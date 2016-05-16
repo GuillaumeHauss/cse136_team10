@@ -42,6 +42,9 @@ app.post('/newAccount', users.newAccount);
 /*  This must go between the users routes and the books routes */
 app.use(users.auth);
 
+app.get('/bookmark/export', bookmarks.exportBookmark);
+app.post('/bookmark/import', bookmarks.exportBookmark);
+
 app.get('/bookmarks', bookmarks.list);
 app.get('/bookmarks/add', bookmarks.add);
 app.post('/bookmarks/insert', bookmarks.insert);
