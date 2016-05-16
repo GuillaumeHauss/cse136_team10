@@ -1,5 +1,5 @@
 var BookmarkIOService = require('./services/BookmarkIOService');
-
+var db = require('./db');
 
 /**
  * Exports a textfile that is named the name of the bookmark
@@ -25,7 +25,7 @@ module.exports.importBookmark = function(req, res) {
  * Does a redirect to the list page
  */
 module.exports.insert = function(req, res){
-  var username = session.username;
+  var username = db.escape(req.body.username);
   var title = db.escape(req.body.title);
   var url = db.escape(req.body.url);
   var description = db.escape(req.body.description);
@@ -44,7 +44,7 @@ module.exports.insert = function(req, res){
 
   db.query(queryString, function(err){
   if (err) throw err;
-    res.redirect('/bookmark');
+    res.redirect('/bookmarks');
   });
 };
 
@@ -58,7 +58,7 @@ module.exports.add = function(req, res) {
 
 
 var list = module.exports.list = function(req, res) {
-  db.query('SELECT * from bookmarks ORDER BY id', function(err, books) {
+  db.query('SELECT * from books ORDER BY id', function(err, books) {
     if (err) throw err;
 
     res.render('bookmarks/list', {books: books});
