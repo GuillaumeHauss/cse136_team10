@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/style.css">
+    <title>Add Bookmark</title>
+  </head>
+  <body>
+    <div class="container">
+      <form id = "add-form" method = "post" action="/bookmarks/insert">
+        <h2>Bookmarx</h2>
+        <p>Add a new bookmark</p>
+        <p>Fill out the form with the requested values</p>
+
+        <input type="text" name="title" placeholder="Title" required="true"><br>
+        <input type="url" name="url" placeholder="URL" required="true"><br>
+
+        <div class="folder">
+          <input type="checkbox" value="selected" id="social-folder" class="folder-input">
+          <label for="social-folder" class="social-label">Advanced Options</label>
+          <div role="folder" class="folder-content">
+            <input class="input-option" type="text" name="tag1" placeholder="Tag1"><br>
+            <input class="input-option" type="text" name="tag2" placeholder="Tag2"><br>
+            <input class="input-option" type="text" name="tag3" placeholder="Tag3"><br>
+            <input class="input-option" type="text" name="tag4" placeholder="Tag4"><br>
+            <input class="input-option" type="text" name="description" placeholder="Description"><br>
+            <input class="input-option" type="text" name="folder" placeholder="Folder"><br>
+            <label for="star">Star it?</label><input type="checkbox" name="star" id="star"><br>
+          </div>
+        </div>
+        <input class="btn-form" type = "submit" value = "Add" id="confirm_add">
+        <button class="btn-form" type = "button" id="cancel_add" onClick="location.href='assignment2.html'" style="float:right">CANCEL</button>
+      </form>
+
+    </div>
+  </body>
+</html>

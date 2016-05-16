@@ -1,4 +1,4 @@
-var MYSQL = require('./db.js');
+var MYSQL = require('.././db');
 var fs = require('fs');
 
 function bookmarkToRowString(bookmark) {
