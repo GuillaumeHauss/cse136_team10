@@ -29,7 +29,7 @@ module.exports.login = function(req, res) {
             console.log(results[0].password);
             if (userInput===results[0].username && pwdInputCrypted===results[0].password) {
                 req.session.user = userInput;
-                res.redirect('/books');
+                res.redirect('/bookmark');
             }
             else{
               res.render('users/errorBadLogin');
@@ -123,7 +123,7 @@ module.exports.newAccountForm = function(req, res){
           if (results.length==0){
             //no existing username --> insert into the table
                //hashing of the password
-              var pwdCrypted = md5(pwd, user);     
+              var pwdCrypted = md5(pwd, user);
               var queryString = "INSERT INTO user (username, password, name, lastname) VALUES (" + db.escape(user) +','+ db.escape(pwdCrypted) +','+ db.escape(name) +','+ db.escape(lastname) + ")";
               db.query(queryString, function(err, result){
                 if (err){

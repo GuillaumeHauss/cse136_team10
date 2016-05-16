@@ -25,7 +25,7 @@ module.exports.importBookmark = function(req, res) {
  * Does a redirect to the list page
  */
 module.exports.insert = function(req, res){
-  var username = db.escape(req.body.username);
+  var username = req.session.user;
   var title = db.escape(req.body.title);
   var url = db.escape(req.body.url);
   var description = db.escape(req.body.description);
@@ -40,13 +40,47 @@ module.exports.insert = function(req, res){
   var counter = 0;
   var folder = db.escape(req.body.folder);
 
-  var queryString = 'INSERT INTO bookmark (username, title, url, description, star, tag1, tag2, tag3, tag4, creationDate, lastVisit, counter, folder) VALUES ('+ username + ', ' + title + ', ' + url + ', ' + description + ', ' + star + ', ' + tag1 + ', ' + tag2 + ', ' + tag3 + ', ' + tag4 + ', ' + creationDate + ', ' + lastVisit + ', ' + counter + ', ' +  folder + ')';
+  var queryString = 'INSERT INTO bookmark (username, title, url, description, star, tag1, tag2, tag3, tag4, creationDate, lastVisit, counter, folder) VALUES ('+ '"' + username + '"' + ', ' + title + ', ' + url + ', ' + description + ', ' + star + ', ' + tag1 + ', ' + tag2 + ', ' + tag3 + ', ' + tag4 + ', ' + creationDate + ', ' + lastVisit + ', ' + counter + ', ' +  folder + ')';
 
   db.query(queryString, function(err){
   if (err) throw err;
-    res.redirect('/bookmarks');
+    res.redirect('/bookmark');
   });
 };
+
+ module.exports.update = function(req,res) {
+   var id = req.params.bookmark_id;
+   var username = req.session.user;
+   var title = db.escape(req.body.title);
+   var url = db.escape(req.body.url);
+   var description = db.escape(req.body.description);
+   var star = db.escape(req.body.star);
+   star === 'on' ? star = 1 : star = 0;
+   var tag1 = db.escape(req.body.tag1);
+   var tag2 = db.escape(req.body.tag2);
+   var tag3 = db.escape(req.body.tag3);
+   var tag4 = db.escape(req.body.tag4);
+   var folder = db.escape(req.body.folder);
+
+   var queryString = 'UPDATE bookmark SET title = ' + title + ', url = ' + url + ', description = ' + description + ', star = ' + star + ', tag1 = ' + tag1 + ', tag2 = ' + tag2 + ', tag3 = ' + tag3 + ', tag4 = ' + tag4 + ', folder = ' + folder + 'WHERE title = ' + "'" + id + "'";
+   console.log(queryString);
+   db.query(queryString, function(err){
+     if (err) throw err;
+     res.redirect('/bookmark');
+   });
+
+ }
+
+ /** Renders the Edit page with the edit.ejs template
+  *
+  */
+  module.exports.edit = function(req, res) {
+    var id = req.params.bookmark_id;
+    db.query('SELECT * from bookmark WHERE title = ' + "'" + id + "'", function(err, bookmark) {
+      if (err) throw err;
+      res.render('bookmarks/edit', {bookmark: bookmark[0]});
+    });
+  };
 
 /**
  *

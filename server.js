@@ -39,8 +39,12 @@ app.post('/bookmark/import', bookmarks.exportBookmark);
 
 app.get('/bookmark', bookmarks.list);
 
-app.get('/bookmark/add', bookmarks.add)
+app.get('/bookmark/add', bookmarks.add);
 app.post('/bookmark/insert', bookmarks.insert);
+
+app.get('/bookmark/edit/:bookmark_id', bookmarks.edit);
+app.post('/bookmark/update/:bookmark_id', bookmarks.update);
+
 
 app.listen(config.PORT, function () {
   console.log('Example app listening on port ' + config.PORT + '!');
