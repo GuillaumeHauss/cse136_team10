@@ -21,16 +21,17 @@
 			<div onClick="location.href='add.html'" class="add-folder"><p>Add bookmark</p></div>
 			<h2>My List</h2>
 			<table>
+			
 				<tr>
 					<td style="width:110px">
 						<a href="">Facebook</a>
 					</td>
 
 					<td class = "icon pencil">
-						<a onclick="editForm('facebook')"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+						<a href="/books/edit/<%= book.id %>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 					</td>
 					<td class = "icon trash">
-						<a href="delete.html"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+						<a href="/books/confirmdelete/<%= book.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
 					</td>
 					<td class="icon star">
 						<a href="star.html"><i class="fa fa-star filled" aria-hidden="true"></i></a>
@@ -45,7 +46,7 @@
 						<a href="edit.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
 					</td>
 					<td class = "icon trash">
-						<a href="delete.html"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+						<a href="/books/confirmdelete/<%= book.id %>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
 					</td>
 					<td class="icon star">
 						<a href="star.html"><i class="fa fa-star-o" aria-hidden="true"></i></a>
