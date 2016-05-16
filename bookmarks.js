@@ -5,10 +5,12 @@ var db = require('./db');
 var regex = require("regex");
 var users = require('./users');
 
+
+
 var list = module.exports.list = function(req, res) {
 
   console.log(req.session.user);
-  if (!req.session) res.redirect('/error');
+  // if (!req.session) res.render('/error', error.errors['url'])
   //if (!req.session.user )
   // add regex to check if user is of type name@email.com
   var user = req.session.user;
