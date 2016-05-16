@@ -95,5 +95,3 @@ module.exports.update = function(req, res){
     res.redirect('/books');
   });
 };
-
-
