@@ -1,0 +1,22 @@
+{
+  "name": "CSE136 Team 10",
+  "homepage": "http://cse136-10.tk",
+  "authors": [
+    "Anthony Altieri <AnthonyRAltieri@gmail.com>"
+  ],
+  "description": "Team 10's Homepage",
+  "main": "",
+  "moduleType": [],
+  "license": "No Public Usage",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-route": "^1.5.3"
+  }
+}

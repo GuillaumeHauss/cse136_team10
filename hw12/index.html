@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html ng-app="mainapp">
+<head>
+    <title>CSE 136 Team 10's Homepage</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <!-- Angular CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+
+    <!-- Application JS -->
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/controllers.js"></script>
+    <script type="text/javascript" src="js/services.js"></script>
+
+    <!- ngRoute -->
+    <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+
+    <!-- Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<nav ng-controller="NavCtrl">
+    <a class="title" ng-click="goTo('Home')">
+        Team 10
+    </a>
+    <ul>
+        <li>
+            <a class="navbtn" href="https://github.com/GuillaumeHauss/cse136_team10">
+                GitHub Repository
+            </a>
+        </li>
+        <li>
+            <a class="navbtn" ng-click="goTo('Assignments')">
+                Assignments
+            </a>
+        </li>
+    </ul>
+</nav>
+<div ng-view></div>
+</body>
+
+</html>
