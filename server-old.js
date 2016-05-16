@@ -1,6 +1,6 @@
 var config = require('./config-template');
 var db = require('./db');
-var bookmarks = require('./bookmarks');
+var books = require('./books');
 var users = require('./users');
 var md5 = require('./md5');
 
@@ -34,11 +34,14 @@ app.post('/newAccount', users.newAccount);
 /*  This must go between the users routes and the books routes */
 app.use(users.auth);
 
-app.get('/bookmark/export', bookmarks.exportBookmark);
-app.post('/bookmark/import', bookmarks.exportBookmark)
-
-
-
+app.get('/books', books.list);
+app.get('/books/add', books.add);
+app.get('/books/edit/:book_id(\\d+)', books.edit);
+app.get('/books/confirmdelete/:book_id(\\d+)', books.confirmdelete);
+app.get('/books/delete/:book_id(\\d+)', books.delete);
+app.post('/books/update/:book_id(\\d+)', books.update);
+app.post('/books/insert', books.insert);
+app.post('/post/export/:book_id(\\d+)', books.exportBookmark)
 
 app.listen(config.PORT, function () {
   console.log('Example app listening on port ' + config.PORT + '!');

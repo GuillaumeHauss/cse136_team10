@@ -2,7 +2,7 @@
  Values are hard coded for example purposes
  */
 
-var config = require('./config');
+var config = require('./config-template');
 var db = require('./db');
 var md5 = require('./md5');
 /**
@@ -23,8 +23,7 @@ module.exports.login = function(req, res) {
     db.query(sql, function(err, results) {
       if(err){
         throw(err);
-      }
-      else{
+      } else {
           if(results.length>0){
             console.log(results[0].username);
             console.log(results[0].password);

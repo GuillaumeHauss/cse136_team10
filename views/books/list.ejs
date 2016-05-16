@@ -38,6 +38,7 @@
     <td>$<%= book.price %></td>
     <td><a href="/books/confirmdelete/<%= book.id %>"><img src='/images/trash.gif' alt='delete' title='Delete' border='0'></a>
     &nbsp;<a href="/books/edit/<%= book.id %>"><img src='/images/pencil.gif' alt='edit' title='Edit' border='0'></a>
+    <a href="/books/export/">export</a>
     </td>
 </tr>
 <% }); %>
@@ -45,6 +46,7 @@
 </table>
 <br>
 <a href="/books/add">Add Row</a>
+<a href="/books/import">Import</a>
 </body>
 </html>
 
