@@ -62,8 +62,8 @@ app.get('/bookmarks/edit/:bookmark_id', bookmarks.edit);
 app.post('/bookmarks/update/:bookmark_id', bookmarks.update);
 
 app.get('/bookmarks/star/:bookmark_title/:bookmark_star(\\d)', bookmarks.star);
-
 app.get('/bookmarks/confirm-delete/:bookmark_id',bookmarks.confirmDelete);
+
 app.post('/bookmarks/delete/:bookmark_id',bookmarks.delete);
 app.post('/search', bookmarks.search);
 

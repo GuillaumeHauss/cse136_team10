@@ -4,6 +4,7 @@
 var db = require('./db');
 var regex = require("regex");
 var users = require('./users');
+//var error = require('./error');
 
 var list = module.exports.list = function(req, res) {
 
@@ -109,8 +110,11 @@ module.exports.insert = function(req, res){
   if (req.body.star) star = 1;
 
   else star = 0;
-
-
+/*
+  if(!user){
+    console.log('inside error');
+    res.render('/error', {errorType : error.undefinedUser});
+  }*/
 
   var urlExpression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
   var urlRegex = new RegExp(urlExpression);
@@ -190,7 +194,6 @@ module.exports.confirmDelete = function(req,res){
     if (err) throw err;
     res.render('bookmarks/confirm-delete', {bookmark: bookmark[0]});
   });
-
 }
 /*** Function to delete a bookmark
  *
@@ -201,11 +204,15 @@ module.exports.confirmDelete = function(req,res){
 module.exports.delete = function(req,res){
   var id = req.params.bookmark_id;
   var user = req.session.user;
-  db.query('DELETE FROM bookmark WHERE title =' + db.escape(id) + 'AND username =' + db.escape(user) , function(err, bookmark){
-    if(err) throw err;
-    res.redirect('/bookmarks');
-  });
-};
+
+  db.query('DELETE FROM bookmark WHERE title =' + db.escape(id) + 'AND username =' + db.escape(user),
+        function (err, bookmark) {
+          if (err) {
+            throw err;
+          }
+          res.redirect('/bookmarks');
+        });
+  };
 
 
 module.exports.star = function(req, res){

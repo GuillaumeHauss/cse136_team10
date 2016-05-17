@@ -313,14 +313,32 @@ table a:hover	{
 .nav-left {
 	display: inline;
 }
-.input-group .form-control {
-	max-width: 200px !important;
-	float: right !important;
+.input-group{
+	margin-left: 4%;
 }
 
-.input-group{
-	padding-bottom: 10px;
+.search-input{
+	float: left;
 }
+
+.search-input > input{
+	height: 33px;
+}
+/*
+.input-group{
+	max-width: 200px !important;
+	float: right !important;
+	display: inline !important;
+}
+
+.input-group > form{
+	display: inline;
+
+}
+
+.input-group > form > input{
+	display: inline;
+}*/
 #sort-controls{
 	padding-left: 4%;
 	z-index: 1000;
