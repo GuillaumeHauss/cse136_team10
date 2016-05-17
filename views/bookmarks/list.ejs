@@ -183,11 +183,12 @@
 
                     <h1><%=bookmark.title%></h1>
                     <p class="bookmark-description"><%=bookmark.description%></p>
-                    <a style="text-decoration: none" href="<%= bookmark.url %>" target="_blank">
+                    <a style="text-decoration: none" href="/bookmarks/counter/<%= bookmark.title %>/<%= bookmark.username %>" target="_blank">
                         <div class="bookmark-button">
                             <p>Link</p>
                         </div>
                     </a>
+                    <p id="counter"><%= bookmark.counter %> views</p>
                     <p class="tags"><span>Tags: </span><% if(bookmark.tag1 != "NULL") {%><%= bookmark.tag1 %><% } %> <% if(bookmark.tag2 != "NULL") {%><%= bookmark.tag2%><% } %> <% if(bookmark.tag3 != "NULL") {%><%= bookmark.tag3%><% } %> <% if(bookmark.tag4 != "NULL") {%><%= bookmark.tag4%><% } %></p>
                     <!--need to fix these links-->
                     <div class = "crud-btns">
@@ -225,12 +226,6 @@
 
 
     </div>
-    <script>
-        function editForm(title){
-
-            window.location = "edit.html?title="+title;//Edit;
-        }
-    </script>
 </body>
 
 </html>
