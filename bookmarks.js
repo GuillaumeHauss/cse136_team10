@@ -346,7 +346,7 @@ module.exports.star = function(req, res){
   	  }
   	});
     db.query('select counter from bookmark where username='+db.escape(username)+' and title='+db.escape(title), function(err, counter){
-      var counterNew = counter[0]+1;
+      var counterNew = counter[0].counter+1;
       console.log("counterNew = "+counterNew);
       db.query('update bookmark set counter='+counterNew+' where title =' + db.escape(title)+' and username='+db.escape(username), function(err){
         if (err){
