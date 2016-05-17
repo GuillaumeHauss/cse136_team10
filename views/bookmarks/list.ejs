@@ -68,6 +68,7 @@
 
     <div class="row ">
         <div class="nav-left" >
+            <div class="col-md-4">
             <form id="sort-controls" action="sort.php" method="post" style="display:inline;">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -82,21 +83,24 @@
                     </ul>
                 </div>
             </form>
+            </div>
 
 
-            <div class="import-export">
+            <div class="col-md-2 import-export">
                 <a class="import-export" href="#"><span class="glyphicon glyphicon-import"></span> <p>Import</p></a>
                 <a class="import-export" href="#"><span class="glyphicon glyphicon-export"></span> <p>Export</p></a>
             </div>
+            
         <div class="col-md-3">
             <div class="input-group">
                 <form method="post" action="/search">
                     <input type="text" class="form-control fix-height" name="searchString" placeholder="Search for...">
-                    <input class ="btn-btn-default" type="submit" value= "Go!">
+                    <input class ="btn btn-default" type="submit" value= "Go!">
                 </form>
             </div>
         </div>
-        <div class="nav-right">
+        
+        <div class="col-md-2 nav-right">
             <form method="get" action="/logout">
                 <input class="log-button" type="submit" value="Log out">
             </form>
