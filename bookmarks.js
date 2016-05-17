@@ -343,6 +343,7 @@ module.exports.star = function(req, res){
   	    console.log("url target :"+url);
   	    //var win = this.open(url, '_blank');
   	    //win.focus();
+  	    res.redirect(url);
   	  }
   	});
     db.query('select counter from bookmark where username='+db.escape(username)+' and title='+db.escape(title), function(err, counter){
