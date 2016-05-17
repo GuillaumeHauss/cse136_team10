@@ -40,6 +40,7 @@
 
         <table id="folders">
             <% for (var folder in folders) {%>
+            <%if(folder != "NULL") {%>
             <tr>
                 <td>
                     <div class="folder">
@@ -47,13 +48,14 @@
                         <label for="social-folder" class="social-label"><%=folder%></label>
                         <div role="folder" class="folder-content">
                             <!--f.title, f.url-->
-                            <% for (var obj in folder) {%>
+                            <% folders[folder].forEach(function(obj) {%>
                             <li><a href=<%=obj.url%>><%=obj.title%></a></li>
-                            <% } %>
+                            <% }); %>
                         </div>
                     </div>
                 </td>
             </tr>
+            <%}%>
            <% } %>
         </table>
 

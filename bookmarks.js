@@ -29,28 +29,28 @@ var list = module.exports.list = function(req, res) {
 
         for (var i = 0; i < bookmarks.length; i++) {
           // console.log(bookmarks[i]);
-          if (bookmarks[i].folder != 'null' && bookmarks[i].folder in foldersHash) {
+          if (bookmarks[i].folder != 'NULL' && bookmarks[i].folder in foldersHash) {
             foldersHash[bookmarks[i].folder].push({"title": bookmarks[i].title, "url": bookmarks[i].url});
           }
-          else {
+          else if (bookmarks[i].folder != 'NULL' && !(bookmarks[i].folder in foldersHash)) {
             foldersHash[bookmarks[i].folder] = [{"title": bookmarks[i].title, "url": bookmarks[i].url}]
           }
         }
 
         // console.log("folders");
         for (var i = 0; i < folders.length; i++) {
-          foldersHash[folders[i].folder] = [{"title": null, "url": null}];
+         if(!foldersHash[folders[i].folder]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
         }
         // console.log(foldersHash);
-        console.log(names[0].name);
+        // console.log("names");
         var nameObj = {name: names[0].name};
         // console.log(nameObj);
 
 
 
 
-        res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: sortObject(foldersHash), name: names[0].name});
-      });
+        res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: sortObject(foldersHash), name: nameObj});
+      })
 
     });
   });
@@ -105,7 +105,6 @@ var list = module.exports.search = function(req,res){
 
       if(err){
         throw(err);
-        res.redirect('505.ejs');
       }
       else{
         res.render('bookmarks/list', {bookmarks: bookmarks});
@@ -312,3 +311,5 @@ module.exports.star = function(req, res){
     });
   }
 };
+
+

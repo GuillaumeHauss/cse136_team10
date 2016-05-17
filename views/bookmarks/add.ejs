@@ -36,8 +36,9 @@
     <div id="folderContainer">
         <h4>Folder:</h4>
         <select class="form-control" type="text" name="folder" form="add-form"><br>
+            <option name="folder" value=""></option>
             <% folders.forEach(function(folder) {%>
-            <option name="<%=folder.name%>" value="<%=folder.name%>"><%=folder.name%></option>
+            <option name="folder" value="<%=folder.name%>"><%=folder.name%></option>
             <% }); %>
         </select>
     </div>
