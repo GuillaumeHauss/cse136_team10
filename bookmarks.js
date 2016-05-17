@@ -68,7 +68,9 @@ var list = module.exports.sortStar = function(req, res) {
 
 var list = module.exports.search = function(req,res){
   var searchTitle = req.body.searchString;
-  var sql = " SELECT * FROM bookmark WHERE title LIKE '%" + searchTitle + "%' OR url LIKE'%" + searchTitle + "%'"; 
+  var sql = " SELECT * FROM bookmark WHERE title LIKE '%" + searchTitle + "%' OR url LIKE'%" + searchTitle 
+  + "%' OR tag1 LIKE'%" + searchTitle + "%' OR tag2 LIKE'%" + searchTitle + "%' OR tag3 LIKE'%" + searchTitle 
+  + "%' OR tag4 LIKE'%" + searchTitle + "%'"; 
 
     db.query(sql, function(err, bookmarks){
 

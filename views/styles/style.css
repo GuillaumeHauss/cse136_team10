@@ -425,3 +425,10 @@ hr{
     float:right;
     
 }
+
+.searchForm{
+	float: left;
+	height: 33px;
+}
+	
+
