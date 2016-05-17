@@ -334,6 +334,17 @@ module.exports.star = function(req, res){
     /*var url = req.params.bookmark_url;
     var win = window.open(url, '_blank');
   	win.focus();*/
+  	db.query('select url friom bookmark where username = '+db.escape(username)+' and title ='+db.escape(title), function(err, url){
+  	  if (err) {
+  	    throw err;
+  	  }
+  	  else{
+  	    var url = url[0];
+  	    console.log("url tager :"+url);
+  	    var win = window.open(url, '_blank');
+  	    win.focus();
+  	  }
+  	});
     db.query('select counter from bookmark where username='+db.escape(username)+' and title='+db.escape(title), function(err, counter){
       var counterNew = counter[0]+1;
       console.log("counterNew = "+counterNew);
