@@ -7,7 +7,7 @@ function sortObject(o) {
 }
 
 
-function render(sortParameter){
+function render(sortParameter, req, res){
   //console.log(req.session.user);
   if (!req.session) res.redirect('errors/error', {errorType:error.password});
   //if (!req.session.user )
@@ -55,7 +55,7 @@ function render(sortParameter){
   });
 }
 var list = module.exports.list = function(req, res) {
-  render('title');
+  render('title', req, res);
 };
 
 var list = module.exports.sortTitle = function(req, res) {
@@ -64,7 +64,7 @@ var list = module.exports.sortTitle = function(req, res) {
 
     res.redirect('/bookmarks');
   });*/
-  render('title');
+  render('title', req, res);
 };
 
 var list = module.exports.sortURL = function(req, res) {
@@ -73,7 +73,7 @@ var list = module.exports.sortURL = function(req, res) {
 
     res.redirect('/bookmarks');
   });*/
-  render('url');
+  render('url', req, res);
 };
 
 var list = module.exports.sortLastVisit = function(req, res) {
@@ -82,7 +82,7 @@ var list = module.exports.sortLastVisit = function(req, res) {
 
     res.redirect('/bookmarks');
   });*/
-  render('lastVisit DESC');
+  render('lastVisit DESC', req, res);
 };
 
 var list = module.exports.sortCreateDate = function(req, res) {
@@ -91,7 +91,7 @@ var list = module.exports.sortCreateDate = function(req, res) {
 
     res.redirect('/bookmarks');
   });*/
-  render('creationDate ASC');
+  render('creationDate ASC', req, res);
 };
 
 var list = module.exports.sortStar = function(req, res) {
@@ -100,7 +100,7 @@ var list = module.exports.sortStar = function(req, res) {
 
     res.redirect('/bookmarks');
   });*/
-  render('star DESC');
+  render('star DESC', req, res);
 };
 
 var list = module.exports.search = function(req,res){
