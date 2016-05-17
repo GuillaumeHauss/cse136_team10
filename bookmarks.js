@@ -331,6 +331,9 @@ module.exports.star = function(req, res){
    console.log("counter function called");
     var title = req.params.bookmark_title;
     var username = req.params.bookmark_username;
+    var url = req.params.bookmark_url;
+    var win = window.open(url, '_blank');
+  	win.focus();
     db.query('select counter from bookmark where username='+db.escape(username)+' and title='+db.escape(title), function(err, counter){
       var counterNew = counter[0]+1;
       console.log("counterNew = "+counterNew);
