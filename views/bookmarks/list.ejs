@@ -118,45 +118,45 @@
     <hr>
     -->
     <div class="row ">
-				<div class="nav-left col-md-4" >
-					<form id="sort-controls" action="" method="post" style="display:inline;">
-						<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Sort bookmarks by... <span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu">
-								<li><a href="/sortTitle">Title</a></li>
-								<li><a href="/sortLastVisit">Last Visit</a></li>
-								<li><a href="/sortURL">URL</a></li>
-								<li><a href="/sortCreateDate">Create Date</a></li>
-								<li><a href="/sortStar">Stared/Unstared</a></li>
-							</ul>
-						</div>
-					</form>
-					<p class='import-export'>
-					Import &nbsp;<a href="#"><span class="glyphicon glyphicon-import"></a></p>
-					<p class='import-export'>Export &nbsp;<a href="#"><span class="glyphicon glyphicon-export"></a>
-					</p>
+		<div class="nav-left col-md-4" >
+			<form id="sort-controls" action="" method="post" style="display:inline;">
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Sort bookmarks by... <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="/sortTitle">Title</a></li>
+						<li><a href="/sortLastVisit">Last Visit</a></li>
+						<li><a href="/sortURL">URL</a></li>
+						<li><a href="/sortCreateDate">Create Date</a></li>
+						<li><a href="/sortStar">Stared/Unstared</a></li>
+					</ul>
 				</div>
+			</form>
+			<p class='import-export'>
+			Import &nbsp;<a href="#"><span class="glyphicon glyphicon-import"></a></p>
+			<p class='import-export'>Export &nbsp;<a href="#"><span class="glyphicon glyphicon-export"></a>
+			</p>
+		</div>
 
-				<div class=" nav-right col-md-6">
-				    <form action="/search" method="post">
-						<div class="input-group">
-							<input type="text" class="form-control fix-height" placeholder="Search for...">
-							<span class="input-group-btn">
-							<button class="btn btn-default" type="button">Go!</button>
-							</span>
-						</div>
-					</form>
+		<div class=" nav-right col-md-6">
+		    <form action="/search" method="post">
+				<div class="input-group">
+					<input type="text" class="form-control fix-height" placeholder="Search for...">
+					<span class="input-group-btn">
+					<button class="btn btn-default" type="button">Go!</button>
+					</span>
 				</div>
-				<div class="nav-right col-md-1">
-						<form method="post" action="/logout">
-							<input class="log-button" type="submit" value="Log out">
-						</form>
-				</div>
-				
-			</div>
-			<hr>
+			</form>
+		</div>
+		<div class="nav-right col-md-1">
+				<form method="get" action="/logout">
+					<input class="log-button" type="submit" value="Log out">
+				</form>
+		</div>
+		
+	</div>
+	<hr>
     <div class ="container-fluid">
 
         <div class="input-group">
