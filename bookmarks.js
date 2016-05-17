@@ -8,8 +8,8 @@ function sortObject(o) {
 
 
 function render(sortParameter){
-  console.log(req.session.user);
-  if (!req.session) res.redirect('/error');
+  //console.log(req.session.user);
+  if (!req.session) res.redirect('errors/error', {errorType:error.password});
   //if (!req.session.user )
   // add regex to check if user is of type name@email.com
   var user = req.session.user;
