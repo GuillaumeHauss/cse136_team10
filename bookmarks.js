@@ -90,10 +90,55 @@ var list = module.exports.sortCreateDate = function(req, res) {
 };
 
 var list = module.exports.sortStar = function(req, res) {
-  db.query('SELECT * from bookmark ORDER BY star DESC', function(err, bookmarks) {
+  /*db.query('SELECT * from bookmark ORDER BY star DESC', function(err, bookmarks) {
     if (err) throw err;
 
     res.redirect('/bookmarks');
+  });*/
+  console.log(req.session.user);
+  if (!req.session) res.redirect('/error');
+  //if (!req.session.user )
+  // add regex to check if user is of type name@email.com
+  var user = req.session.user;
+  db.query('select name from user where username = '+ db.escape(user), function(err, names) {
+    // console.log(names);
+    db.query('SELECT * from bookmark where username = ' + db.escape(user)+'order by star DESC', function (err, bookmarks) {
+      if (err) throw err;
+      // console.log(bookmarks);
+      // (Select folder, title from bookmark where username = ' + db.escape(user) + ' and folder in (select folder from bookmark where username = ' + db.escape(user) + ')) union all (select name, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + '))
+      db.query('(Select folder, title, url from bookmark where username = ' + db.escape(user) + ' and folder is not null ) union (select name, null, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + ' and folder is not null))', function (err, folders) {
+        if (err) throw err;
+
+        var foldersHash = {};
+
+
+
+        for (var i = 0; i < bookmarks.length; i++) {
+          // console.log(bookmarks[i]);
+          if (bookmarks[i].folder != 'null' && bookmarks[i].folder in foldersHash) {
+            foldersHash[bookmarks[i].folder].push({"title": bookmarks[i].title, "url": bookmarks[i].url});
+          }
+          else {
+            foldersHash[bookmarks[i].folder] = [{"title": bookmarks[i].title, "url": bookmarks[i].url}]
+          }
+        }
+
+        // console.log("folders");
+        for (var i = 0; i < folders.length; i++) {
+          foldersHash[folders[i].folder] = [{"title": null, "url": null}];
+        }
+        // console.log(foldersHash);
+        console.log(names[0].name);
+        var nameUser = names[0].name;
+        // console.log(nameObj);
+
+
+
+
+        res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: sortObject(foldersHash), name: nameUser});
+      });
+
+    });
   });
 };
 
