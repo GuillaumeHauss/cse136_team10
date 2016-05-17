@@ -39,7 +39,7 @@ function render(sortParameter, req, res){
 
         // console.log("folders");
         for (var i = 0; i < folders.length; i++) {
-         if(!foldersHash[folders[i].folder]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
+         if(!foldersHash[folders[i].folder] && foldersHash[folders[i].folder != "null"]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
         }
         console.log(foldersHash);
         // console.log("names");
