@@ -185,7 +185,7 @@
                     <p class="bookmark-description"><%=bookmark.description%></p>
                     <a style="text-decoration: none" href="<%= bookmark.url %>" target="_blank">
                         <div class="bookmark-button">
-                            <p onClick="counter("+<%=bookmark.url%>+")">Link</p>
+                            <p onClick="counter('"+<%= bookmark.url %>+"')">Link</p>
                         </div>
                     </a>
                     <p class="tags"><span>Tags: </span><% if(bookmark.tag1 != "NULL") {%><%= bookmark.tag1 %><% } %> <% if(bookmark.tag2 != "NULL") {%><%= bookmark.tag2%><% } %> <% if(bookmark.tag3 != "NULL") {%><%= bookmark.tag3%><% } %> <% if(bookmark.tag4 != "NULL") {%><%= bookmark.tag4%><% } %></p>
@@ -227,7 +227,7 @@
     </div>
     <script>
         function counter(url){
-        	var win = window.open(url', '_blank');
+        	var win = window.open(url, '_blank');
   		win.focus();
         }
     </script>
