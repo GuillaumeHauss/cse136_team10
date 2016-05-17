@@ -29,10 +29,10 @@ function render(sortParameter, req, res){
 
         for (var i = 0; i < bookmarks.length; i++) {
           // console.log(bookmarks[i]);
-          if (bookmarks[i].folder != 'NULL' && bookmarks[i].folder in foldersHash) {
+          if (bookmarks[i].folder != 'NULL' && bookmarks[i].folder != 'null' && bookmarks[i].folder in foldersHash) {
             foldersHash[bookmarks[i].folder].push({"title": bookmarks[i].title, "url": bookmarks[i].url});
           }
-          else if (bookmarks[i].folder != 'NULL' && !(bookmarks[i].folder in foldersHash)) {
+          else if (bookmarks[i].folder != 'NULL' && bookmarks[i].folder != 'null' && !(bookmarks[i].folder in foldersHash)) {
             foldersHash[bookmarks[i].folder] = [{"title": bookmarks[i].title, "url": bookmarks[i].url}]
           }
         }
