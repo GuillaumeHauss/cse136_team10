@@ -21,6 +21,7 @@ function render(sortParameter, req, res){
       // (Select folder, title from bookmark where username = ' + db.escape(user) + ' and folder in (select folder from bookmark where username = ' + db.escape(user) + ')) union all (select name, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + '))
       db.query('(Select folder, title, url from bookmark where username = ' + db.escape(user) + ' and folder is not null ) union (select name, null, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + ' and folder is not null))', function (err, folders) {
         if (err) throw err;
+        console.log(folders);
 
         var foldersHash = {};
 
@@ -38,18 +39,18 @@ function render(sortParameter, req, res){
 
         // console.log("folders");
         for (var i = 0; i < folders.length; i++) {
-          if(!foldersHash[folders[i].folder]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
+         if(!foldersHash[folders[i].folder]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
         }
-        // console.log(foldersHash);
-        console.log(names[0].name);
-        var nameUser = names[0].name;
+        console.log(foldersHash);
+        // console.log("names");
+        var nameObj = {name: names[0].name};
         // console.log(nameObj);
 
 
 
 
-        res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: sortObject(foldersHash), name: nameUser});
-      });
+        res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: sortObject(foldersHash), name: nameObj});
+      })
 
     });
   });
