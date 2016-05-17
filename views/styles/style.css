@@ -329,6 +329,7 @@ table a:hover	{
 
 .input-group{
 	padding-bottom: 10px;
+	margin-left: 15px;
 }
 #sort-controls{
 	padding-left: 4%;
@@ -444,5 +445,12 @@ hr{
 }
 #errorMessage > h1{
     text-align: center;
+}
+.search-bar{
+	float:left;
+}
+
+.btn-btn-default{
+	height: 33px !important;
 }
 

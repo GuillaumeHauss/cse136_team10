@@ -16,7 +16,7 @@
 <body>
 <div class="side-bar">
     <h1>BookMarx</h1>
-    <p id="helloUser">Hello <em><%= #{name}%></em></p>
+    <p id="helloUser">Hello <em><%= name.name %></em></p>
     <div class="folder-wrapper">
         <div onClick="location.href='/bookmarks/add'" class="add-folder"><p>Add bookmark</p></div>
         <!--<table>-->
@@ -45,8 +45,14 @@
                 <td>
                     <div class="folder">
                         <input type="checkbox" value="selected" id="social-folder" class="folder-input">
+
                         <label for="social-folder" class="social-label"><%=folder%></label>
                         <div role="folder" class="folder-content">
+
+                            <div class="import-export">
+                                <a class="import-export" href="#"><span class="glyphicon glyphicon-import"></span> <p>Import</p></a>
+                                <a class="import-export" href="#"><span class="glyphicon glyphicon-export"></span> <p>Export</p></a>
+                            </div>
                             <!--f.title, f.url-->
                             <% folders[folder].forEach(function(obj) {%>
                             <li><a href=<%=obj.url%>><%=obj.title%></a></li>
@@ -100,8 +106,12 @@
     <div class ="container-fluid">
         <div class="input-group">
             <form method="post" action="/search">
-                <input type="text" class="form-control fix-height" name="searchString" placeholder="Search for...">
-                <input class ="btn-btn-default" type="submit" value= "Go!">
+                <div class="search-bar">
+                    <input type="text" class="form-control fix-height" name="searchString" placeholder="Search for...">
+                </div>
+                <div class="search-bar">
+                    <input class ="btn-btn-default" type="submit" value= "Go!">
+                </div>
             </form>
         </div>
         <div class="row">
