@@ -339,9 +339,9 @@ module.exports.star = function(req, res){
   	    throw err;
   	  }
   	  else{
-  	    var url = url[0];
-  	    console.log("url tager :"+url);
-  	    var win = window.open(url, '_blank');
+  	    var url = url[0].url;
+  	    console.log("url target :"+url);
+  	    var win = this.open(url, '_blank');
   	    win.focus();
   	  }
   	});
