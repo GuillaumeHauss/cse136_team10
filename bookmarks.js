@@ -17,16 +17,16 @@ function render(sortParameter, req, res){
     // console.log(names);
     db.query('SELECT * from bookmark where username = ' + db.escape(user)+'order by '+sortParameter, function (err, bookmarks) {
       if (err) throw err;
-      console.log("counter 1"+bookmarks[0].counter);
-      console.log("counter 2"+bookmarks[1].counter);
+      //console.log("counter 1"+bookmarks[0].counter);
+      //console.log("counter 2"+bookmarks[1].counter);
       // (Select folder, title from bookmark where username = ' + db.escape(user) + ' and folder in (select folder from bookmark where username = ' + db.escape(user) + ')) union all (select name, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + '))
       db.query('(Select folder, title, url from bookmark where username = ' + db.escape(user) + ' and folder is not null ) union (select name, null, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + ' and folder is not null))', function (err, folders) {
         if (err) throw err;
-        console.log(folders);
+        //console.log(folders);
 
         var foldersHash = {};
 
-        console.log(bookmarks);
+        //console.log(bookmarks);
 
 
         for (var i = 0; i < bookmarks.length; i++) {
@@ -43,7 +43,7 @@ function render(sortParameter, req, res){
         for (var i = 0; i < folders.length; i++) {
          if(!foldersHash[folders[i].folder]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
         }
-        console.log(foldersHash);
+        //console.log(foldersHash);
         // console.log("names");
         var nameObj = {name: names[0].name};
         // console.log(nameObj);
@@ -163,13 +163,13 @@ module.exports.insert = function(req, res) {
   var urlExpression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
   var urlRegex = new RegExp(urlExpression);
 
-  console.log("length of title" + title.length + ', ' + 'name of title: ' + title);
+  //console.log("length of title" + title.length + ', ' + 'name of title: ' + title);
   if (!titleRegex.test(title) || title.length > 20) {
-    console.log("Error in title");
+    //console.log("Error in title");
     res.render('errors/error', {errorType: error.titleError});
   }
   else if (!urlRegex.test(url)) {
-    console.log("Error in url");
+    //console.log("Error in url");
     res.render('errors/error', {errorType: error.urlError});
   }
   else {
@@ -237,20 +237,20 @@ module.exports.update = function(req,res){
   var urlExpression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
   var urlRegex = new RegExp(urlExpression);
 
-  console.log(titleRegex.test(title));
+  //console.log(titleRegex.test(title));
   if(!titleRegex.test(title) || title.length > 20 ){
-    console.log("Error in title");
+    //console.log("Error in title");
     res.render('errors/error', {errorType : error.titleError});
   }
   else if(!urlRegex.test(url)){
-    console.log("Error in url");
+   // console.log("Error in url");
     res.render('errors/error', {errorType : error.urlError});
   }
   else {
     var queryString = 'UPDATE bookmark SET title = ' + db.escape(title) + ', url = ' + url + ', description = ' + description + ', star = ' + star + ', tag1 = ' + db.escape(
             tag[0]) + ', tag2 = ' + db.escape(tag[1]) + ', tag3 = ' + db.escape(tag[2]) + ', tag4 = ' + db.escape(
             tag[3]) + 'WHERE title = ' + "'" + id + "'";
-    console.log(queryString);
+    //console.log(queryString);
     db.query(queryString, function (err) {
       if (err) {
         throw err;
@@ -269,7 +269,7 @@ module.exports.update = function(req,res){
  */
 module.exports.confirmDelete = function(req,res){
   var id = req.params.bookmark_id;
-  console.log("id of bookmark: " + id);
+  //console.log("id of bookmark: " + id);
   db.query('SELECT * from bookmark WHERE title = ' + "'" + id + "'", function (err, bookmark) {
     if (err) {
       throw err;
@@ -359,7 +359,7 @@ module.exports.exportBookmark = function(req, res) {
   // If there is no session do nothing
   // TODO: boot user back to sign in screen or notify of session lost
   if (!req.session) {
-    console.error('ERROR: No session');
+    //console.error('ERROR: No session');
     return;
   }
   var title = req.body.title;
@@ -387,8 +387,8 @@ module.exports.importBookmark = function(req, res) {
     }
     var filename = req.file.filename;
     var username = req.session.user;
-    console.log('filename');
-    console.log(filename);
+    //console.log('filename');
+    //console.log(filename);
     BookmarkIOService.importBookmark(username, filename);
   });
   res.redirect('/bookmarks');
@@ -405,8 +405,8 @@ module.exports.importFolder = function(req, res) {
     }
     var filename = req.file.filename;
     var username = req.session.user;
-    console.log('filename');
-    console.log(filename);
+    //console.log('filename');
+    //console.log(filename);
     BookmarkIOService.importFolder(username, filename, function() {
       if (fs.existsSync(path.join(__dirname, 'public/uploads/' + filename))) {
         fs.unlink(path.join(__dirname, 'public/uploads/' + filename));
@@ -420,7 +420,7 @@ module.exports.importFolder = function(req, res) {
 
 module.exports.exportFolder = function(req, res) {
   if (!req.session) {
-    console.error('ERROR: No session');
+    //console.error('ERROR: No session');
     return;
   }
   var username = req.session.user;
