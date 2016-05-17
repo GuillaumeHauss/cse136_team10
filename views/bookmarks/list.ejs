@@ -43,6 +43,7 @@
         <table id="folders">
             <% for (var folder in folders) {%>
             <%if(folder != "NULL") {%>
+            <%if(folder != "null") {%>
             <tr>
                 <td>
                     <div class="folder">
@@ -65,6 +66,7 @@
                     </div>
                 </td>
             </tr>
+            <%}%>
             <%}%>
            <% } %>
         </table>
