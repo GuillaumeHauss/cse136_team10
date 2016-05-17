@@ -49,7 +49,7 @@ function render(sortParameter, req, res){
 
 
 
-        res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: sortObject(foldersHash), name: nameObj});
+        res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: foldersHash, name: nameObj});
       })
 
     });
