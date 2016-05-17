@@ -297,7 +297,9 @@ module.exports.delete = function(req,res){
   });
 };
 
-
+/**
+ * Function to star/unstar a bookmark
+ */
 module.exports.star = function(req, res){
   var title = req.params.bookmark_title;
   var star = req.params.bookmark_star;
@@ -322,6 +324,23 @@ module.exports.star = function(req, res){
   }
 };
 
+/**
+ * Function to updta the counter of the bookmark
+ */
+ module.exports.counter = function(req, res){
+    var title = req.params.bookmark_title;
+    var username = req.params.bookmark_username;
+    db.query('select counter from bookmark where username='+db.escape(username)+' and title='+db.escape(title), function(err, counter){
+      var counterNew = counter[0]+1;
+      db.query('update bookmark set counter='+counterNew+' where title =' + db.escape(title)+' and username='+db.escape(username), function(err){
+        if (err){
+          throw err;
+          res.redirect('/505.ejs');
+        }
+        res.redirect('/bookmarks');
+      });
+    });
+};
 var BookmarkIOService = require('./services/BookmarkIOService');
 var path = require('path');
 var fs = require('fs');
