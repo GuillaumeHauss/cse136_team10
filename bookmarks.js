@@ -341,8 +341,8 @@ module.exports.star = function(req, res){
   	  else{
   	    var url = url[0].url;
   	    console.log("url target :"+url);
-  	    var win = this.open(url, '_blank');
-  	    win.focus();
+  	    //var win = this.open(url, '_blank');
+  	    //win.focus();
   	  }
   	});
     db.query('select counter from bookmark where username='+db.escape(username)+' and title='+db.escape(title), function(err, counter){
