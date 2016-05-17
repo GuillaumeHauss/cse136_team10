@@ -324,12 +324,12 @@ table a:hover	{
 }
 .input-group .form-control {
 	max-width: 200px !important;
-	float: right !important;
 }
 
 .input-group{
-	padding-bottom: 10px;
-	margin-left: 15px;
+	position: absolute!important;
+	right: 5%;
+
 }
 #sort-controls{
 	padding-left: 4%;
@@ -390,6 +390,7 @@ hr{
 .log-button:hover{
 	background-color: rgb(239,64,86);
 	color: white;
+	border-color: rgb(239,64,86);
 }
 
 #helloUser{
