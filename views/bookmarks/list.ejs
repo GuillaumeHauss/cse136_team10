@@ -88,7 +88,14 @@
                 <a class="import-export" href="#"><span class="glyphicon glyphicon-import"></span> <p>Import</p></a>
                 <a class="import-export" href="#"><span class="glyphicon glyphicon-export"></span> <p>Export</p></a>
             </div>
-
+        <div class="col-md-3">
+            <div class="input-group">
+                <form method="post" action="/search">
+                    <input type="text" class="form-control fix-height" name="searchString" placeholder="Search for...">
+                    <input class ="btn-btn-default" type="submit" value= "Go!">
+                </form>
+            </div>
+        </div>
         <div class="nav-right">
             <form method="get" action="/logout">
                 <input class="log-button" type="submit" value="Log out">
@@ -98,12 +105,7 @@
     </div>
     <hr>
     <div class ="container-fluid">
-        <div class="input-group">
-            <form method="post" action="/search">
-                <input type="text" class="form-control fix-height" name="searchString" placeholder="Search for...">
-                <input class ="btn-btn-default" type="submit" value= "Go!">
-            </form>
-        </div>
+        
         <div class="row">
             <% bookmarks.forEach(function(bookmark) {%>
             <div class="col-md-4">
