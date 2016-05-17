@@ -188,6 +188,7 @@
                             <p onClick="counter("+<%= bookmark.url %>+")">Link</p>
                         </div>
                     </a>
+                    <p><% bookmark.counter%> views</p>
                     <p class="tags"><span>Tags: </span><% if(bookmark.tag1 != "NULL") {%><%= bookmark.tag1 %><% } %> <% if(bookmark.tag2 != "NULL") {%><%= bookmark.tag2%><% } %> <% if(bookmark.tag3 != "NULL") {%><%= bookmark.tag3%><% } %> <% if(bookmark.tag4 != "NULL") {%><%= bookmark.tag4%><% } %></p>
                     <!--need to fix these links-->
                     <div class = "crud-btns">
