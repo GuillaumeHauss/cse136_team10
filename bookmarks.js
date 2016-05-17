@@ -15,7 +15,7 @@ function render(sortParameter, req, res){
   var user = req.session.user;
   db.query('select name from user where username = '+ db.escape(user), function(err, names) {
     // console.log(names);
-    db.query('SELECT * from bookmark where username = ' + db.escape(user)+'order by '+sortParameter, function (err, bookmarks) {
+    db.query('SELECT * from bookmark where username = ' + db.escape(user)+' order by '+db.escape(sortParameter), function (err, bookmarks) {
       if (err) throw err;
       //console.log("counter 1"+bookmarks[0].counter);
       //console.log("counter 2"+bookmarks[1].counter);
