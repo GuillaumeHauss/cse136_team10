@@ -419,6 +419,11 @@ hr{
 	bottom: 20px;
 
 }
+#counter{
+	position:absolute;
+	right:60px;
+	bottom:20px;
+}
 /*CSS for the log in and sign in forms*/
 #formLogin, #formSignin{
     color:rgb(239,64,86);
