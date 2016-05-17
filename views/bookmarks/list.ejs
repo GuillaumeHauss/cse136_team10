@@ -185,7 +185,7 @@
                     <p class="bookmark-description"><%=bookmark.description%></p>
                     <a style="text-decoration: none" href="<%= bookmark.url %>" target="_blank">
                         <div class="bookmark-button">
-                            <p onClick="counter("+<%= bookmark.url %>+")">Link</p>
+                            <p href="/bookmarks/counter/<%= bookmark.title %>/<%= bookmark.username %>">Link</p>
                         </div>
                     </a>
                     <p id="counter"><%= bookmark.counter %> views</p>
