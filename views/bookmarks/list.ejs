@@ -52,8 +52,10 @@
                         <div role="folder" class="folder-content">
 
                             <div class="import-export">
-                                <a class="import-export" href="#"><span class="glyphicon glyphicon-import"></span> <p>Import</p></a>
-                                <a class="import-export" href="#"><span class="glyphicon glyphicon-export"></span> <p>Export</p></a>
+                                <form method="post" action="/folder/export">
+                                    <input class="hidden" name="name" value="<%folder.name%>" readonly>
+                                    <input type="submit" class="import-export" value="Export">
+                                </form>
                             </div>
                             <!--f.title, f.url-->
                             <% folders[folder].forEach(function(obj) {%>
@@ -133,10 +135,12 @@
 					</ul>
 				</div>
 			</form>
-			<p class='import-export'>
-			Import &nbsp;<a href="#"><span class="glyphicon glyphicon-import"></a></p>
-			<p class='import-export'>Export &nbsp;<a href="#"><span class="glyphicon glyphicon-export"></a>
-			</p>
+            <div class="container-import-bookmark">
+                <form method="post" action="/bookmark/import" enctype="multipart/form-data">
+                    <input class="import-items" type="file" name="filename">
+                    <input class="import-items" type="submit" value="Import">
+                </form>
+            </div>
 		</div>
 
 		<!--<div class=" nav-right col-md-6">
@@ -185,7 +189,22 @@
                     <p class="tags"><span>Tags: </span><% if(bookmark.tag1 != "NULL") {%><%= bookmark.tag1 %><% } %> <% if(bookmark.tag2 != "NULL") {%><%= bookmark.tag2%><% } %> <% if(bookmark.tag3 != "NULL") {%><%= bookmark.tag3%><% } %> <% if(bookmark.tag4 != "NULL") {%><%= bookmark.tag4%><% } %></p>
                     <!--need to fix these links-->
                     <div class = "crud-btns">
-                        <a class="import-export-btn" href="#"><span class="glyphicon glyphicon-export"></span><p>Export</p></a>
+                        <form method="post" action="/bookmark/export/">
+                            <input class="hidden" name="username" value="<%bookmark.username%>" readonly>
+                            <input class="hidden" name="title" value="<%bookmark.title%>" readonly>
+                            <input class="hidden" name="url" value="<%bookmark.url%>" readonly>
+                            <input class="hidden" name="description" value="<%bookmark.description%>" readonlly>
+                            <input class="hidden" name="star" value="<%bookmark.star%>" readonly>
+                            <input class="hidden" name="tag1" value="<%bookmark.tag1%>" readonly>
+                            <input class="hidden" name="tag2" value="<%bookmark.tag2%>" readonly>
+                            <input class="hidden" name="tag3" value="<%bookmark.tag3%>" readonly>
+                            <input class="hidden" name="tag4" value="<%bookmark.tag4%>" readonly>
+                            <input class="hidden" name="creationDate" value="<%bookmark.creationDate%>" readonly>
+                            <input class="hidden" name="lastVisit" value="<%bookmark.lastVisit%>" readonly>
+                            <input class="hidden" name="counter" value="<%bookmark.counter%>" readonly>
+                            <input class="hidden" name="folder" value="<%bookmark.folder%>" readonly>
+                            <input type="submit" class="import-export-btn" name="export" value="Export">
+                        </form>
                         <a href="/bookmarks/edit/<%=bookmark.title%>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                         <a href="/bookmarks/confirm-delete/<%=bookmark.title%>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                         <a href="/bookmarks/star/<%=bookmark.title %>/<%=bookmark.star%>">

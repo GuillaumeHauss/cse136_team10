@@ -15,6 +15,10 @@
 
         <button class="btn-form" type = "submit" id="confirm_add">ADD</button>
         <button class="btn-form" type = "button" id="cancel_add" onClick="location.href='/bookmarks'" style="float:right">CANCEL</button>
+        <form method="post" action="/folder/import" enctype="multipart/form-data">
+            <input type="file" name="filename">
+            <input type="submit" value="Import">
+        </form>
 
     </form>
 

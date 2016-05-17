@@ -19,6 +19,21 @@ body{
 	height: 100%;
 }
 
+.hidden {
+	visibility: hidden;
+	display: none;
+}
+.import-items {
+	display: inline-block;
+	margin: 0;
+}
+
+.container-import-bookmark{
+	margin-left: 32px;
+	width: 300px;
+	display: inline-block;
+}
+
 .home-container{
 	padding-top: 25px;
 	font-family: "Century Gothic";
