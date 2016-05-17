@@ -63,6 +63,15 @@ app.get('/bookmarks/confirm-delete/:bookmark_id',bookmarks.confirmDelete);
 app.post('/bookmarks/delete/:bookmark_id',bookmarks.delete);
 app.post('/search', bookmarks.search);
 
+// Import and export individual bookmarks
+app.post('/bookmark/export/', bookmarks.exportBookmark);
+app.post('/bookmark/import/', bookmarks.importBookmark);
+
+// Import and export folders
+app.post('/folder/export', bookmarks.exportFolder);
+app.post('/folder/import', bookmarks.importFolder);
+
+
 /*
 app.get('/books', books.list);
 app.get('/books/add', books.add);

@@ -9,6 +9,7 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "install": "^0.7.3",
+    "multer": "^1.1.0",
     "mysql": "^2.10.2",
     "npm": "^3.8.8"
   },

@@ -24,6 +24,7 @@ function render(sortParameter, req, res){
 
         var foldersHash = {};
 
+        console.log(bookmarks);
 
 
         for (var i = 0; i < bookmarks.length; i++) {
@@ -318,3 +319,94 @@ module.exports.star = function(req, res){
     });
   }
 };
+
+var BookmarkIOService = require('./services/BookmarkIOService');
+var path = require('path');
+var fs = require('fs');
+var multer = require('multer');
+var upload = multer({
+  dest: './public/uploads/'
+}).single('filename');
+
+/**
+ * Exports a textfile that is named the name of the bookmark
+ * @param req
+ * @param res
+ */
+module.exports.exportBookmark = function(req, res) {
+  // If there is no session do nothing
+  // TODO: boot user back to sign in screen or notify of session lost
+  if (!req.session) {
+    console.error('ERROR: No session');
+    return;
+  }
+  var title = req.body.title;
+  var username = req.session.user;
+  BookmarkIOService.exportBookmark(username, title, function() {
+    var filename = username + ' ' + title + ' export';
+    if (fs.existsSync(filename)) {
+      res.sendFile(__dirname + '/' + filename, null, function() {
+        fs.unlink(filename);
+      });
+    }
+  });
+};
+
+/**
+ * Imports a textfile containing one bookmark into the database if
+ * the user exists that is refrenced in the file
+ */
+module.exports.importBookmark = function(req, res) {
+  upload(req, res, function(err) {
+    if (err) throw err;
+    if (typeof req.file === 'undefined') {
+      res.redirect('/bookmarks');
+      return;
+    }
+    var filename = req.file.filename;
+    var username = req.session.user;
+    console.log('filename');
+    console.log(filename);
+    BookmarkIOService.importBookmark(username, filename);
+  });
+  res.redirect('/bookmarks');
+
+};
+
+
+module.exports.importFolder = function(req, res) {
+  upload(req, res, function(err) {
+    if (err) throw err;
+    if (typeof req.file === 'undefined') {
+      res.redirect('/bookmarks');
+      return;
+    }
+    var filename = req.file.filename;
+    var username = req.session.user;
+    console.log('filename');
+    console.log(filename);
+    BookmarkIOService.importFolder(username, filename, function() {
+      if (fs.existsSync(path.join(__dirname, 'public/uploads/' + filename))) {
+        fs.unlink(path.join(__dirname, 'public/uploads/' + filename));
+      }
+      res.redirect('/bookmarks');
+      return;
+    });
+  });
+  res.redirect('/bookmarks');
+};
+
+module.exports.exportFolder = function(req, res) {
+  if (!req.session) {
+    console.error('ERROR: No session');
+    return;
+  }
+  var username = req.session.user;
+  var name = req.body.name;
+  var filename = username + name + ' export';
+  BookmarkIOService.exportFolder(username, name, function() {
+    res.sendFile(filename);
+  });
+};
+
+

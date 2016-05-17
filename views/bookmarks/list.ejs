@@ -190,19 +190,19 @@
                     <!--need to fix these links-->
                     <div class = "crud-btns">
                         <form method="post" action="/bookmark/export/">
-                            <input class="hidden" name="username" value="<%bookmark.username%>" readonly>
-                            <input class="hidden" name="title" value="<%bookmark.title%>" readonly>
-                            <input class="hidden" name="url" value="<%bookmark.url%>" readonly>
-                            <input class="hidden" name="description" value="<%bookmark.description%>" readonlly>
-                            <input class="hidden" name="star" value="<%bookmark.star%>" readonly>
-                            <input class="hidden" name="tag1" value="<%bookmark.tag1%>" readonly>
-                            <input class="hidden" name="tag2" value="<%bookmark.tag2%>" readonly>
-                            <input class="hidden" name="tag3" value="<%bookmark.tag3%>" readonly>
-                            <input class="hidden" name="tag4" value="<%bookmark.tag4%>" readonly>
-                            <input class="hidden" name="creationDate" value="<%bookmark.creationDate%>" readonly>
-                            <input class="hidden" name="lastVisit" value="<%bookmark.lastVisit%>" readonly>
-                            <input class="hidden" name="counter" value="<%bookmark.counter%>" readonly>
-                            <input class="hidden" name="folder" value="<%bookmark.folder%>" readonly>
+                            <input class="hidden" name="username" value="<%=bookmark.username%>" readonly>
+                            <input class="hidden" name="title" value="<%=bookmark.title%>" readonly>
+                            <input class="hidden" name="url" value="<%=bookmark.url%>" readonly>
+                            <input class="hidden" name="description" value="<%=bookmark.description%>" readonlly>
+                            <input class="hidden" name="star" value="<%=bookmark.star%>" readonly>
+                            <input class="hidden" name="tag1" value="<%=bookmark.tag1%>" readonly>
+                            <input class="hidden" name="tag2" value="<%=bookmark.tag2%>" readonly>
+                            <input class="hidden" name="tag3" value="<%=bookmark.tag3%>" readonly>
+                            <input class="hidden" name="tag4" value="<%=bookmark.tag4%>" readonly>
+                            <input class="hidden" name="creationDate" value="<%=bookmark.creationDate%>" readonly>
+                            <input class="hidden" name="lastVisit" value="<%=bookmark.lastVisit%>" readonly>
+                            <input class="hidden" name="counter" value="<%=bookmark.counter%>" readonly>
+                            <input class="hidden" name="folder" value="<%=bookmark.folder%>" readonly>
                             <input type="submit" class="import-export-btn" name="export" value="Export">
                         </form>
                         <a href="/bookmarks/edit/<%=bookmark.title%>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
