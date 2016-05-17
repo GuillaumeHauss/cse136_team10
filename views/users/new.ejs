@@ -2,35 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <title>New user</title>
 </head>
 <body>
-<h1>Create your account</h1>
-<form method='post' action='/newAccount' onsubmit="return validateForm()">
-    <!--  Use CSS to be modern -->
-    <table>
-        <tr>
-            <td>Username: </td><td><input type="email" id="username" name="username"  value="" placeholder="Write your email" required="true" ></td>
-        </tr>
-        <tr>
-            <td>Password: </td><td><input type="password" id="password" name="password" value="" placeholder="Write your password" required="true" minlength="7"></td>
+
+<form method='post' action='/newAccount' onsubmit="return validateForm()" id="formSignin" class="group-form">
+   <h1>Create your account</h1>
+    <label for="username">Username: </label><br>
+            <input class="form-control" type="email" id="username" name="username"  value="" placeholder="Write your email" required="true" >
+        <br>
+    <label for="password">Password: </label><br>
+            <input class="form-control"  type="password" id="password" name="password" value="" placeholder="Write your password" required="true" minlength="7">
             <!--No alert on this field by the browser. Need a JS code to do the alert before sending the form-->
-        </tr>
-        <tr>
-            <td>Confirm your password: </td><td><input type="password" id="password2" name="password2" value="" placeholder="Write your password again" required="true" minlength="7"></td>
-            <!--No alert on this field by the browser. Need a JS code to do the alert before sending the form-->
-        </tr>
-        <tr>
-            <td>First Name: </td><td><input type="text" id="name" name="name"  value="" placeholder="Write your name" required="true"  ></td>
-        </tr>
-        <tr>
-            <td>Last Name: </td><td><input type="text" id="lastname" name="lastname" value="" placeholder="Write your last name" required="true"></td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type='submit' value="Create"></td>
-        </tr>
-        
-    </table>
+        <br>
+    <label for="password2">Confirm your password</label><br>
+            <input class="form-control"  type="password" id="password2" name="password2" value="" placeholder="Write it again :)" required="true" minlength="7">
+        <br>
+    <label for="name">Name: </label>
+            <input class="form-control"  type="text" id="name" name="name"  value="" placeholder="Write your name" required="true"  >
+        <br>
+    <label for="lastname">Last Name: </label>
+            <input class="form-control"  type="text" id="lastname" name="lastname" value="" placeholder="Write your last name" required="true">
+        <br>
+       
+         <input type='submit' value="Create" id="signin">
+       
 </form>
 <script>
     function validateForm(){

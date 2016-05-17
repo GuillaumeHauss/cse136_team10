@@ -1,6 +1,3 @@
-/**
- * Created by abbas on 5/15/16.
- */
 var db = require('./db');
 var regex = require("regex");
 var users = require('./users');
@@ -13,17 +10,21 @@ var list = module.exports.list = function(req, res) {
   //if (!req.session.user )
   // add regex to check if user is of type name@email.com
   var user = req.session.user;
-  db.query('SELECT * from bookmark where username = ' + db.escape(user), function (err, bookmarks) {
-    if (err) throw err;
-    // console.log(bookmarks);
-    // (Select folder, title from bookmark where username = ' + db.escape(user) + ' and folder in (select folder from bookmark where username = ' + db.escape(user) + ')) union all (select name, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + '))
-    db.query('(Select folder, title, url from bookmark where username = ' + db.escape(user) + ' and folder is not null ) union (select name, null, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + ' and folder is not null))', function (err, folders) {
+  db.query('select name from user where username = '+ db.escape(user), function(err, names) {
+    console.log(names);
+    db.query('SELECT * from bookmark where username = ' + db.escape(user), function (err, bookmarks) {
       if (err) throw err;
-      console.log(folders);
-      res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: folders});
-    })
+      // console.log(bookmarks);
+      // (Select folder, title from bookmark where username = ' + db.escape(user) + ' and folder in (select folder from bookmark where username = ' + db.escape(user) + ')) union all (select name, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + '))
+      db.query('(Select folder, title, url from bookmark where username = ' + db.escape(user) + ' and folder is not null ) union (select name, null, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + ' and folder is not null))', function (err, folders) {
+        if (err) throw err;
+        console.log(folders);
+        res.render('bookmarks/list.ejs', {names: names, bookmarks: bookmarks, folders: folders});
+      })
 
+    });
   });
+
 };
 
 var list = module.exports.sortTitle = function(req, res) {

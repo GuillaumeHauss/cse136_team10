@@ -36,18 +36,18 @@ module.exports.login = function(req, res) {
                 res.redirect('/bookmarks');
             }
             else{
-              res.render('/error', {errorType : error.password});
+              res.render('errors/error', {errorType : error.password});
             }
           }
           else{
-            res.render('/error', {errorType: error.unknownUser});
+            res.render('errors/error', {errorType: error.unknownUser});
           }
       }
     });
   }
   else{
     //Alert message : all the fiels have not been filled up
-    res.render('/error', error.form);
+    res.render('errors/error', {errorType: error.form});
   }
 };
 

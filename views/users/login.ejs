@@ -2,31 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-   
-    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <title>Log in</title>
 </head>
 <body>
-<h1>Login</h1>
-<form method='post' action='/login'>
-    <!--  Use CSS to be modern -->
-    <table>
-        <tr>
-            <td>Username: </td><td><input type="text" name="username"  value="" placeholder="Use 'cse136User'" ></td>
-        </tr>
-        <tr>
-            <td>Password: </td><td><input type="password" name="password" value="" placeholder="Use 'cse136PW'"></td>
-        </tr>
-        <tr>
-            <td><input type='submit' value="LOGIN"></td>
-        </tr>
-    </table>
+
+<form method='post' action='/login' id="formLogin" class="group-form">
+    <h1>Log in</h1>
+    
+   <label for="username">Username: </label>
+   <input class="form-control" type="text" id="username" name="username"  value="" placeholder="Type your username" >
+   <br>
+   <label for="password" >Password: </label>
+   <input class="form-control" type="password" id="password" name="password" value="" placeholder="Type your password">
+   <input type="submit" value="Go!" id="loginButton">
 </form>
-<form method="post" action="/newAccountForm">
-    <table>
-        <tr>
-            <td><input type="submit" value="New member ?"></td>
-        </tr>
-    </table>
+<br>
+
+<form method="post" action="/newAccountForm" class="group-form" id="formSignin">
+    <label for="signin">New user? Sign in here !</label>
+    <input type="submit" value="Create my account" id="signin">     
 </form>
 </body>
 </html>

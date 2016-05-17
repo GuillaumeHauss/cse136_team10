@@ -411,3 +411,35 @@ hr{
 	bottom: 20px;
 
 }
+/*CSS for the log in and sign in forms*/
+#formLogin, #formSignin{
+    color:rgb(239,64,86);
+    font-family: "Century Gothic";
+    width:25%;
+    margin: auto;
+    text-align: center;
+    margin-top: 10px;
+}
+#formLogin > h1{
+    color: dodgerblue;
+}
+#signin{
+    background-color: dodgerblue;
+    font-size: 1.5em;
+    color: white;
+    border:none,
+    
+}
+#signin:hover{
+    color:white;
+    background-color: rgb(239,64,86);
+    border:none;
+}
+#loginButton{
+    border: none;
+    color:dodgerblue;
+    background-color: white;
+    font-size: 2em;
+    float:right;
+    
+}
