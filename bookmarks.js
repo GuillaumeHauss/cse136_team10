@@ -353,7 +353,9 @@ module.exports.star = function(req, res){
           throw err;
           res.redirect('/505.ejs');
         }
-        
+        else{
+          res.redirect('/bookmarks');
+        }
       });
     });
 };
