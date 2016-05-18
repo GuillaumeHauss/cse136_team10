@@ -45,7 +45,7 @@ function render(sortParameter, req, res){
         }
         //console.log(foldersHash);
         // console.log("names");
-        var nameObj = {name: names[0].name};
+        var nameObj = names[0].name;
         // console.log(nameObj);
 
 
