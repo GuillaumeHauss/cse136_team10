@@ -2,12 +2,14 @@ var db = require('./db');
 var regex = require("regex");
 var users = require('./users');
 var error = require('./error');
+/*
 function sortObject(o) {
   return Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {});
-}
+}*/
 
 
-function render(sortParameter, req, res){
+function updateList(sortParameter, req, res){
+  console.log(sortParameter);
   //console.log(req.session.user);
   if (!req.session) res.redirect('errors/error', {errorType:error.password});
   //if (!req.session.user )
@@ -50,7 +52,7 @@ function render(sortParameter, req, res){
 
 
 
-
+        console.log(bookmarks);
         res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: foldersHash, name: nameObj});
       })
 
@@ -58,16 +60,16 @@ function render(sortParameter, req, res){
   });
 }
 var list = module.exports.list = function(req, res) {
-  render('title', req, res);
+  updateList('title', req, res);
 };
 
 var list = module.exports.sortTitle = function(req, res) {
-  /*db.query('SELECT * from bookmark ORDER BY title', function(err, bookmarks) {
+  db.query('SELECT * from bookmark ORDER BY title', function(err, bookmarks) {
     if (err) throw err;
 
     res.redirect('/bookmarks');
-  });*/
-  render('title', req, res);
+  });
+  updateList('title', req, res);
 };
 
 var list = module.exports.sortURL = function(req, res) {
@@ -76,7 +78,8 @@ var list = module.exports.sortURL = function(req, res) {
 
     res.redirect('/bookmarks');
   });*/
-  render('url', req, res);
+  console.log('test');
+  updateList('url', req, res);
 };
 
 var list = module.exports.sortLastVisit = function(req, res) {
@@ -85,7 +88,7 @@ var list = module.exports.sortLastVisit = function(req, res) {
 
     res.redirect('/bookmarks');
   });*/
-  render('lastVisit DESC', req, res);
+  updateList('lastVisit DESC', req, res);
 };
 
 var list = module.exports.sortCreateDate = function(req, res) {
@@ -94,7 +97,7 @@ var list = module.exports.sortCreateDate = function(req, res) {
 
     res.redirect('/bookmarks');
   });*/
-  render('creationDate ASC', req, res);
+  updateList('creationDate ASC', req, res);
 };
 
 var list = module.exports.sortStar = function(req, res) {
@@ -103,7 +106,7 @@ var list = module.exports.sortStar = function(req, res) {
 
     res.redirect('/bookmarks');
   });*/
-  render('star DESC', req, res);
+  updateList('star DESC', req, res);
 };
 
 var list = module.exports.search = function(req,res){
@@ -157,7 +160,7 @@ module.exports.insert = function(req, res) {
 
   else star = 0;
 
-  var titleExpression = /^[a-z0-9]+$/i;
+  var titleExpression = /^[a-z0-9\s]+$/i;
   var titleRegex = new RegExp(titleExpression);
 
   var urlExpression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
@@ -231,7 +234,7 @@ module.exports.update = function(req,res){
 
   if (req.body.star) star = "on";
 
-  var titleExpression = /^[a-z0-9]+$/i;
+  var titleExpression = /^[a-z0-9\s]+$/i;
   var titleRegex = new RegExp(titleExpression);
 
   var urlExpression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
@@ -254,9 +257,9 @@ module.exports.update = function(req,res){
     db.query(queryString, function (err) {
       if (err) {
         throw err;
-        res.redirect('505.ejs');
+        res.render('505.ejs');
       }
-      res.redirect('/bookmarks');
+      res.render('/bookmarks');
     });
   }
 
@@ -343,7 +346,7 @@ module.exports.star = function(req, res){
   	    console.log("url target :"+url);
   	    //var win = this.open(url, '_blank');
   	    //win.focus();
-  	    res.redirect(url);
+  	    //res.redirect(url);
   	  }
   	});
     db.query('select counter from bookmark where username='+db.escape(username)+' and title='+db.escape(title), function(err, counter){
@@ -352,7 +355,7 @@ module.exports.star = function(req, res){
       db.query('update bookmark set counter='+counterNew+' where title =' + db.escape(title)+' and username='+db.escape(username), function(err){
         if (err){
           throw err;
-          res.redirect('/505.ejs');
+          res.render('/505.ejs');
         }
         else{
           res.redirect('/bookmarks');

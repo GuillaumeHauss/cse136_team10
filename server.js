@@ -11,6 +11,7 @@ db.init();
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+
 var mySession = session({
   secret: 'N0deJS1sAw3some',
   resave: true,
@@ -20,7 +21,6 @@ var mySession = session({
 
 var app = express();
 app.use(mySession);
-
 app.use("/styles",express.static("./views/styles"));
 
 /*  Not overwriting default views directory of 'views' */
