@@ -33,17 +33,17 @@ function updateList(sortParameter, req, res){
 
         for (var i = 0; i < bookmarks.length; i++) {
           // console.log(bookmarks[i]);
-          if (bookmarks[i].folder != 'NULL' && bookmarks[i].folder != 'null' && bookmarks[i].folder in foldersHash) {
+          if ( bookmarks[i].folder != null && bookmarks[i].folder in foldersHash) {
             foldersHash[bookmarks[i].folder].push({"title": bookmarks[i].title, "url": bookmarks[i].url});
           }
-          else if (bookmarks[i].folder != 'NULL' && bookmarks[i].folder != 'null' && !(bookmarks[i].folder in foldersHash)) {
+          else if (bookmarks[i].folder != null && !(bookmarks[i].folder in foldersHash)) {
             foldersHash[bookmarks[i].folder] = [{"title": bookmarks[i].title, "url": bookmarks[i].url}]
           }
         }
 
         // console.log("folders");
         for (var i = 0; i < folders.length; i++) {
-         if(!foldersHash[folders[i].folder] && foldersHash[folders[i].folder != "null"]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
+         if(!foldersHash[folders[i].folder] && foldersHash[folders[i].folder != null]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
         }
         //console.log(foldersHash);
         // console.log("names");
