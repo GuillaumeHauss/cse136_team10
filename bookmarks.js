@@ -119,7 +119,13 @@ module.exports.insert = function(req, res) {
   var url = db.escape(req.body.url);
   var description = db.escape(req.body.description);
   var star = 0;
-
+   if (req.body.folder != ""){
+        var folder = req.body.folder;      
+  }
+  else{
+    var folder = null;
+  }
+  
   var tag = ['NULL', 'NULL', 'NULL', 'NULL'];
   if (req.body.tag1) tag[0] = req.body.tag1;
   if (req.body.tag2) tag[1] = req.body.tag2;
@@ -157,7 +163,7 @@ module.exports.insert = function(req, res) {
             user) + ', ' + db.escape(title) + ', ' + url + ', ' + description + ', ' + db.escape(
             star) + ', ' + db.escape(
             tag[0]) + ', ' + db.escape(tag[1]) + ', ' + db.escape(tag[2]) + ', ' + db.escape(tag[3]) + ', ' + db.escape(
-            date) + ', ' + db.escape(date) + ', ' + db.escape(0) + ', ' + 'NULL' + ')';
+            date) + ', ' + db.escape(date) + ', ' + db.escape(0) + ', ' + db.escape(folder) + ')';
 
     db.query(queryString, function (err) {
       if (err) {
