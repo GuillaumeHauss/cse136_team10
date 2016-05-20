@@ -83,7 +83,7 @@ module.exports.sortStar = function(req, res) {
 };
 
 module.exports.sortCounter = function(req, res){
-  render('counter DESC', req, res);
+  updateList('counter DESC', req, res);
 };
 
 module.exports.search = function(req,res){
