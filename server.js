@@ -53,7 +53,7 @@ app.get('/sortURL', bookmarks.sortURL);
 app.get('/sortStar', bookmarks.sortStar);
 app.get('/sortCreateDate', bookmarks.sortCreateDate);
 app.get('/sortLastVisit', bookmarks.sortLastVisit);
-
+app.get('/sortCounter', bookmarks.sortCounter);
 app.get('/bookmarks/edit/:bookmark_id', bookmarks.edit);
 app.post('/bookmarks/update/:bookmark_id', bookmarks.update);
 
