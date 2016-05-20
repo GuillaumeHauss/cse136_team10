@@ -1,15 +1,11 @@
 var db = require('./db');
 var regex = require("regex");
 var users = require('./users');
-<<<<<<< HEAD
-//var error = require('./error');
-=======
 var error = require('./error');
 /*
 function sortObject(o) {
   return Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {});
 }*/
->>>>>>> master
 
 
 function updateList(sortParameter, req, res){
@@ -56,7 +52,7 @@ function updateList(sortParameter, req, res){
 
 
 
-        console.log(bookmarks);
+        //console.log(bookmarks);
         res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: foldersHash, name: nameObj});
       })
 
@@ -164,17 +160,17 @@ module.exports.insert = function(req, res) {
   if (req.body.star) star = 1;
 
   else star = 0;
+    /*
 <<<<<<< HEAD
-/*
+
   if(!user){
     console.log('inside error');
     res.render('/error', {errorType : error.undefinedUser});
-  }*/
-=======
+  }
+=======*/
 
   var titleExpression = /^[a-z0-9\s]+$/i;
   var titleRegex = new RegExp(titleExpression);
->>>>>>> master
 
   var urlExpression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
   var urlRegex = new RegExp(urlExpression);
@@ -290,7 +286,7 @@ module.exports.update = function(req,res){
   else{
       res.render('errors/error', {errorType : error.notLoggedIn});
   }
-;}
+};
 
 /*** Function to serve the confirmation of deleting a bookmark
  *
@@ -298,13 +294,13 @@ module.exports.update = function(req,res){
  * @param res
  */
 module.exports.confirmDelete = function(req,res){
-<<<<<<< HEAD
+/*<<<<<<< HEAD
   var id = req.params.bookmark_id;
   db.query('SELECT * from bookmark WHERE title = ' + "'" + id + "'", function(err, bookmark) {
     if (err) throw err;
     res.render('bookmarks/confirm-delete', {bookmark: bookmark[0]});
   });
-=======
+=======*/
   if(req.session && req.session.user != undefined){
     var id = req.params.bookmark_id;
     //console.log("id of bookmark: " + id);
@@ -319,8 +315,8 @@ module.exports.confirmDelete = function(req,res){
   else{
     res.render('errors/error', {errorType : error.notLoggedIn});
   }
->>>>>>> master
-}
+
+};
 /*** Function to delete a bookmark
  *
  * @param req
@@ -331,7 +327,7 @@ module.exports.delete = function(req,res){
   if(req.session && req.session.user != undefined){
   var id = req.params.bookmark_id;
   var user = req.session.user;
-<<<<<<< HEAD
+/*<<<<<<< HEAD
 
   db.query('DELETE FROM bookmark WHERE title =' + db.escape(id) + 'AND username =' + db.escape(user),
         function (err, bookmark) {
@@ -341,7 +337,7 @@ module.exports.delete = function(req,res){
           res.redirect('/bookmarks');
         });
   };
-=======
+=======*/
   db.query('DELETE FROM bookmark WHERE title =' + db.escape(id) + 'AND username =' + db.escape(user) , function(err, bookmark){
     if(err){
       throw err;
@@ -354,7 +350,6 @@ else{
     res.render('errors/error', {errorType : error.notLoggedIn});
 }
 };
->>>>>>> master
 
 /**
  * Function to star/unstar a bookmark
@@ -393,9 +388,10 @@ module.exports.star = function(req, res){
  */
  module.exports.counter = function(req, res){
    if(req.session && req.session.user != undefined){
-   console.log("counter function called");
-    var title = req.params.bookmark_title;
-    var username = req.params.bookmark_username;
+     console.log("counter function called");
+     var title = req.params.bookmark_title;
+     var username = req.params.bookmark_username;
+     var link;
     /*var url = req.params.bookmark_url;
     var win = window.open(url, '_blank');
   	win.focus();*/
@@ -404,10 +400,10 @@ module.exports.star = function(req, res){
   	    throw err;
   	  }
   	  else{
-  	    var url = url[0].url;
-  	    console.log("url target :"+url);
+  	    link = url[0].url;
+  	    console.log("url target :"+link);
   	    //var win = this.open(url, '_blank');
-  	    //win.focus();
+  	    //win.focus();`
   	    //res.redirect(url);
   	  }
   	});
@@ -420,7 +416,7 @@ module.exports.star = function(req, res){
           res.render('/505.ejs');
         }
         else{
-          res.redirect('/bookmarks');
+          res.redirect(link);
         }
       });
     });

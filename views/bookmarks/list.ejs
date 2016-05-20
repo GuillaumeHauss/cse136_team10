@@ -17,7 +17,7 @@
 <div class="side-bar">
     <h1>BookMarx</h1>
 
-    <p id="helloUser">Hello <em><%= name.name %></em></p>
+    <p id="helloUser">Hello <em><%= name %></em></p>
 
     <div class="folder-wrapper">
         <div onClick="location.href='/bookmarks/add'" class="add-folder"><p>Add bookmark</p></div>
@@ -156,17 +156,16 @@
 
         <div class="input-group">
             <form method="post" action="/search">
-<<<<<<< HEAD
+<!--<<<<<< HEAD
                 <div class ="search-input">
                     <input type="text" class="form-control fix-height" name="searchString" placeholder="Search for...">
                 </div>
                 <div class ="search-input">
-=======
+=======-->
                 <div class="search-bar">
                     <input type="text" class="form-control fix-height" name="searchString" placeholder="Search for...">
                 </div>
                 <div class="search-bar">
->>>>>>> master
                     <input class ="btn-btn-default" type="submit" value= "Go!">
                 </div>
             </form>
