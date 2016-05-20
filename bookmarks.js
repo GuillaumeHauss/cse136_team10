@@ -9,7 +9,6 @@ function sortObject(o) {
 
 
 function updateList(sortParameter, req, res){
-  console.log(sortParameter);
   //console.log(req.session.user);
   if (!req.session) res.redirect('errors/error', {errorType:error.password});
   //if (!req.session.user )
@@ -17,7 +16,7 @@ function updateList(sortParameter, req, res){
   var user = req.session.user;
   db.query('select name from user where username = '+ db.escape(user), function(err, names) {
     // console.log(names);
-    db.query('SELECT * from bookmark where username = ' + db.escape(user)+' order by '+db.escape(sortParameter), function (err, bookmarks) {
+    db.query('SELECT * from bookmark where username = ' + db.escape(user)+' order by '+sortParameter, function (err, bookmarks) {
       if (err) throw err;
       //console.log("counter 1"+bookmarks[0].counter);
       //console.log("counter 2"+bookmarks[1].counter);
@@ -63,53 +62,31 @@ var list = module.exports.list = function(req, res) {
   updateList('title', req, res);
 };
 
-var list = module.exports.sortTitle = function(req, res) {
-  db.query('SELECT * from bookmark ORDER BY title', function(err, bookmarks) {
-    if (err) throw err;
-
-    res.redirect('/bookmarks');
-  });
+module.exports.sortTitle = function(req, res) {
   updateList('title', req, res);
 };
 
-var list = module.exports.sortURL = function(req, res) {
-  /*db.query('SELECT * from bookmark ORDER BY url', function(err, bookmarks) {
-    if (err) throw err;
-
-    res.redirect('/bookmarks');
-  });*/
-  console.log('test');
+module.exports.sortURL = function(req, res) {
   updateList('url', req, res);
 };
 
-var list = module.exports.sortLastVisit = function(req, res) {
-  /*db.query('SELECT * from bookmark ORDER BY lastVisit DESC', function(err, bookmarks) {
-    if (err) throw err;
-
-    res.redirect('/bookmarks');
-  });*/
+module.exports.sortLastVisit = function(req, res) {
   updateList('lastVisit DESC', req, res);
 };
 
-var list = module.exports.sortCreateDate = function(req, res) {
-  /*db.query('SELECT * from bookmark ORDER BY creationDate', function(err, bookmarks) {
-    if (err) throw err;
-
-    res.redirect('/bookmarks');
-  });*/
+module.exports.sortCreateDate = function(req, res) {
   updateList('creationDate ASC', req, res);
 };
 
-var list = module.exports.sortStar = function(req, res) {
-  /*db.query('SELECT * from bookmark ORDER BY star DESC', function(err, bookmarks) {
-    if (err) throw err;
-
-    res.redirect('/bookmarks');
-  });*/
+module.exports.sortStar = function(req, res) {
   updateList('star DESC', req, res);
 };
 
-var list = module.exports.search = function(req,res){
+module.exports.sortCounter = function(req, res){
+  render('counter DESC', req, res);
+};
+
+module.exports.search = function(req,res){
   var searchTitle = req.body.searchString;
   var sql = " SELECT * FROM bookmark WHERE title LIKE '%" + searchTitle + "%' OR url LIKE'%" + searchTitle + "%'"; 
 
