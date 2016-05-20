@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <title>Password Reset</title>
+</head>
+<body>
+    <form method="post" action="/resetPwd" id="formLogin" class="group-form" >
+        <h1>Password Reset</h1>
+        
+        <label for="username">Username: </label>
+        <input class="form-control" type="text" id="username" name="username"  value="" placeholder="Type your username" required="true" >
+        <br>
+        <label for="password" >New Password: </label>
+        <input class="form-control" type="password" id="password" name="password" value="" placeholder="Type your new password" required="true" minlength="7">
+        <br>
+        <input type="submit" value="Reset my password" id="loginButton">
+    </form>
+<script>
+    function validateForm2(){
+        console.log('validate form');
+        var x = document.getElementById('password').value;
+        var bool = false;
+        if (x == null || x == "") {
+        alert("The password must be filled out");
+        bool =  false;
+        }
+        else{
+            if (x.length < 7){
+                alert("Your password is too short. It has to be 7 characters long. Boolean = "+bool);
+                bool = false;
+            }
+            else{
+                bool = true;
+            }
+        }
+        alert("final boolean ="+bool);
+        return bool;
+        
+    }
+ </script>
+ <script src="js/md5.min.js"></script>
+</body>
+</html>
