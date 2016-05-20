@@ -134,7 +134,7 @@ module.exports.insert = function(req, res) {
   var user = req.session.user;
 
   var title = req.body.title;
-  var url = db.escape(req.body.url);
+  var url = db.escape('http://'+req.body.url);
   var description = db.escape(req.body.description);
   var star = 0;
    if (req.body.folder != ""){
