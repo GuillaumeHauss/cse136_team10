@@ -2,12 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <title>Success New Account</title>
 </head>
-<body>
-<h1>Succes</h1>
-    <div>
-    Your attempt to create was a success! You can now connect to Bookmarx using your login!
+<body id="bodyError">
+    <div id="errorMessage">
+        <h1>Success</h1>
+        <hr>
+            <div>
+            <%= successType %>
+            </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">    
+            <form method="get" action="/login">
+                <input type="submit" value="Log in" id="loginButton">
+            </form>
+        </div>
     </div>
 </body>
 </html>
