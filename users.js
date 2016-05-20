@@ -6,6 +6,8 @@ var config = require('./config');
 var db = require('./db');
 var md5 = require('./md5');
 var error = require('./error');
+var success = require('./success');
+
 var mainUser;
 /**
  *
@@ -91,26 +93,6 @@ module.exports.newAccountForm = function(req, res){
  */
  module.exports.newAccount = function(req, res){
   //Check if the fields have been filled up
-  /*if (req.body.username.trim() != "" && req.body.password.trim() != "" && req.body.name.trim() != "" && req.body.lastname != ""){
-    var username = req.body.username;
-    var password = req.body.password;
-    var name = req.body.name;
-    var lastname = req.body.lastname;
-    var queryString = 'INSERT INTO user (username, password, name, lastname) VALUES (' + username + ', ' + password + ', ' + name + ', ' + lastname + ')';
-    db.query(queryString, function(err, result){
-      if (err){
-       throw err;
-      }
-      else{
-        //render an alert message : the account have been created
-        res.render('users/success');
-      }
-    });
-  }
-  else{
-    //Render an alert message : all the fields haven't been filled up
-      res.render('users/error');
-  }*/
   if (req.body.username.trim() != "" && req.body.password.trim() != "" && req.body.name.trim() != "" && req.body.lastname != ""){
     var user = req.body.username;
     var pwd = req.body.password;
@@ -150,3 +132,48 @@ module.exports.newAccountForm = function(req, res){
     res.render('users/errorBadForm');
   }
  };
+
+/**
+  * Render the form to reset a password
+  */
+  module.exports.pwdForgot = function(req, res){
+    res.render('users/pwdForgot');
+  };
+  
+/**
+ * Reset the password of the username
+ */
+module.exports.resetPwd = function(req, res){
+  var username = req.body.username;
+  var newPwd = req.body.password;
+  console.log('test console');
+  //Check if the username is in the database
+  db.query('Select username, password from user where username='+db.escape(username),function(err, userDB){
+    if(err){
+      throw err;
+    }
+    else{
+      //if we have an existing username in the db
+      if (userDB.length >0){
+        if(newPwd.length>=7){
+            //update the user table with the hashed password
+            newPwdCrypted = md5(newPwd, username);
+            db.query('update user set password = '+db.escape(newPwdCrypted)+' where username = '+db.escape(username), function(err2, pwdDB){
+              if(err2){
+                throw err2;
+              }
+              else{
+                res.render('users/success', {successType:success.successReset});
+              }
+            });
+        }
+        else{
+          res.render('errors/error', {errorType : error.passwordTooShort});
+        }
+      }
+      else{
+        res.render('errors/error', {errorType : error.unknownUser});
+      }
+    }
+  });
+};
