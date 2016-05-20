@@ -2,17 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="/css">
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <title>Error</title>
 </head>
-<body>
-    <h1>Error</h1>
-    <hr>
-    <h3>Something bad happened...</h3>
-    <div>
-        <%= errorType%>
+<body id="bodyError">
+    <div id="errorMessage">
+        <h1>Error</h1>
+        <hr>
+        <h3>Something bad happened...</h3>
+        <div>
+            <%= errorType%>
+        </div>
     </div>
-       
+    <div class="row">
+        <div class="col-md-4">    
+            <form method="get" action="/login">
+                <input type="submit" value="Log in" id="loginButton">
+            </form>
+        </div>
+        <div class="col-md-4">    
+            <form method="post" action="/newAccountForm">
+                <input type="submit" value="Sign in" id="loginButton">
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

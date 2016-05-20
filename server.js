@@ -11,6 +11,7 @@ db.init();
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+
 var mySession = session({
   secret: 'N0deJS1sAw3some',
   resave: true,
@@ -20,7 +21,6 @@ var mySession = session({
 
 var app = express();
 app.use(mySession);
-
 app.use("/styles",express.static("./views/styles"));
 
 /*  Not overwriting default views directory of 'views' */
@@ -33,11 +33,8 @@ app.get('/login', users.loginForm);
 app.post('/login', users.login);
 app.get('/logout', users.logout);
 
-app.get('/error', function(req, res) {
-  res.render('./views/users/error.ejs')
-
-});
-
+app.get('/pwdForgot', users.pwdForgot);
+app.post('/resetPwd', users.resetPwd);
 app.post('/newAccountForm', users.newAccountForm);
 app.post('/newAccount', users.newAccount);
 /*  This must go between the users routes and the books routes */
@@ -57,15 +54,28 @@ app.get('/sortURL', bookmarks.sortURL);
 app.get('/sortStar', bookmarks.sortStar);
 app.get('/sortCreateDate', bookmarks.sortCreateDate);
 app.get('/sortLastVisit', bookmarks.sortLastVisit);
-
+app.get('/sortCounter', bookmarks.sortCounter);
 app.get('/bookmarks/edit/:bookmark_id', bookmarks.edit);
 app.post('/bookmarks/update/:bookmark_id', bookmarks.update);
 
 app.get('/bookmarks/star/:bookmark_title/:bookmark_star(\\d)', bookmarks.star);
+<<<<<<< HEAD
+=======
+app.get('/bookmarks/counter/:bookmark_title/:bookmark_username', bookmarks.counter);
+>>>>>>> master
 app.get('/bookmarks/confirm-delete/:bookmark_id',bookmarks.confirmDelete);
 
 app.post('/bookmarks/delete/:bookmark_id',bookmarks.delete);
 app.post('/search', bookmarks.search);
+
+// Import and export individual bookmarks
+app.post('/bookmark/export/', bookmarks.exportBookmark);
+app.post('/bookmark/import/', bookmarks.importBookmark);
+
+// Import and export folders
+app.post('/folder/export', bookmarks.exportFolder);
+app.post('/folder/import', bookmarks.importFolder);
+
 
 /*
 app.get('/books', books.list);
