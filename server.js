@@ -33,8 +33,8 @@ app.get('/login', users.loginForm);
 app.post('/login', users.login);
 app.get('/logout', users.logout);
 
-/*app.get('/pwdForgot', users.pwdForgot);
-app.post('/resetPwd', users.resetPwd);*/
+app.get('/pwdForgot', users.pwdForgot);
+app.post('/resetPwd', users.resetPwd);
 app.post('/newAccountForm', users.newAccountForm);
 app.post('/newAccount', users.newAccount);
 /*  This must go between the users routes and the books routes */
