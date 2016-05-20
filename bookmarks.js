@@ -10,9 +10,10 @@ function sortObject(o) {
 
 function updateList(sortParameter, req, res){
   //console.log(req.session.user);
-  if (!req.session) res.redirect('errors/error', {errorType:error.password});
+  //if (!req.session) res.redirect('errors/error', {errorType:error.password});
   //if (!req.session.user )
   // add regex to check if user is of type name@email.com
+   if(req.session && req.session.user != undefined){
   var user = req.session.user;
   db.query('select name from user where username = '+ db.escape(user), function(err, names) {
     // console.log(names);
@@ -57,6 +58,10 @@ function updateList(sortParameter, req, res){
 
     });
   });
+  }
+  else{
+    res.render('errors/error', {errorType : error.notLoggedIn});
+  }
 }
 var list = module.exports.list = function(req, res) {
   updateList('title', req, res);
@@ -87,32 +92,45 @@ module.exports.sortCounter = function(req, res){
 };
 
 module.exports.search = function(req,res){
-  var searchTitle = req.body.searchString;
-  var sql = " SELECT * FROM bookmark WHERE title LIKE '%" + searchTitle + "%' OR url LIKE'%" + searchTitle + "%'"; 
+  if(req.session && req.session.user != undefined){
 
-    db.query(sql, function(err, bookmarks){
-
-      if(err){
-        throw(err);
-        res.redirect('505.ejs');
-      }
-      else{
-        res.render('bookmarks/list', {bookmarks: bookmarks});
-      }
-  });
+    var searchTitle = req.body.searchString;
+    var sql = " SELECT * FROM bookmark WHERE title LIKE '%" + searchTitle + "%' OR url LIKE'%" + searchTitle + "%'"; 
+  
+      db.query(sql, function(err, bookmarks){
+  
+        if(err){
+          throw(err);
+          res.redirect('505.ejs');
+        }
+        else{
+          res.render('bookmarks/list', {bookmarks: bookmarks});
+        }
+    });
+  }
+  else{
+    res.render('errors/error', {errorType : error.notLoggedIn});
+  }
 };
 
 module.exports.add = function(req, res) {
-  var user = req.session.user;
-  db.query('select name from folder where username = ' + db.escape(user), function(err, folders) {
-    if (err) throw err;
-    res.render('bookmarks/add.ejs', {folders: folders});
-  });
+   if(req.session && req.session.user != undefined){
 
+    var user = req.session.user;
+    db.query('select name from folder where username = ' + db.escape(user), function(err, folders) {
+      if (err) throw err;
+      res.render('bookmarks/add.ejs', {folders: folders});
+    });
+  
+  }
+  else{
+    res.render('errors/error', {errorType : error.notLoggedIn});
+  }
 };
 
 module.exports.insert = function(req, res) {
   // if (!req.session) res.redirect('/error');
+  if(req.session && req.session.user != undefined){
   var user = req.session.user;
 
   var title = req.body.title;
@@ -179,6 +197,10 @@ module.exports.insert = function(req, res) {
 
     }
   }
+  }
+  else{
+    res.render('errors/error', {errorType : error.notLoggedIn});
+  }
 };
 
 /*** Function to serve the edit bookmark view
@@ -187,14 +209,19 @@ module.exports.insert = function(req, res) {
  * @param res
  */
 module.exports.edit = function(req, res) {
-  var id = req.params.bookmark_id;
-  db.query('SELECT * from bookmark WHERE title = ' + "'" + id + "'", function(err, bookmark) {
-    if (err){
-      throw err;
-      res.redirect('505.ejs');
-    }
-    res.render('bookmarks/edit', {bookmark: bookmark[0]});
-  });
+   if(req.session && req.session.user != undefined){
+    var id = req.params.bookmark_id;
+    db.query('SELECT * from bookmark WHERE title = ' + "'" + id + "'", function(err, bookmark) {
+      if (err){
+        throw err;
+        res.redirect('505.ejs');
+      }
+      res.render('bookmarks/edit', {bookmark: bookmark[0]});
+    });
+}
+else{
+    res.render('errors/error', {errorType : error.notLoggedIn});
+}
 };
 
 /*** Function to edit a bookmark
@@ -203,6 +230,7 @@ module.exports.edit = function(req, res) {
  * @param res
  */
 module.exports.update = function(req,res){
+   if(req.session && req.session.user != undefined){
   var id = req.params.bookmark_id;
   var title = req.body.title;
   var url = db.escape(req.body.url);
@@ -246,7 +274,11 @@ module.exports.update = function(req,res){
     });
   }
 
-}
+  }
+  else{
+      res.render('errors/error', {errorType : error.notLoggedIn});
+  }
+;}
 
 /*** Function to serve the confirmation of deleting a bookmark
  *
@@ -254,16 +286,20 @@ module.exports.update = function(req,res){
  * @param res
  */
 module.exports.confirmDelete = function(req,res){
-  var id = req.params.bookmark_id;
-  //console.log("id of bookmark: " + id);
-  db.query('SELECT * from bookmark WHERE title = ' + "'" + id + "'", function (err, bookmark) {
-    if (err) {
-      throw err;
-      res.redirect('505.ejs');
-    }
-    res.render('bookmarks/confirm-delete', {bookmark: bookmark[0]});
-  });
-
+  if(req.session && req.session.user != undefined){
+    var id = req.params.bookmark_id;
+    //console.log("id of bookmark: " + id);
+    db.query('SELECT * from bookmark WHERE title = ' + "'" + id + "'", function (err, bookmark) {
+      if (err) {
+        throw err;
+        res.redirect('505.ejs');
+      }
+      res.render('bookmarks/confirm-delete', {bookmark: bookmark[0]});
+    });
+  }
+  else{
+    res.render('errors/error', {errorType : error.notLoggedIn});
+  }
 }
 /*** Function to delete a bookmark
  *
@@ -272,6 +308,7 @@ module.exports.confirmDelete = function(req,res){
  */
 
 module.exports.delete = function(req,res){
+  if(req.session && req.session.user != undefined){
   var id = req.params.bookmark_id;
   var user = req.session.user;
   db.query('DELETE FROM bookmark WHERE title =' + db.escape(id) + 'AND username =' + db.escape(user) , function(err, bookmark){
@@ -281,12 +318,17 @@ module.exports.delete = function(req,res){
     }
     res.redirect('/bookmarks');
   });
+}
+else{
+    res.render('errors/error', {errorType : error.notLoggedIn});
+}
 };
 
 /**
  * Function to star/unstar a bookmark
  */
 module.exports.star = function(req, res){
+  if(req.session && req.session.user != undefined){
   var title = req.params.bookmark_title;
   var star = req.params.bookmark_star;
 
@@ -308,12 +350,17 @@ module.exports.star = function(req, res){
       res.redirect('/bookmarks');
     });
   }
+  }
+  else{
+    res.render('errors/error', {errorType : error.notLoggedIn});
+  }
 };
 
 /**
  * Function to updta the counter of the bookmark
  */
  module.exports.counter = function(req, res){
+   if(req.session && req.session.user != undefined){
    console.log("counter function called");
     var title = req.params.bookmark_title;
     var username = req.params.bookmark_username;
@@ -345,7 +392,12 @@ module.exports.star = function(req, res){
         }
       });
     });
+ }
+else{
+    res.render('errors/error', {errorType : error.notLoggedIn});
+ }
 };
+
 var BookmarkIOService = require('./services/BookmarkIOService');
 var path = require('path');
 var fs = require('fs');
