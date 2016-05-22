@@ -117,7 +117,7 @@ module.exports.newAccountForm = function(req, res){
                 }
                 else{
                     //render an alert message : the account have been created
-                    res.render('users/success');
+                    res.render('users/success', {successType:success.successCreation});
                 }
               });
           }
