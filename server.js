@@ -59,7 +59,7 @@ app.post('/api/search', bookmarks.search);
 
 /* Crud routes for utility functions */
 app.get('/api/bookmarks/star/:bookmark_title/:bookmark_star(\\d)', bookmarks.star);
-app.get('/api/bookmarks/counter/:bookmark_title/:bookmark_username', bookmarks.counter);
+app.get('/api/bookmarks/counter/:bookmark_title', bookmarks.counter);
 
 /* Crud Routes for Bookmarks*/
 app.get('/api/bookmarks/add', bookmarks.add);
@@ -69,7 +69,7 @@ app.get('/api/bookmarks/confirm-delete/:bookmark_id',bookmarks.confirmDelete);
 app.delete('/api/bookmarks/delete/:bookmark_id',bookmarks.delete);
 
 app.get('/api/bookmarks/edit/:bookmark_id', bookmarks.edit);
-app.post('/api/bookmarks/update/:bookmark_id', bookmarks.update);
+app.put('/api/bookmarks/update/:bookmark_id', bookmarks.update);
 
 
 
