@@ -123,13 +123,13 @@ module.exports.newAccountForm = function(req, res){
           }
           else{
             //already existing username --> alert message
-            res.render('users/errorNew');
+            res.render('errors/error', {errorType:error.userTaken});
           }
       }
     });
   }
   else{
-    res.render('users/errorBadForm');
+    res.render('errors/error', {errorType:error.form});
   }
  };
 
