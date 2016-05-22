@@ -117,19 +117,19 @@ module.exports.newAccountForm = function(req, res){
                 }
                 else{
                     //render an alert message : the account have been created
-                    res.render('users/success');
+                    res.render('users/success', {successType:success.successCreation});
                 }
               });
           }
           else{
             //already existing username --> alert message
-            res.render('users/errorNew');
+            res.render('errors/error', {errorType:error.userTaken});
           }
       }
     });
   }
   else{
-    res.render('users/errorBadForm');
+    res.render('errors/error',{errorType:error.form});
   }
  };
 
