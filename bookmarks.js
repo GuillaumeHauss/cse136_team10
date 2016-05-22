@@ -7,13 +7,12 @@ function sortObject(o) {
   return Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {});
 }*/
 
-
 function updateList(sortParameter, req, res){
   //console.log(req.session.user);
   //if (!req.session) res.redirect('errors/error', {errorType:error.password});
   //if (!req.session.user )
   // add regex to check if user is of type name@email.com
-   if(req.session && req.session.user != undefined){
+  if(req.session && req.session.user != undefined){
   var user = req.session.user;
   db.query('select name from user where username = '+ db.escape(user), function(err, names) {
     // console.log(names);
@@ -49,12 +48,11 @@ function updateList(sortParameter, req, res){
         // console.log("names");
         var nameObj = names[0].name;
         // console.log(nameObj);
-
-
-
         //console.log(bookmarks);
-        res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: foldersHash, name: nameObj});
-      })
+        //res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: foldersHash, name: nameObj});
+        console.log("updating list on server");
+        res.json(bookmarks);
+      });
 
     });
   });
@@ -64,6 +62,7 @@ function updateList(sortParameter, req, res){
   }
 }
 var list = module.exports.list = function(req, res) {
+
   updateList('title', req, res);
 };
 
@@ -137,6 +136,8 @@ module.exports.insert = function(req, res) {
   var url = db.escape(req.body.url);
   var description = db.escape(req.body.description);
   var star = 0;
+    console.log(title);
+    console.log(url);
    if (req.body.folder != ""){
         var folder = req.body.folder;      
   }
@@ -157,17 +158,11 @@ module.exports.insert = function(req, res) {
       ('00' + date.getUTCHours()).slice(-2) + ':' +
       ('00' + date.getUTCMinutes()).slice(-2) + ':' +
       ('00' + date.getUTCSeconds()).slice(-2);
-  if (req.body.star) star = 1;
+  if (req.body.star)
+    star = 1;
+  else
+    star = 0;
 
-  else star = 0;
-    /*
-<<<<<<< HEAD
-
-  if(!user){
-    console.log('inside error');
-    res.render('/error', {errorType : error.undefinedUser});
-  }
-=======*/
 
   var titleExpression = /^[a-z0-9\s]+$/i;
   var titleRegex = new RegExp(titleExpression);
@@ -196,7 +191,7 @@ module.exports.insert = function(req, res) {
         throw err;
         res.redirect('505.ejs');
       }
-      res.redirect('/bookmarks');
+     list(req,res);
     });
 
     if (!url.match(urlRegex)) {
@@ -327,23 +322,12 @@ module.exports.delete = function(req,res){
   if(req.session && req.session.user != undefined){
   var id = req.params.bookmark_id;
   var user = req.session.user;
-/*<<<<<<< HEAD
-
-  db.query('DELETE FROM bookmark WHERE title =' + db.escape(id) + 'AND username =' + db.escape(user),
-        function (err, bookmark) {
-          if (err) {
-            throw err;
-          }
-          res.redirect('/bookmarks');
-        });
-  };
-=======*/
   db.query('DELETE FROM bookmark WHERE title =' + db.escape(id) + 'AND username =' + db.escape(user) , function(err, bookmark){
     if(err){
       throw err;
       res.redirect('505.ejs');
     }
-    res.redirect('/bookmarks');
+    res.json({ bookmark: id});
   });
 }
 else{
@@ -435,7 +419,7 @@ var upload = multer({
 }).single('filename');
 
 /**
- * Exports a textfile that is named the name of the bookmark
+ * Exports a text file that is named the name of the bookmark
  * @param req
  * @param res
  */
@@ -459,8 +443,8 @@ module.exports.exportBookmark = function(req, res) {
 };
 
 /**
- * Imports a textfile containing one bookmark into the database if
- * the user exists that is refrenced in the file
+ * Imports a text file containing one bookmark into the database if
+ * the user exists that is referenced in the file
  */
 module.exports.importBookmark = function(req, res) {
   upload(req, res, function(err) {
@@ -489,8 +473,6 @@ module.exports.importFolder = function(req, res) {
     }
     var filename = req.file.filename;
     var username = req.session.user;
-    //console.log('filename');
-    //console.log(filename);
     BookmarkIOService.importFolder(username, filename, function() {
       if (fs.existsSync(path.join(__dirname, 'public/uploads/' + filename))) {
         fs.unlink(path.join(__dirname, 'public/uploads/' + filename));

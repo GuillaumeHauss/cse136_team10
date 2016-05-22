@@ -35,7 +35,7 @@ module.exports.login = function(req, res) {
             console.log(results[0].password);
             if (userInput===results[0].username && pwdInputCrypted===results[0].password) {
                 req.session.user = userInput;
-                res.redirect('/bookmarks');
+                res.redirect('/bookmarks/list.html');
             }
             else{
               res.render('errors/error', {errorType : error.password});

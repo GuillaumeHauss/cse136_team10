@@ -26,6 +26,7 @@ app.use("/styles",express.static("./views/styles"));
 /*  Not overwriting default views directory of 'views' */
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 /* Routes - consider putting in routes.js */
@@ -40,32 +41,37 @@ app.post('/newAccount', users.newAccount);
 /*  This must go between the users routes and the books routes */
 app.use(users.auth);
 
-app.get('/bookmarks', bookmarks.list);
-app.get('/bookmarks/add', bookmarks.add);
-app.post('/bookmarks/insert', bookmarks.insert);
+/* Route to show the bookmark*/
+
+app.get('/api/bookmarks', bookmarks.list);
 
 app.get('/folders/add', folders.add);
 app.post('/folders/insert', folders.insert);
 
-
 /*Sorting routes*/
-app.get('/sortTitle', bookmarks.sortTitle);
-app.get('/sortURL', bookmarks.sortURL);
-app.get('/sortStar', bookmarks.sortStar);
-app.get('/sortCreateDate', bookmarks.sortCreateDate);
-app.get('/sortLastVisit', bookmarks.sortLastVisit);
-app.get('/sortCounter', bookmarks.sortCounter);
-app.get('/bookmarks/edit/:bookmark_id', bookmarks.edit);
-app.post('/bookmarks/update/:bookmark_id', bookmarks.update);
+app.get('/api/sortTitle', bookmarks.sortTitle);
+app.get('/api/sortURL', bookmarks.sortURL);
+app.get('/api/sortStar', bookmarks.sortStar);
+app.get('/api/sortCreateDate', bookmarks.sortCreateDate);
+app.get('/api/sortLastVisit', bookmarks.sortLastVisit);
+app.get('/api/sortCounter', bookmarks.sortCounter);
+app.post('/api/search', bookmarks.search);
 
-app.get('/bookmarks/star/:bookmark_title/:bookmark_star(\\d)', bookmarks.star);
+/* Crud routes for utility functions */
+app.get('/api/bookmarks/star/:bookmark_title/:bookmark_star(\\d)', bookmarks.star);
+app.get('/api/bookmarks/counter/:bookmark_title/:bookmark_username', bookmarks.counter);
 
-app.get('/bookmarks/counter/:bookmark_title/:bookmark_username', bookmarks.counter);
+/* Crud Routes for Bookmarks*/
+app.get('/api/bookmarks/add', bookmarks.add);
+app.post('/api/bookmarks/insert', bookmarks.insert);
 
-app.get('/bookmarks/confirm-delete/:bookmark_id',bookmarks.confirmDelete);
+app.get('/api/bookmarks/confirm-delete/:bookmark_id',bookmarks.confirmDelete);
+app.delete('/api/bookmarks/delete/:bookmark_id',bookmarks.delete);
 
-app.post('/bookmarks/delete/:bookmark_id',bookmarks.delete);
-app.post('/search', bookmarks.search);
+app.get('/api/bookmarks/edit/:bookmark_id', bookmarks.edit);
+app.post('/api/bookmarks/update/:bookmark_id', bookmarks.update);
+
+
 
 // Import and export individual bookmarks
 app.post('/bookmark/export/', bookmarks.exportBookmark);
@@ -76,15 +82,6 @@ app.post('/folder/export', bookmarks.exportFolder);
 app.post('/folder/import', bookmarks.importFolder);
 
 
-/*
-app.get('/books', books.list);
-app.get('/books/add', books.add);
-app.get('/books/edit/:book_id(\\d+)', books.edit);
-app.get('/books/confirmdelete/:book_id(\\d+)', books.confirmdelete);
-app.get('/books/delete/:book_id(\\d+)', books.delete);
-app.post('/books/update/:book_id(\\d+)', books.update);
-app.post('/books/insert', books.insert);
-*/
 app.listen(config.PORT, function () {
   console.log('Example app listening on port ' + config.PORT + '!');
 });

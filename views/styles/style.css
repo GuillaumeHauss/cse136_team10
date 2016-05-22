@@ -445,9 +445,9 @@ hr{
 
 }
 #counter{
-	position:absolute;
-	right:80px;
-	bottom:20px;
+	position: absolute;
+	right: 0;
+	top: -30px;
 }
 /*CSS for the log in and sign in forms*/
 #formLogin, #formSignin{
