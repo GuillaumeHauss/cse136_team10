@@ -374,19 +374,22 @@ module.exports.star = function(req, res){
    if(req.session && req.session.user != undefined){
      console.log("counter function called");
      var title = req.params.bookmark_title;
-     //var username = req.params.bookmark_username;
-
-    //db.query('select counter from bookmark where username='+db.escape(username)+' and title='+db.escape(title), function(err, counter){
-     db.query('select counter from bookmark where title='+db.escape(title), function(err, counter){
+     var username = req.session.user;
+     console.log(username);
+    db.query('select counter from bookmark where username='+db.escape(username)+' and title='+db.escape(title), function(err, counter){
+     //db.query('select counter from bookmark where title='+db.escape(title), function(err, counter){
       var counterNew = counter[0].counter+1;
       console.log("counterNew = "+counterNew);
-      db.query('update bookmark set counter='+counterNew+' where title =' + db.escape(title), function(err){
+      db.query('update bookmark set counter='+counterNew+' where title =' + db.escape(title) + 'and username='+db.escape(username), function(err){
         if (err){
-          throw err;
           res.render('/505.ejs');
+          throw err;
         }
         else{
-          res.json({ bookmark: counterNew });
+          db.query('select counter,title from bookmark where title=' + db.escape(title) + 'and username='+db.escape(username),function(err,result){
+            console.log(result);
+            res.json(result[0]);
+          });
         }
       });
     });

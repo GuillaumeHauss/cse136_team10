@@ -224,17 +224,17 @@ function getBookmarkEl(bookmark){
     "tag3" : tags[2].innerHTML,
     "tag4" : tags[3].innerHTML
   };
-
 }
 
 function incrementValue(data){
-  //var parent = bookmark.parentNode.parentNode;
-  var child = parent.children;
+  console.log(data);
+  var bookmarkObj = document.getElementById(data.title);
+  var child = bookmarkObj.children;
   for (var i = 0; i < child.length; i++) {
-    if(child[i].getAttribute("class") === 'crud-btns'){
+    if (child[i].getAttribute("class") === 'crud-btns') {
       console.log(child[i]);
       var counter = child[i].children[0].children[0];
-      counter.innerHTML = data;
+      counter.innerHTML = data.counter;
     }
   }
 }
