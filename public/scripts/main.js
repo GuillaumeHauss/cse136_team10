@@ -156,6 +156,7 @@ function addBookmark(){
 }
 
 function updateBookmark(){
+  console.log("updating bookmark");
   makeRequest("POST","/api/bookmarks/insert",populateList, grabFormElements());
 }
 
@@ -170,6 +171,8 @@ function grabFormElements(){
   var star = document.getElementById('add-star').value;
 
   var payload = 'title=' + title + '&url=' + url + '&tag1=' + tag1  + '&tag2=' + tag2  + '&tag3=' + tag3  + '&tag4=' + tag4  + '&description=' + description  + '&star=' + star;
+
+  console.log(payload);
 
   document.getElementById('add-title').setAttribute("value","");
   document.getElementById('add-url').setAttribute("value","");
