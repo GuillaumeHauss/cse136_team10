@@ -58,7 +58,7 @@ app.get('/api/sortCounter', bookmarks.sortCounter);
 app.post('/api/search', bookmarks.search);
 
 /* Crud routes for utility functions */
-app.get('/api/bookmarks/star/:bookmark_title/:bookmark_star(\\d)', bookmarks.star);
+app.get('/api/bookmarks/star/:bookmark_title/:bookmark_star', bookmarks.star);
 app.get('/api/bookmarks/counter/:bookmark_title', bookmarks.counter);
 
 /* Crud Routes for Bookmarks*/

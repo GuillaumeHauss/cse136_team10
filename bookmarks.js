@@ -8,26 +8,16 @@ function sortObject(o) {
 }*/
 
 function updateList(sortParameter, req, res){
-  //console.log(req.session.user);
-  //if (!req.session) res.redirect('errors/error', {errorType:error.password});
-  //if (!req.session.user )
-  // add regex to check if user is of type name@email.com
   if(req.session && req.session.user != undefined){
   var user = req.session.user;
   db.query('select name from user where username = '+ db.escape(user), function(err, names) {
     // console.log(names);
     db.query('SELECT * from bookmark where username = ' + db.escape(user)+' order by '+sortParameter, function (err, bookmarks) {
       if (err) throw err;
-      //console.log("counter 1"+bookmarks[0].counter);
-      //console.log("counter 2"+bookmarks[1].counter);
-      // (Select folder, title from bookmark where username = ' + db.escape(user) + ' and folder in (select folder from bookmark where username = ' + db.escape(user) + ')) union all (select name, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + '))
       db.query('(Select folder, title, url from bookmark where username = ' + db.escape(user) + ' and folder is not null ) union (select name, null, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + ' and folder is not null))', function (err, folders) {
         if (err) throw err;
-        //console.log(folders);
 
         var foldersHash = {};
-
-        //console.log(bookmarks);
 
         for (var i = 0; i < bookmarks.length; i++) {
           // console.log(bookmarks[i]);
@@ -43,12 +33,8 @@ function updateList(sortParameter, req, res){
         for (i = 0; i < folders.length; i++) {
          if(!foldersHash[folders[i].folder] && foldersHash[folders[i].folder != null]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
         }
-        //console.log(foldersHash);
-        // console.log("names");
+
         //var nameObj = names[0].name;
-        // console.log(nameObj);
-        //console.log(bookmarks);
-        //res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: foldersHash, name: nameObj});
         console.log("updating list on server");
         res.json(bookmarks);
       });
@@ -157,7 +143,7 @@ module.exports.insert = function(req, res) {
       ('00' + date.getUTCHours()).slice(-2) + ':' +
       ('00' + date.getUTCMinutes()).slice(-2) + ':' +
       ('00' + date.getUTCSeconds()).slice(-2);
-  if (req.body.star)
+  if (req.body.star == "on")
     star = 1;
   else
     star = 0;
@@ -190,6 +176,7 @@ module.exports.insert = function(req, res) {
         throw err;
         res.redirect('505.ejs');
       }
+      console.log(res.body);
      list(req,res);
     });
 
@@ -338,20 +325,30 @@ else{
 };
 
 /**
+ * STARFUNCTION
  * Function to star/unstar a bookmark
  */
 module.exports.star = function(req, res){
+  console.log('star function');
   if(req.session && req.session.user != undefined){
-  var title = req.params.bookmark_title;
-  var star = req.params.bookmark_star;
+    var user = req.session.user;
+    var title = req.params.bookmark_title;
+    var star = req.params.bookmark_star;
+    console.log('title: ' + title + ' star: ' + star);
 
   if (star === '0'){
+
+    console.log("star is 0");
     db.query('update bookmark set star=1 where title =' + db.escape(title), function(err){
       if (err){
         throw err;
         res.redirect('/505.ejs');
       }
-      res.redirect('/bookmarks');
+      db.query('select star, title from bookmark where title =' + db.escape(title) + 'and username=' + db.escape(user), function(err,result){
+        console.log(result[0]);
+        res.json(result[0]);
+      });
+
     });
   }
   else{
@@ -360,7 +357,10 @@ module.exports.star = function(req, res){
         throw err;
         res.redirect('/505.ejs');
       }
-      res.redirect('/bookmarks');
+       db.query('select star, title from bookmark where title =' + db.escape(title) + 'and username=' + db.escape(user), function(err,result){
+         console.log(result);
+         res.json(result[0]);
+       });
     });
   }
   }

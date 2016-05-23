@@ -34,21 +34,21 @@ function loadListeners(){
 
   $('.bookmark-button').on('click', function(){
     var bookmark = getBookmarkEl(this);
-    /*var parent = this.parentNode.parentNode;
-    console.log(parent);
-    bookmark.counter++;
-    event.preventDefault();
-    var child = parent.children;
-    for (var i = 0; i < child.length; i++) {
-      if(child[i].getAttribute("class") === 'crud-btns'){
-        console.log(child[i]);
-        var counter = child[i].children[0].children[0];
-        var counterVal = counter.innerHTML;
-        console.log(counterVal);
-        counter.innerHTML = ++counterVal;
-      }
-    }*/
     incrementBookmark(bookmark.title, this);
+  });
+
+  $('.star-btn').on('click',function(){
+    console.log('star btn clicked: ' + this.children[0].getAttribute('class'));
+    var bookmark = getBookmarkEl(this);
+    console.log(bookmark.star);
+    starBookmark(bookmark.title, bookmark.star);
+    /*if(this.children[0].getAttribute('class') === 'fa fa-star filled'){
+      this.children[0].setAttribute('class', 'fa fa-star-o filled');
+    }
+    else if (this.children[0].getAttribute('class') === 'fa fa-star-o filled') {
+      this.children[0].setAttribute('class', 'fa fa-star filled');
+    }*/
+
   });
 
   $('#sort-title').on('click', function(){
@@ -118,12 +118,6 @@ function deleteBookmark(id){
   makeRequest("DELETE","/api/bookmarks/delete/" + id, deleteCard);
 }
 
-
-function incrementBookmark(id){
-  console.log("Incrementing Bookmark Counter :" + id);
-  makeRequest("GET", "/api/bookmarks/counter/" + id, incrementValue);
-}
-
 function sortByTitle(){
   makeRequest("GET","/api/sortTitle", populateList);
 }
@@ -156,6 +150,17 @@ function addBookmark(){
 function editBookmark(id){
   console.log('Editing bookmark');
   makeRequest("PUT", "/api/bookmarks/update/" + id, populateList, grabFormElements());
+}
+
+function incrementBookmark(id){
+  console.log("Incrementing Bookmark Counter :" + id);
+  makeRequest("GET", "/api/bookmarks/counter/" + id, incrementValue);
+}
+
+function starBookmark(id,starValue){
+  console.log(starValue);
+  makeRequest("GET", "/api/bookmarks/star/" + id + '/' + starValue, toggleStar);
+
 }
 /*
 function updateBookmark(){
@@ -201,8 +206,9 @@ function grabFormElements(){
 function deleteCard(data){
   console.log(data);
   var card = document.getElementById(data.bookmark);
-  console.log(card);
-  card.parentNode.removeChild(card);
+  console.log(card.parentNode.parentNode);
+  var cardToRemove = card.parentNode;
+  cardToRemove.parentNode.removeChild(cardToRemove);
 }
 
 function populateList(data){
@@ -216,15 +222,19 @@ function populateList(data){
 
 //Get Bookmark Elements from the DOM Tree
 function getBookmarkEl(bookmark){
+
   var bookmarkCard = bookmark.parentNode.parentNode;
+  var starValue = bookmarkCard.children[4].children[3].value;
   var tags = [];
   for(var i = 0, len = bookmarkCard.children[3].children.length; i < len; i++){
     tags.push(bookmarkCard.children[3].children[i]);
   }
+  //console.log("value of star: " + starValue);
   return {
     "title" : bookmarkCard.children[0].innerHTML,
     "description" : bookmarkCard.children[1].innerHTML,
     "url" : bookmarkCard.children[2].getAttribute("href"),
+    "star" : starValue,
     "tag1" : tags[0].innerHTML,
     "tag2" : tags[1].innerHTML,
     "tag3" : tags[2].innerHTML,
@@ -244,3 +254,27 @@ function incrementValue(data){
     }
   }
 }
+
+function toggleStar(data){
+
+  var bookmarkObj = document.getElementById(data.title);
+  var child = bookmarkObj.children;
+
+  for (var i = 0; i < child.length; i++) {
+    if (child[i].getAttribute("class") === 'crud-btns') {
+      var star = child[i].children[3];
+      star.value = data.star;
+    }
+  }
+  if(star.value === '1'){
+    star.children[0].className = 'fa fa-star filled';
+  }
+  else if(star.value === '0'){
+    star.children[0].className = 'fa fa-star-o filled';
+
+  }
+
+
+
+}
+

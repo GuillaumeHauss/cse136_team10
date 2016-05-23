@@ -3,14 +3,14 @@
 <head>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
-   <link rel="stylesheet" type="text/css" href="../styles/style.css">
+
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
    <script src="../scripts/ejs.min.js"></script>
    <script src="../scripts/main.js"></script>
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+   <link rel="stylesheet" type="text/css" href="../styles/style.css">
    <title>Bookmark</title>
 </head>
 <body>
@@ -18,7 +18,7 @@
    <h1>BookMarx</h1>
    <!--<p id="helloUser">Hello <em><%= name %></em></p>-->
    <div class="folder-wrapper">
-      <button type="button" data-toggle="modal" data-target="#myAddModal">
+      <button id="add-bookmark-btn" type="button" data-toggle="modal" data-target="#myAddModal">
          Add Bookmark
       </button>
       <h2>Folders <a href='/folders/add'><i class="fa fa-plus-square-o" aria-hidden="true"></i></a></h2>
@@ -52,7 +52,6 @@
        </table>-->
    </div>
 </div>
-
 <div class="home-container">
    <div class="row ">
       <div class="nav-left">
@@ -149,7 +148,8 @@
                            </div>
                         </div>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="edit-btn btn-primary" data-dismiss="modal"> Edit </button>
+                        <button type="button" class="edit-btn btn btn-primary" data-dismiss="modal"> Edit </button>
+
                      </form>
 
                   </div>
@@ -174,12 +174,12 @@
                         <label for="social-folder" class="social-label">Advanced Options</label>
                         <div role="folder" class="folder-content">
                            <div id="tagHolder">
-                              <input id="add-tag1" class="input-option tag1" type="text" name="tag1" placeholder="Tag 1"><br>
-                              <input id="add-tag2" class="input-option tag2" type="text" name="tag2" placeholder="Tag 2"><br>
-                              <input id="add-tag3" class="input-option tag3" type="text" name="tag3" placeholder="Tag 3"><br>
-                              <input id="add-tag4" class="input-option tag4" type="text" name="tag4" placeholder="Tag 4"><br>
+                              <input id="add-tag1" class="input-option tag1" type="text" placeholder = "tag" name="tag1"><br>
+                              <input id="add-tag2" class="input-option tag2" type="text" placeholder = "tag" name="tag2"><br>
+                              <input id="add-tag3" class="input-option tag3" type="text" placeholder = "tag" name="tag3"><br>
+                              <input id="add-tag4" class="input-option tag4" type="text" placeholder = "tag" name="tag4"><br>
                            </div>
-                           <input id = "add-description" class="input-option" type="text" name="description" placeholder="Description"><br>
+                           <input id = "add-description" class="input-option" type="text" name="description" placeholder = "description"><br>
                            <label id="add-star" for="star">Star it?</label><input type="checkbox" name="star" id="star"><br>
                         </div>
                      </div>
@@ -206,9 +206,9 @@
 </div>
 
 <script id="list" type="text/x-ejs-template">
-   <div class="row" >
-      <% bookmarks.forEach(function(bookmark) { %>
-      <div class="col-md-4 cards" id ="<%=bookmark.title%>">
+   <% bookmarks.forEach(function(bookmark) { %>
+   <div class="col-md-4">
+      <div id ="<%=bookmark.title%>" class="cards">
          <h1><%=bookmark.title%></h1>
          <p class="bookmark-description"><%= bookmark.description %></p>
          <a style="text-decoration: none" href="<%= bookmark.url %>" target="_blank">
@@ -226,13 +226,17 @@
             <button type="button" class="delete-bookmark" data-toggle="modal" data-target="#myDeleteModal">
                <i class="fa fa-trash-o" aria-hidden="true"></i>
             </button>
-            <button type="button" data-toggle="modal" data-target="#myModal">
+            <button type="button" class="star-btn" value = "<%= bookmark.star %>" data-toggle="modal" data-target="#myModal">
+               <%if(bookmark.star == "1") {%>
                <i class="fa fa-star filled" aria-hidden="true"></i>
+               <% }else{ %>
+               <i class="fa fa-star-o filled" aria-hidden="true"></i>
+               <% } %>
             </button>
          </div>
       </div>
-      <% }); %>
    </div>
+   <% }); %>
 
 </script>
 
