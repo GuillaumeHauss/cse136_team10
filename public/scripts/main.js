@@ -26,8 +26,9 @@ function loadListeners(){
     var bookmark = getBookmarkEl(this);
     var compiled = ejs.compile(template.innerHTML);
     document.getElementById('crud-modal').innerHTML = compiled({bookmark:bookmark});
+    var id = bookmark.title;
     $('.edit-btn').on('click', function(){
-      editBookmark(bookmark.title);
+      editBookmark(id);
     });
   });
 
@@ -76,6 +77,7 @@ function loadListeners(){
 
 
   $('.add-btn').on('click',addBookmark);
+  //$('.edit-btn').on('click', editBookmark);
 }
 
 //Function WRAPPER  for AJAX Calls
@@ -116,10 +118,6 @@ function deleteBookmark(id){
   makeRequest("DELETE","/api/bookmarks/delete/" + id, deleteCard);
 }
 
-function editBookmark(id){
-  console.log('Editing: ' + id);
-  makeRequest("PUT", "/api/bookmarks/update/" + id, updateBookmark);
-}
 
 function incrementBookmark(id){
   console.log("Incrementing Bookmark Counter :" + id);
@@ -155,10 +153,15 @@ function addBookmark(){
   makeRequest("POST","/api/bookmarks/insert",populateList, grabFormElements());
 }
 
+function editBookmark(id){
+  console.log('Editing bookmark');
+  makeRequest("PUT", "/api/bookmarks/update/" + id, populateList, grabFormElements());
+}
+/*
 function updateBookmark(){
   console.log("updating bookmark");
   makeRequest("POST","/api/bookmarks/insert",populateList, grabFormElements());
-}
+}*/
 
 function grabFormElements(){
   var title = document.getElementById('add-title').value;

@@ -98,8 +98,8 @@
          </form>
       </div>-->
       <div id="bookmark-card"></div>
-
       <div id="crud-modal"></div>
+
       <script id="delete-modal" type = "text/x-ejs-template">
          <div class="modal fade" id="myDeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
@@ -132,24 +132,24 @@
                   </div>
                   <div class="modal-body">
                      <form id = "add-form" method='post'>
-                        <input id="add-title" type="text" name="title" placeholder="<%= bookmark.title %>" required="true"><br>
-                        <input id="add-url" type="url" name="url" placeholder="<%= bookmark.url %>" required="true"><br>
+                        <input id="add-title" type="text" name="title" value="<%= bookmark.title %>" required="true"><br>
+                        <input id="add-url" type="url" name="url" value="<%= bookmark.url %>" required="true"><br>
                         <div class="folder">
                            <input type="checkbox" value="selected" id="social-folder" class="folder-input">
                            <label for="social-folder" class="social-label">Advanced Options</label>
                            <div role="folder" class="folder-content">
                               <div id="tagHolder">
-                                 <input id="add-tag1" class="input-option tag1" type="text" name="tag1" placeholder="<%= bookmark.tag1 %>"><br>
-                                 <input id="add-tag2" class="input-option tag2" type="text" name="tag2" placeholder="<%= bookmark.tag2 %>"><br>
-                                 <input id="add-tag3" class="input-option tag3" type="text" name="tag3" placeholder="<%= bookmark.tag3 %>"><br>
-                                 <input id="add-tag4" class="input-option tag4" type="text" name="tag4" placeholder="<%= bookmark.tag4 %>"><br>
+                                 <input id="add-tag1" class="input-option tag1" type="text" name="tag1" value="<%= bookmark.tag1 %>"><br>
+                                 <input id="add-tag2" class="input-option tag2" type="text" name="tag2" value="<%= bookmark.tag2 %>"><br>
+                                 <input id="add-tag3" class="input-option tag3" type="text" name="tag3" value="<%= bookmark.tag3 %>"><br>
+                                 <input id="add-tag4" class="input-option tag4" type="text" name="tag4" value="<%= bookmark.tag4 %>"><br>
                               </div>
-                              <input id = "add-description" class="input-option" type="text" name="description" placeholder="<%= bookmark.description %>"><br>
+                              <input id = "add-description" class="input-option" type="text" name="description" value="<%= bookmark.description %>"><br>
                               <label id="add-star" for="star">Star it?</label><input type="checkbox" name="star" id="star"><br>
                            </div>
                         </div>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="add-btn btn btn-primary" data-dismiss="modal"> Add </button>
+                        <button type="button" class="edit-btn btn-primary" data-dismiss="modal"> Edit </button>
                      </form>
 
                   </div>
@@ -157,28 +157,6 @@
             </div>
          </div>
       </script>
-<!--
-      <script id="delete-modal" type="text/x-ejs-template">
-         <div class="modal fade" id="myDeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-               <div class="modal-content">
-                  <div class="modal-header">
-                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                     <h4 class="modal-title" id="myModalLabel"><%= bookmark.title %></h4>
-                  </div>
-                  <div class="modal-body">
-                     <p><%= bookmark.description %></p>
-                     <p class="tags">Tags: <span> <%= bookmark.tag1 %></span> <span> <%= bookmark.tag2%></span> <span> <%= bookmark.tag3%></span> <span><%= bookmark.tag4%></span></p>
-                  </div>
-                  <div class="modal-footer">
-                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                     <button type="button" class="delete-btn btn btn-primary" data-dismiss="modal"> Delete </button>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </script>
--->
       <div class="modal fade" id="myAddModal" tabindex="-1" role="dialog" aria-labelledby="myAddModalLabel">
          <div class="modal-dialog" role="document">
             <div class="modal-content">

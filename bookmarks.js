@@ -29,7 +29,6 @@ function updateList(sortParameter, req, res){
 
         //console.log(bookmarks);
 
-
         for (var i = 0; i < bookmarks.length; i++) {
           // console.log(bookmarks[i]);
           if ( bookmarks[i].folder != null && bookmarks[i].folder in foldersHash) {
@@ -41,12 +40,12 @@ function updateList(sortParameter, req, res){
         }
 
         // console.log("folders");
-        for (var i = 0; i < folders.length; i++) {
+        for (i = 0; i < folders.length; i++) {
          if(!foldersHash[folders[i].folder] && foldersHash[folders[i].folder != null]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
         }
         //console.log(foldersHash);
         // console.log("names");
-        var nameObj = names[0].name;
+        //var nameObj = names[0].name;
         // console.log(nameObj);
         //console.log(bookmarks);
         //res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: foldersHash, name: nameObj});
@@ -234,48 +233,51 @@ else{
  */
 module.exports.update = function(req,res){
    if(req.session && req.session.user != undefined){
-  var id = req.params.bookmark_id;
-  var title = req.body.title;
-  var url = db.escape(req.body.url);
-  var description = db.escape(req.body.description);
-  var star = 0;
+     var user = req.session.user;
+     var id = req.params.bookmark_id;
+     var title = req.body.title;
+     var url = db.escape(req.body.url);
+     var description = db.escape(req.body.description);
+     var star = 0;
+     var tag = [];
 
-  var tag = ['', '', '', ''];
-  if (req.body.tag1) tag[0] = req.body.tag1;
-  if (req.body.tag2) tag[1] = req.body.tag2;
-  if (req.body.tag3) tag[2] = req.body.tag3;
-  if (req.body.tag4) tag[3] = req.body.tag4;
+     tag[0] = req.body.tag1;
+     tag[1] = req.body.tag2;
+     tag[2] = req.body.tag3;
+     tag[3] = req.body.tag4;
 
-  if (req.body.star) star = "on";
+     if (req.body.star)
+       star = 1;
+     else
+       star = 0;
 
-  var titleExpression = /^[a-z0-9\s]+$/i;
-  var titleRegex = new RegExp(titleExpression);
 
-  var urlExpression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-  var urlRegex = new RegExp(urlExpression);
+    var titleExpression = /^[a-z0-9\s]+$/i;
+    var titleRegex = new RegExp(titleExpression);
 
-  //console.log(titleRegex.test(title));
-  if(!titleRegex.test(title) || title.length > 20 ){
-    //console.log("Error in title");
-    res.render('errors/error', {errorType : error.titleError});
-  }
-  else if(!urlRegex.test(url)){
-   // console.log("Error in url");
-    res.render('errors/error', {errorType : error.urlError});
-  }
-  else {
-    var queryString = 'UPDATE bookmark SET title = ' + db.escape(title) + ', url = ' + url + ', description = ' + description + ', star = ' + star + ', tag1 = ' + db.escape(
-            tag[0]) + ', tag2 = ' + db.escape(tag[1]) + ', tag3 = ' + db.escape(tag[2]) + ', tag4 = ' + db.escape(
-            tag[3]) + 'WHERE title = ' + "'" + id + "'";
-    //console.log(queryString);
-    db.query(queryString, function (err) {
-      if (err) {
-        throw err;
-        res.render('505.ejs');
-      }
-      res.render('/bookmarks');
-    });
-  }
+    var urlExpression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+    var urlRegex = new RegExp(urlExpression);
+
+    //console.log(titleRegex.test(title));
+    if(!titleRegex.test(title) || title.length > 20 ){
+      //console.log("Error in title");
+      res.render('errors/error', {errorType : error.titleError});
+    }
+    else if(!urlRegex.test(url)){
+     // console.log("Error in url");
+      res.render('errors/error', {errorType : error.urlError});
+    }
+    else {
+      var queryString = 'UPDATE bookmark SET title = ' + db.escape(title) + ', url = ' + url + ', description = ' + description + ', star = ' + db.escape(star) + ', tag1 = ' + db.escape(tag[0]) + ', tag2 = ' + db.escape(tag[1]) + ', tag3 = ' + db.escape(tag[2]) + ', tag4 = ' + db.escape(tag[3]) + ' WHERE username =' +  db.escape(user) + 'AND title =' + db.escape(id);
+      console.log(queryString);
+      db.query(queryString, function (err) {
+        if (err) {
+          res.render('505.ejs');
+          throw err;
+        }
+        list(req,res);
+      });
+    }
 
   }
   else{
