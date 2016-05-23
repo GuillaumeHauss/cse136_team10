@@ -270,7 +270,7 @@ module.exports.update = function(req,res){
         throw err;
         res.render('505.ejs');
       }
-      res.render('/bookmarks');
+      res.redirect('/bookmarks');
     });
   }
 
