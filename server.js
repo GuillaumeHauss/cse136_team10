@@ -11,7 +11,6 @@ db.init();
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-
 var mySession = session({
   secret: 'N0deJS1sAw3some',
   resave: true,
@@ -21,12 +20,29 @@ var mySession = session({
 
 var app = express();
 app.use(mySession);
+
 app.use("/styles",express.static("./views/styles"));
 
 /*  Not overwriting default views directory of 'views' */
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+var sess;
+app.get('/',function(req,res){
+sess = req.session;
+//Session set when user Request our app via URL
+if(sess.user) {
+/*
+* This line check Session existence.
+* If it existed will do some action.
+*/
+    res.redirect('/bookmarks');
+}
+else {
+    res.render('users/login');
+}
+});
 
 /* Routes - consider putting in routes.js */
 app.get('/login', users.loginForm);
@@ -37,7 +53,7 @@ app.get('/pwdForgot', users.pwdForgot);
 app.post('/resetPwd', users.resetPwd);
 app.post('/newAccountForm', users.newAccountForm);
 app.post('/newAccount', users.newAccount);
-/*  This must go between the users routes and the books routes */
+/*  This must go between the users routes and the bookmarks routes */
 app.use(users.auth);
 
 app.get('/bookmarks', bookmarks.list);
@@ -46,7 +62,10 @@ app.post('/bookmarks/insert', bookmarks.insert);
 
 app.get('/folders/add', folders.add);
 app.post('/folders/insert', folders.insert);
-
+app.get('/folders/edit/:folder_name', folders.edit);
+app.post('/folders/update/:folder_name', folders.update);
+app.get('/folders/confirm-delete/:folder_name', folders.confirmDelete);
+app.post('/folders/delete', folders.delete);
 
 /*Sorting routes*/
 app.get('/sortTitle', bookmarks.sortTitle);
@@ -55,6 +74,7 @@ app.get('/sortStar', bookmarks.sortStar);
 app.get('/sortCreateDate', bookmarks.sortCreateDate);
 app.get('/sortLastVisit', bookmarks.sortLastVisit);
 app.get('/sortCounter', bookmarks.sortCounter);
+
 app.get('/bookmarks/edit/:bookmark_id', bookmarks.edit);
 app.post('/bookmarks/update/:bookmark_id', bookmarks.update);
 
