@@ -9,27 +9,15 @@ function sortObject(o) {
 
 
 function updateList(sortParameter, req, res){
-  //console.log(req.session.user);
-  //if (!req.session) res.redirect('errors/error', {errorType:error.password});
-  //if (!req.session.user )
-  // add regex to check if user is of type name@email.com
-   if(req.session && req.session.user != undefined){
-  var user = req.session.user;
-  db.query('select name from user where username = '+ db.escape(user), function(err, names) {
-    // console.log(names);
-    db.query('SELECT * from bookmark where username = ' + db.escape(user)+' order by '+sortParameter, function (err, bookmarks) {
+  if(req.session && req.session.user != undefined){
+    var user = req.session.user;
+    db.query('select name from user where username = '+ db.escape(user), function(err, names) {
+
+      db.query('SELECT * from bookmark where username = ' + db.escape(user)+' order by '+sortParameter, function (err, bookmarks) {
       if (err) throw err;
-      //console.log("counter 1"+bookmarks[0].counter);
-      //console.log("counter 2"+bookmarks[1].counter);
-      // (Select folder, title from bookmark where username = ' + db.escape(user) + ' and folder in (select folder from bookmark where username = ' + db.escape(user) + ')) union all (select name, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + '))
       db.query('(Select folder, title, url from bookmark where username = ' + db.escape(user) + ' and folder is not null ) union (select name, null, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + ' and folder is not null))', function (err, folders) {
         if (err) throw err;
-        //console.log(folders);
-
         var foldersHash = {};
-
-        //console.log(bookmarks);
-
 
         for (var i = 0; i < bookmarks.length; i++) {
           // console.log(bookmarks[i]);
@@ -40,22 +28,13 @@ function updateList(sortParameter, req, res){
             foldersHash[bookmarks[i].folder] = [{"title": bookmarks[i].title, "url": bookmarks[i].url}]
           }
         }
-
-        // console.log("folders");
-        for (var i = 0; i < folders.length; i++) {
-         if(!foldersHash[folders[i].folder] && foldersHash[folders[i].folder != null]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
+        for (i = 0; i < folders.length; i++) {
+          if(!foldersHash[folders[i].folder] && foldersHash[folders[i].folder != null]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
         }
-        //console.log(foldersHash);
-        // console.log("names");
         var nameObj = names[0].name;
-        // console.log(nameObj);
 
-
-
-        console.log(bookmarks);
         res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: foldersHash, name: nameObj});
-      })
-
+      });
     });
   });
   }
@@ -374,9 +353,6 @@ module.exports.star = function(req, res){
   	  else{
   	    var url = url[0].url;
   	    console.log("url target :"+url);
-  	    //var win = this.open(url, '_blank');
-  	    //win.focus();
-  	    //res.redirect(url);
   	  }
   	});
     db.query('select counter from bookmark where username='+db.escape(username)+' and title='+db.escape(title), function(err, counter){
@@ -450,7 +426,6 @@ module.exports.importBookmark = function(req, res) {
   res.redirect('/bookmarks');
 
 };
-
 
 module.exports.importFolder = function(req, res) {
   upload(req, res, function(err) {
