@@ -92,24 +92,54 @@ module.exports.sortCounter = function(req, res){
 };
 
 module.exports.search = function(req,res){
-  if(req.session && req.session.user != undefined){
-
+  if(req.session && req.session.user!=undefined){
     var searchTitle = req.body.searchString;
-    var sql = " SELECT * FROM bookmark WHERE title LIKE '%" + searchTitle + "%' OR url LIKE'%" + searchTitle + "%'"; 
-  
+    var user = req.session.user;
+    db.query(" SELECT * FROM bookmark WHERE title LIKE '%" + searchTitle + "%' OR url LIKE'%" + searchTitle + "%' and username="+db.escape(user), function (err, bookmarks) {
+        if (err) throw err;
+        // (Select folder, title from bookmark where username = ' + db.escape(user) + ' and folder in (select folder from bookmark where username = ' + db.escape(user) + ')) union all (select name, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + '))
+        db.query("(Select folder, title, url from bookmark where username = " + db.escape(user) + " and folder != 'null' ) union (select name, null, null from folder where username = " + db.escape(user) + " and name not in (select folder from bookmark where username = " + db.escape(user) + " and folder != 'null'))", function (err, folders) {
+          if (err) throw err;
+        //console.log(folders);
+
+          var foldersHash = {};
+
+          for (var i = 0; i < bookmarks.length; i++) {
+            
+            if (/*bookmarks[i].folder != 'NULL' && */bookmarks[i].folder != null && bookmarks[i].folder in foldersHash) {
+              foldersHash[bookmarks[i].folder].push({"title": bookmarks[i].title, "url": bookmarks[i].url}); 
+            }
+            else if (/*bookmarks[i].folder != 'NULL' && */bookmarks[i].folder != null && !(bookmarks[i].folder in foldersHash)) {
+              foldersHash[bookmarks[i].folder] = [{"title": bookmarks[i].title, "url": bookmarks[i].url}]
+            }
+          }
+        
+          for (var i = 0; i < folders.length; i++) {
+          if(!foldersHash[folders[i].folder] && foldersHash[folders[i].folder != null]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
+          }
+        
+          //var nameObj = names[0].name;
+          res.render('bookmarks/list.ejs', {bookmarks: bookmarks, folders: foldersHash, name: 'name'});
+        })
+
+      });
+    /*var sql = " SELECT * FROM bookmark WHERE title LIKE '%" + searchTitle + "%' OR url LIKE'%" + searchTitle + "%'"; 
+
       db.query(sql, function(err, bookmarks){
-  
+
         if(err){
-          throw(err);
           res.redirect('505.ejs');
+          throw(err);
+          
         }
         else{
-          res.render('bookmarks/list', {bookmarks: bookmarks});
-        }
-    });
+          //res.render('bookmarks/list', {bookmarks: bookmarks});
+          res.redirect('/bookmarks');  
+      }
+    });*/
   }
   else{
-    res.render('errors/error', {errorType : error.notLoggedIn});
+    res.render('errors/error', {errorType:error.notLoggedIn});
   }
 };
 
