@@ -22,13 +22,27 @@ module.exports.insert = function(req, res) {
     var user = req.session.user;
 
     if (req.body.title === "\s") {
-      res.render("/error", {errorType: form});
+      res.render("errors/error", {errorType: error.form});
     }
-
-    var query = 'INSERT INTO folder (name, username) VALUES (' + db.escape(req.body.title) + ', ' + db.escape(user) + ')';
-    db.query(query, function(err){
-      if (err) throw err;
-      res.redirect('/bookmarks');
+    var name = req.body.title;
+    db.query('select * from folder where name='+db.escape(name)+' and username='+db.escape(user), function(err1, results){
+      if (err1){
+        throw err1;
+      }
+      else{
+        if (results.length==0){
+            
+            var query = 'INSERT INTO folder (name, username) VALUES (' + db.escape(req.body.title) + ', ' + db.escape(user) + ')';
+          db.query(query, function(err){
+            if (err) throw err;
+            res.redirect('/bookmarks');
+          });
+        }
+        else{
+          res.render('errors/error', {errorType:error.FolderTaken});
+        }
+      }
+      
     });
   }
   else{
