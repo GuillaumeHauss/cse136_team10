@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
   loadBookmark();
   loadFolder();
-
+  console.log(static_folders);
 });
+var static_folders;
 
 //LOAD ONCLICK LISTENERS
 function loadListeners(){
@@ -26,7 +27,7 @@ function loadListeners(){
   });
 
   $('.add-btn').on('click', function(){
-    event.preventDefault();
+    //event.preventDefault();
     console.log("add button clicked");
     addBookmark();
   });
@@ -35,9 +36,24 @@ function loadListeners(){
     console.log('edit clicked');
     var template = document.getElementById('edit-modal');
     var bookmark = getBookmarkEl(this);
+
     var compiled = ejs.compile(template.innerHTML);
-    document.getElementById('crud-modal').innerHTML = compiled({bookmark:bookmark});
+    document.getElementById('crud-modal').innerHTML = compiled({bookmark:bookmark, folders: static_folders});
     var id = bookmark.title;
+    for(var i = 0, len = static_folders.length; i< len; i++){
+      console.log(bookmark.folder);
+      console.log(static_folders[i].name);
+      if(static_folders[i].name === bookmark.folder){
+        console.log('hi');
+        console.log(  document.getElementsByClassName("folder-options[value='" + bookmark.folder + "']"));
+        var folderOptions = document.getElementsByClassName("folder-options");
+        for(i=0, len= folderOptions.length; i < len; i++){
+          if(folderOptions[i]. value === bookmark.folder){
+            folderOptions[i].setAttribute("selected","selected");
+          }
+        }
+      }
+    }
 
     $('.edit-btn').on('click', function(){
       editBookmark(id);
@@ -175,6 +191,10 @@ function starBookmark(id,starValue){
 
 }
 
+function retrieveBookmark(id){
+
+}
+
 /***
  * Grabs user input when adding a new bookmark
  * @returns {string}
@@ -287,6 +307,7 @@ function populateList(data){
   var template = document.getElementById('list');
   var compiled = ejs.compile(template.innerHTML);
   document.getElementById('bookmark-card').innerHTML = compiled({bookmarks: data});
+
   loadListeners();
 }
 
@@ -305,6 +326,7 @@ function populateFolders(data){
   var compiled2 = ejs.compile(template2.innerHTML);
   document.getElementById('list-of-folders').innerHTML = compiled2({folders: data});
 
+  static_folders = data;
 
 }
 
@@ -321,6 +343,10 @@ function getBookmarkEl(bookmark){
   for(var i = 0, len = bookmarkCard.children[3].children.length; i < len; i++){
     tags.push(bookmarkCard.children[3].children[i]);
   }
+
+  var folderType = bookmarkCard.getAttribute("data-folder-type");
+  /*return makeRequest('GET', '/api/bookmarks/retrieve/' + title, getBookmark);*/
+
   return {
     "title" : bookmarkCard.children[0].innerHTML,
     "description" : bookmarkCard.children[1].innerHTML,
@@ -329,7 +355,8 @@ function getBookmarkEl(bookmark){
     "tag1" : tags[0].innerHTML,
     "tag2" : tags[1].innerHTML,
     "tag3" : tags[2].innerHTML,
-    "tag4" : tags[3].innerHTML
+    "tag4" : tags[3].innerHTML,
+    "folder": folderType
   };
 }
 

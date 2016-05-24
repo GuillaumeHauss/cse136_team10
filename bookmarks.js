@@ -2,10 +2,7 @@ var db = require('./db');
 var regex = require("regex");
 var users = require('./users');
 var error = require('./error');
-/*
-function sortObject(o) {
-  return Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {});
-}*/
+
 
 function updateList(sortParameter, req, res){
   if(req.session && req.session.user != undefined){
@@ -197,7 +194,6 @@ module.exports.insert = function(req, res) {
 };
 
 /*** Function to serve the edit bookmark view
- *
  * @param req
  * @param res
  */
@@ -218,7 +214,6 @@ else{
 };
 
 /*** Function to edit a bookmark
- *
  * @param req
  * @param res
  */
@@ -231,6 +226,15 @@ module.exports.update = function(req,res){
      var description = db.escape(req.body.description);
      var star = 0;
      var tag = [];
+
+     var folder;
+
+     if (req.body.folder != ""){
+       folder = req.body.folder;
+     }
+     else{
+       folder = 'none';
+     }
 
      tag[0] = req.body.tag1;
      tag[1] = req.body.tag2;
@@ -259,7 +263,7 @@ module.exports.update = function(req,res){
       res.render('errors/error', {errorType : error.urlError});
     }
     else {
-      var queryString = 'UPDATE bookmark SET title = ' + db.escape(title) + ', url = ' + url + ', description = ' + description + ', star = ' + db.escape(star) + ', tag1 = ' + db.escape(tag[0]) + ', tag2 = ' + db.escape(tag[1]) + ', tag3 = ' + db.escape(tag[2]) + ', tag4 = ' + db.escape(tag[3]) + ' WHERE username =' +  db.escape(user) + 'AND title =' + db.escape(id);
+      var queryString = 'UPDATE bookmark SET title = ' + db.escape(title) + ', url = ' + url + ', description = ' + description + ', star = ' + db.escape(star) + ', tag1 = ' + db.escape(tag[0]) + ', tag2 = ' + db.escape(tag[1]) + ', tag3 = ' + db.escape(tag[2]) + ', tag4 = ' + db.escape(tag[3]) +', folder=' + db.escape(folder) + ' WHERE username =' +  db.escape(user) + 'AND title =' + db.escape(id);
       console.log(queryString);
       db.query(queryString, function (err) {
         if (err) {
@@ -492,4 +496,14 @@ module.exports.exportFolder = function(req, res) {
   });
 };
 
+module.exports.retrieve = function(req, res){
+  if(req.session && req.session.user != undefined) {
+    var user = req.session.user;
+    var title = req.params.bookmark_id;
 
+    db.query('SELECT * From bookmark WHERE username= ' + db.escape(user) + 'and title = ' + db.escape(title),function(err, result){
+      if(err) throw err;
+      res.json(result);
+    });
+  }
+};

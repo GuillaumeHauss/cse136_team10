@@ -156,8 +156,9 @@
                         <div id="folderContainer">
                            <h4>Folder:</h4>
                            <select id = "list-of-folders" class="form-control" title="folder" name="folder">
+                              <option disabled selected value> -- Select an option -- </option>
                               <% folders.forEach(function(folder) {%>
-                              <option name="folder" value="<%=folder.name%>"><%=folder.name%></option>
+                              <option class = "folder-options" name="folder" value="<%=folder.name%>"><%=folder.name%></option>
                               <% }); %>
                            </select>
                         </div>
@@ -214,7 +215,7 @@
       </div>
    </div>
    <script id = "folder-list-form"  type="text/x-ejs-template">
-      <option disabled selected value> -- select an option -- </option>
+      <option disabled selected value> -- Select an option -- </option>
       <% folders.forEach(function(folder) {%>
       <option name="folder" value="<%=folder.name%>"><%=folder.name%></option>
       <% }); %>
@@ -244,13 +245,12 @@
          </div>
       </div>
    </div>
-
 </div>
 
 <script id="list" type="text/x-ejs-template">
    <% bookmarks.forEach(function(bookmark) { %>
    <div class="col-md-4">
-      <div id ="<%=bookmark.title%>" class="cards">
+      <div id ="<%=bookmark.title%>" data-folder-type = "<%= bookmark.folder %>" class="cards">
          <h1><%=bookmark.title%></h1>
          <p class="bookmark-description"><%= bookmark.description %></p>
          <a style="text-decoration: none" href="<%= bookmark.url %>" target="_blank">

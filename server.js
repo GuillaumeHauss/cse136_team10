@@ -68,6 +68,7 @@ app.post('/api/bookmarks/insert', bookmarks.insert);
 app.get('/api/bookmarks/confirm-delete/:bookmark_id',bookmarks.confirmDelete);
 app.delete('/api/bookmarks/delete/:bookmark_id',bookmarks.delete);
 
+app.get('/api/bookmarks/retrieve/:bookmark_id', bookmarks.retrieve);
 app.get('/api/bookmarks/edit/:bookmark_id', bookmarks.edit);
 app.put('/api/bookmarks/update/:bookmark_id', bookmarks.update);
 
