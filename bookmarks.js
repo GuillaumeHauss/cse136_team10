@@ -205,77 +205,90 @@ module.exports.add = function(req, res) {
 };
 
 module.exports.insert = function(req, res) {
-  // if (!req.session) res.redirect('/error');
   if (req.session && req.session.user != undefined){
     var user = req.session.user;
 
     var title = req.body.title;
-    var url = db.escape(req.body.url);
-    var description = db.escape(req.body.description);
-    var star = 0;
-    if (req.body.folder != ""){
-          var folder = req.body.folder;      
-    }
-    else{
-      var folder = null;
-    }
-
-    
-    var tag = ['NULL', 'NULL', 'NULL', 'NULL'];
-    if (req.body.tag1) tag[0] = req.body.tag1;
-    if (req.body.tag2) tag[1] = req.body.tag2;
-    if (req.body.tag3) tag[2] = req.body.tag3;
-    if (req.body.tag4) tag[3] = req.body.tag4;
-
-    var date = new Date();
-    date = date = date.getUTCFullYear() + '-' +
-        ('00' + (date.getUTCMonth() + 1)).slice(-2) + '-' +
-        ('00' + date.getUTCDate()).slice(-2) + ' ' +
-        ('00' + date.getUTCHours()).slice(-2) + ':' +
-        ('00' + date.getUTCMinutes()).slice(-2) + ':' +
-        ('00' + date.getUTCSeconds()).slice(-2);
-    if (req.body.star) star = 1;
-
-    else star = 0;
-
-    var titleExpression = /^[a-z0-9\s]+$/i;
-    var titleRegex = new RegExp(titleExpression);
-
-    var urlExpression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-    var urlRegex = new RegExp(urlExpression);
-
-    //console.log("length of title" + title.length + ', ' + 'name of title: ' + title);
-    if (!titleRegex.test(title) || title.length > 20) {
-      //console.log("Error in title");
-      res.render('errors/error', {errorType: error.titleError});
-    }
-    else if (!urlRegex.test(url)) {
-      //console.log("Error in url");
-      res.render('errors/error', {errorType: error.urlError});
-    }
-    else {
-      var queryString = 'INSERT INTO bookmark (username, title, url, description, star, tag1, tag2, tag3, tag4, creationDate, lastVisit, counter, folder) VALUES (' + db.escape(
-              user) + ', ' + db.escape(title) + ', ' + url + ', ' + description + ', ' + db.escape(
-              star) + ', ' + db.escape(
-              tag[0]) + ', ' + db.escape(tag[1]) + ', ' + db.escape(tag[2]) + ', ' + db.escape(tag[3]) + ', ' + db.escape(
-              date) + ', ' + db.escape(date) + ', ' + db.escape(0) + ', ' + db.escape(folder) + ')';
-
-      db.query(queryString, function (err) {
-        if (err) {
-          res.redirect('505.ejs');
-          throw err;
-          
-        }
-        res.redirect('/bookmarks');
-      });
-
-      if (!url.match(urlRegex)) {
-        // change all errors to specific ones
-        res.render('./errors/error', {errorType: error.url});
-
+    db.query('select * from bookmark where username='+db.escape(user)+' and title='+db.escape(title), function(err1, results){
+      if (err1){
+        throw err1;
       }
+      else{
+          if (results.length==0){
+      
+    
+        var url = db.escape(req.body.url);
+        var description = db.escape(req.body.description);
+        var star = 0;
+        if (req.body.folder != ""){
+              var folder = req.body.folder;      
+        }
+        else{
+          var folder = null;
+        }
+
+        
+        var tag = ['NULL', 'NULL', 'NULL', 'NULL'];
+        if (req.body.tag1) tag[0] = req.body.tag1;
+        if (req.body.tag2) tag[1] = req.body.tag2;
+        if (req.body.tag3) tag[2] = req.body.tag3;
+        if (req.body.tag4) tag[3] = req.body.tag4;
+
+        var date = new Date();
+        date = date = date.getUTCFullYear() + '-' +
+            ('00' + (date.getUTCMonth() + 1)).slice(-2) + '-' +
+            ('00' + date.getUTCDate()).slice(-2) + ' ' +
+            ('00' + date.getUTCHours()).slice(-2) + ':' +
+            ('00' + date.getUTCMinutes()).slice(-2) + ':' +
+            ('00' + date.getUTCSeconds()).slice(-2);
+        if (req.body.star) star = 1;
+
+        else star = 0;
+
+        var titleExpression = /^[a-z0-9\s]+$/i;
+        var titleRegex = new RegExp(titleExpression);
+
+        var urlExpression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+        var urlRegex = new RegExp(urlExpression);
+
+        //console.log("length of title" + title.length + ', ' + 'name of title: ' + title);
+        if (!titleRegex.test(title) || title.length > 20) {
+          //console.log("Error in title");
+          res.render('errors/error', {errorType: error.titleError});
+        }
+        else if (!urlRegex.test(url)) {
+          //console.log("Error in url");
+          res.render('errors/error', {errorType: error.urlError});
+        }
+        else {
+          var queryString = 'INSERT INTO bookmark (username, title, url, description, star, tag1, tag2, tag3, tag4, creationDate, lastVisit, counter, folder) VALUES (' + db.escape(
+                  user) + ', ' + db.escape(title) + ', ' + url + ', ' + description + ', ' + db.escape(
+                  star) + ', ' + db.escape(
+                  tag[0]) + ', ' + db.escape(tag[1]) + ', ' + db.escape(tag[2]) + ', ' + db.escape(tag[3]) + ', ' + db.escape(
+                  date) + ', ' + db.escape(date) + ', ' + db.escape(0) + ', ' + db.escape(folder) + ')';
+
+          db.query(queryString, function (err) {
+            if (err) {
+              res.redirect('505.ejs');
+              throw err;
+              
+            }
+            res.redirect('/bookmarks');
+          });
+
+          if (!url.match(urlRegex)) {
+            // change all errors to specific ones
+            res.render('errors/error', {errorType: error.url});
+
+          }
+        }
+          }
+          else{
+            res.render('errors/error', {errorType:error.BookmarkTaken});
+          }
     }
-  }
+    });
+}
   else{
     res.render('errors/error', {errorType : error.notLoggedIn});
   }
