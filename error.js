@@ -8,5 +8,7 @@ module.exports = {
   "urlError" : "There was an error with the URL",
   "passwordTooShort":"You need to enter a 7 characters long password.",
   "userTaken": "Oops, this username is already taken! Try another please, or reset your password!",
-  "notLoggedIn":"Oops, it seems that you're trying to access our app without being connected. Please log in using the button down here :)"
+  "notLoggedIn":"Oops, it seems that you're trying to access our app without being connected. Please log in using the button down here :)",
+  "BookmarkTaken": "One of your bookmark has already this title. Please choose another title for your new bookmark.",
+  "FolderTaken": "One of your folder has already this title. Please choose another title for your new folder."
 };
