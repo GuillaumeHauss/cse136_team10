@@ -11,9 +11,18 @@ var upload = multer({
 var list = module.exports.list = function(req, res) {
   var user = req.session.user;
   console.log(user);
-  db.query('SELECT * from folder WHERE username = ' + db.escape(user) + ' ORDER BY name', function(err, books) {
+  db.query('SELECT * from folder WHERE username = ' + db.escape(user) + ' ORDER BY name', function(err, folders) {
     if (err) throw err;
-    res.json(books);
+    db.query('select bookmark.folder, bookmark.title, bookmark.url from folder left join bookmark on folder.name = bookmark.folder where bookmark.username =' + db.escape(user), function(err, bookmarks) {
+      console.log("bookmark folders: " + bookmarks);
+      for(var i = 0, len = folders.length; i < len; i++){
+        console.log(bookmarks[i].folders);
+        if(bookmarks[i].folders){
+          
+        }
+      }
+    });
+    res.json(folders);
   });
 };
 

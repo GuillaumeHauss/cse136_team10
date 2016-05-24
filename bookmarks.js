@@ -3,7 +3,6 @@ var regex = require("regex");
 var users = require('./users');
 var error = require('./error');
 
-
 function updateList(sortParameter, req, res){
   if(req.session && req.session.user != undefined){
   var user = req.session.user;
@@ -25,8 +24,6 @@ function updateList(sortParameter, req, res){
             foldersHash[bookmarks[i].folder] = [{"title": bookmarks[i].title, "url": bookmarks[i].url}]
           }
         }
-
-        // console.log("folders");
         for (i = 0; i < folders.length; i++) {
          if(!foldersHash[folders[i].folder] && foldersHash[folders[i].folder != null]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
         }
@@ -246,7 +243,6 @@ module.exports.update = function(req,res){
      else
        star = 0;
 
-
     var titleExpression = /^[a-z0-9\s]+$/i;
     var titleRegex = new RegExp(titleExpression);
 
@@ -286,13 +282,6 @@ module.exports.update = function(req,res){
  * @param res
  */
 module.exports.confirmDelete = function(req,res){
-/*<<<<<<< HEAD
-  var id = req.params.bookmark_id;
-  db.query('SELECT * from bookmark WHERE title = ' + "'" + id + "'", function(err, bookmark) {
-    if (err) throw err;
-    res.render('bookmarks/confirm-delete', {bookmark: bookmark[0]});
-  });
-=======*/
   if(req.session && req.session.user != undefined){
     var id = req.params.bookmark_id;
     //console.log("id of bookmark: " + id);
@@ -454,8 +443,6 @@ module.exports.importBookmark = function(req, res) {
     }
     var filename = req.file.filename;
     var username = req.session.user;
-    //console.log('filename');
-    //console.log(filename);
     BookmarkIOService.importBookmark(username, filename);
   });
   res.redirect('/bookmarks');
