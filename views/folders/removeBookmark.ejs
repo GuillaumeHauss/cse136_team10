@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Remove a Bookmark from the folder <%= name%></title>
+</head>
+<body>
+<div class="container">
+    <form id = "add-form" method='post' action='/folders/removeBookmark'>
+        <h2>Bookmarx</h2>
+        <p>Remove a bookmark from the folder<%= name%></p>
+        <p>Choose the bookmark you want to remove from this folder, in the list below</p>
+        <select class="form-control" type="text" name="bookmark" form="add-form"><br>
+            <% bookmarks.forEach(function(bookmark) {%>
+            <option name="bookmark" value="<%=bookmark.title%>"><%=bookmark.title%></option>
+            <% }); %>
+        </select>
+        <input type="hidden" name="folder" value="<%=name%>">
+        <button class="btn-form" type = "submit" id="confirm_add">Remove</button>
+        <button class="btn-form" type = "button" id="cancel_add" onClick="location.href='/bookmarks'" >CANCEL</button>
+
+    </form>
+
+</div>
+</body>
+</html>
