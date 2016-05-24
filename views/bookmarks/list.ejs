@@ -1,0 +1,221 @@
+<!DOCTYPE HTML>
+<html>
+<!---->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+    <title>Bookmark</title>
+</head>
+
+<body>
+<div class="side-bar">
+    <h1>BookMarx</h1>
+
+    <p id="helloUser">Hello <em><%= name %></em></p>
+
+    <div class="folder-wrapper">
+        <div onClick="location.href='/bookmarks/add'" class="add-folder"><p>Add bookmark</p></div>
+          
+          <h2>Folders <a href='/folders/add'><i class="fa fa-plus-square-o" aria-hidden="true"></i></a></h2>
+
+        <table id="folders">
+            <% for (var folder in folders) {%>
+            <%if(folder != "NULL") {%>
+            
+            <tr>
+                <td>
+                    <div class="folder">
+                        <input type="checkbox" value="selected" id="social-folder" class="folder-input">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <label for="social-folder" class="social-label"><%=folder%></label>
+                            </div>
+                            <div class="col-sm-1">
+                                <a href="/folders/edit/<%=folder%>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                            </div>
+                            <div class="col-sm-1">
+                                <a href="/folders/confirm-delete/<%=folder%>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            </div>
+                            <div class="col-sm-2">
+                                <form method="post" action="/folder/export" >
+                                        <input class="hidden" name="name" value="<%=folder%>" readonly>
+                                        <input type="submit" class="import-export" value="Export" style="margin:0;padding:0">
+                                </form>
+                            </div>    
+                            
+                          </div>    
+                            <div role="folder" class="folder-content">                                                       
+                                <!--<div class="import-export">
+                                    <form method="post" action="/folder/export">
+                                        <input class="hidden" name="name" value="<%=folder%>" readonly>
+                                        <input type="submit" class="import-export" value="Export">
+                                    </form>
+                                </div>-->
+                                <!--f.title, f.url-->
+                                <% folders[folder].forEach(function(obj) {%>
+                                <li><a href=<%=obj.url%>><%=obj.title%></a></li>
+                                <% }); %>
+                                <table>
+                                    <tr><td class="addBookmarkToFolderLink"><a href="/folders/addBookmarkToFolder/<%=folder%>"><span class="glyphicon glyphicon-plus" style="padding-right:10px"></span></a></td>
+                                        <td class="removeBookmarkFromFolderLink"><a href="/folders/removeBookmarkFromFolder/<%=folder%>"><span class="glyphicon glyphicon-minus"></span></a></td>
+                                    </tr>
+                                </table>
+                            </div>
+                         
+                    </div>
+                </td>
+            </tr>
+            
+            <%}%>
+           <% } %>
+        </table>
+
+
+    </div>
+
+</div>
+
+<div class="home-container">
+    <div class="row" id="top-bar">
+		<div class="col-md-6">
+			<form id="sort-controls" action="" method="post" style="display:inline;">
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Sort bookmarks by... <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="/sortTitle">Title</a></li>
+						<li><a href="/sortLastVisit">Last Visit</a></li>
+						<li><a href="/sortURL">URL</a></li>
+						<li><a href="/sortCreateDate">Create Date</a></li>
+						<li><a href="/sortStar">Stared/Unstared</a></li>
+                        <li><a href="/sortCounter">Most Visited</a></li>
+					</ul>
+				</div>
+			</form>
+            <div class="container-import-bookmark">
+                <form method="post" action="/bookmark/import" enctype="multipart/form-data">
+                    <div class="col-sm-1">
+                    <span class="glyphicon glyphicon-import" id="upfile1" style="cursor:pointer"></span>
+                    <input type="file" id="file1"  name="file1" style="display:none" />
+                    </div>
+                    <div class="col-sm-8">
+                    <p id="nomFichier"><em>File name</em></p>
+                    </div>
+                    <div class="col-sm-2">
+                    <input class="import-items log-button" type="submit" value="Import" >
+                    </div>
+                </form>
+            </div>
+		</div>
+
+		<!--<div class=" nav-right col-md-6">
+		    <form action="/search" method="post">
+				<div class="input-group">
+					<input type="text" class="form-control fix-height" placeholder="Search for...">
+					<span class="input-group-btn">
+					<button class="btn btn-default" type="button">Go!</button>
+					</span>
+				</div>
+			</form>
+		</div>-->
+        <div class="input-group col-md-3 ">
+            <form method="post" action="/search">
+                <div class="search-bar">
+                    <input type="text" class="form-control fix-height" name="searchString" placeholder="Search for...">
+                </div>
+                <div class="search-bar">
+                    <input class ="btn-btn-default" type="submit" value= "Go!">
+                </div>
+            </form>
+        </div>
+		<div class="col-md-2">
+            <form method = "get" action="/logout">
+                <input class="log-button" type="submit" value="Log out">
+            </form>
+		</div>
+		
+	</div>
+	<hr>
+    <div class ="container-fluid">
+
+        
+
+        <div class="row">
+            <% bookmarks.forEach(function(bookmark) {%>
+            <div class="col-md-4">
+                <div id="facebook" class="cards">
+
+                    <h1><%=bookmark.title%></h1>
+                    <p class="bookmark-description"><%=bookmark.description%></p>
+                    <a style="text-decoration: none" href="/bookmarks/counter/<%= bookmark.title %>/<%= bookmark.username %>" target="_blank">
+                        <div class="bookmark-button">
+                            <p>Link</p>
+                        </div>
+                    </a>
+                    <p id="counter"><%= bookmark.counter %> views</p>
+                    <p class="tags"><span>Tags: </span><% if(bookmark.tag1 != "NULL") {%><%= bookmark.tag1 %><% } %> <% if(bookmark.tag2 != "NULL") {%><%= bookmark.tag2%><% } %> <% if(bookmark.tag3 != "NULL") {%><%= bookmark.tag3%><% } %> <% if(bookmark.tag4 != "NULL") {%><%= bookmark.tag4%><% } %></p>
+                    <!--need to fix these links-->
+                    <div class = "crud-btns">
+                        <form method="post" action="/bookmark/export/">
+                            <input class="hidden" name="username" value="<%=bookmark.username%>" readonly>
+                            <input class="hidden" name="title" value="<%=bookmark.title%>" readonly>
+                            <input class="hidden" name="url" value="<%=bookmark.url%>" readonly>
+                            <input class="hidden" name="description" value="<%=bookmark.description%>" readonlly>
+                            <input class="hidden" name="star" value="<%=bookmark.star%>" readonly>
+                            <input class="hidden" name="tag1" value="<%=bookmark.tag1%>" readonly>
+                            <input class="hidden" name="tag2" value="<%=bookmark.tag2%>" readonly>
+                            <input class="hidden" name="tag3" value="<%=bookmark.tag3%>" readonly>
+                            <input class="hidden" name="tag4" value="<%=bookmark.tag4%>" readonly>
+                            <input class="hidden" name="creationDate" value="<%=bookmark.creationDate%>" readonly>
+                            <input class="hidden" name="lastVisit" value="<%=bookmark.lastVisit%>" readonly>
+                            <input class="hidden" name="counter" value="<%=bookmark.counter%>" readonly>
+                            <input class="hidden" name="folder" value="<%=bookmark.folder%>" readonly>
+                            <input type="submit" class="import-export-btn" name="export" value="Export">
+                        </form>
+                        <a href="/bookmarks/edit/<%=bookmark.title%>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                        <a href="/bookmarks/confirm-delete/<%=bookmark.title%>"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                        <a href="/bookmarks/star/<%=bookmark.title %>/<%=bookmark.star%>">
+                            <% if(bookmark.star) {%>
+                                <i class="fa fa-star filled" aria-hidden="true"></i></a>
+                            <% }else{ %>
+                                <i class="fa fa-star-o" aria-hidden="true"></i></a>
+                            <% } %>
+                    </div>
+                </div>
+            </div>
+            <% }); %>
+
+        </div>
+
+
+
+    </div>
+    </div>
+    
+    <script type='text/javascript'>
+    $(function(){
+        //Maps your button click event to the File Upload click event
+        $("#upfile1").click(function () {
+             $("#file1").trigger('click');
+       
+        var nomFichierUpload = document.getElementById('file1').value;
+        console.log(nomFichierUpload);
+        document.getElementById('nomFichier').innerHTML = nomFichierUpload;
+        
+        }); 
+    });
+    
+     $('#export').click(function(){ $('#form-export-folder').submit()});
+            
+        });
+</script>
+</body>
+
+</html>
