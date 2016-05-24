@@ -15,12 +15,12 @@ var list = module.exports.list = function(req, res) {
     if (err) throw err;
     db.query('select bookmark.folder, bookmark.title, bookmark.url from folder left join bookmark on folder.name = bookmark.folder where bookmark.username =' + db.escape(user), function(err, bookmarks) {
       console.log("bookmark folders: " + bookmarks);
-      for(var i = 0, len = folders.length; i < len; i++){
+      /*for(var i = 0, len = folders.length; i < len; i++){
         console.log(bookmarks[i].folders);
         if(bookmarks[i].folders){
-          
+
         }
-      }
+      }*/
     });
     res.json(folders);
   });

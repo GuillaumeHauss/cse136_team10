@@ -127,7 +127,7 @@ module.exports.insert = function(req, res) {
     folder = 'none';
   }
   
-  var tag = ['NULL', 'NULL', 'NULL', 'NULL'];
+  var tag = ['', '', '', ''];
   if (req.body.tag1) tag[0] = req.body.tag1;
   if (req.body.tag2) tag[1] = req.body.tag2;
   if (req.body.tag3) tag[2] = req.body.tag3;

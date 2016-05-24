@@ -5,38 +5,40 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 var static_folders;
 
-//LOAD ONCLICK LISTENERS
+/***
+ * FUNCTION TO LOAD ALL THE JAVASCRIPT LISTENERS ON THE PAGE
+ *
+ */
 function loadListeners(){
 
   //CRUD EVENT LISTENERS
+
+  //LISTENER FOR DELETE BOOKMARK
   $('.delete-bookmark').on('click', function(){
-    console.log('delete clicked');
     var template = document.getElementById('delete-modal');
     var bookmark = getBookmarkEl(this);
     bookmark.crudType = "Delete";
     var compiled = ejs.compile(template.innerHTML);
     document.getElementById('crud-modal').innerHTML = compiled({bookmark:bookmark});
-    console.log(bookmark.title);
     $('.delete-btn').on('click',function(){
       deleteBookmark(bookmark.title);
     });
   });
 
+  //LISTENER FOR ADD FOLDER
   $('.add-folder-btn').on('click', function(){
     addFolder();
   });
-
+  //LISTENER FOR ADD BOOKMARK
   $('.add-btn').on('click', function(){
-    //event.preventDefault();
-    console.log("add button clicked");
     addBookmark();
   });
 
+  //LISTENER FOR EDIT BOOKMARK
   $('.edit-bookmark').on('click', function(){
     console.log('edit clicked');
     var template = document.getElementById('edit-modal');
     var bookmark = getBookmarkEl(this);
-
     var compiled = ejs.compile(template.innerHTML);
     document.getElementById('crud-modal').innerHTML = compiled({bookmark:bookmark, folders: static_folders});
     var id = bookmark.title;
@@ -54,21 +56,18 @@ function loadListeners(){
         }
       }
     }
-
     $('.edit-btn').on('click', function(){
       editBookmark(id);
     });
   });
 
+  //LISTENER FOR INCREMENTING COUNTER
   $('.bookmark-button').on('click', function(){
     var bookmark = getBookmarkEl(this);
     incrementBookmark(bookmark.title, this);
   });
 
-  $('.add-bookmark-folder').on('click', function(){
-
-  });
-
+  //LISTENER FOR STARING A BOOKMARK
   $('.star-btn').on('click',function(){
     console.log('star btn clicked: ' + this.children[0].getAttribute('class'));
     var bookmark = getBookmarkEl(this);
@@ -76,6 +75,9 @@ function loadListeners(){
     starBookmark(bookmark.title, bookmark.star);
   });
 
+  /***
+   * LISTENER'S FOR SORTING
+   */
   $('#sort-title').on('click', function(){
     sortByTitle();
   });
@@ -93,13 +95,12 @@ function loadListeners(){
   });
 
   $('#sort-starred').on('click', function(){
-    //sortStarred();
+    sortByStar();
   });
 
   $('#sort-visit').on('click', function(){
     sortByViews();
   });
-
 }
 
 //Function WRAPPER  for AJAX Calls
@@ -116,7 +117,7 @@ function makeRequest(request,url, operation, payload) {
     console.log("getting request");
     if (httpRequest.readyState == XMLHttpRequest.DONE) {
       if (httpRequest.status == 200) {
-        console.log("request successful:" + httpRequest.responseText);
+        //console.log("request successful:" + httpRequest.responseText);
         var response = JSON.parse(httpRequest.responseText);
         operation(response);
       }
@@ -167,6 +168,10 @@ function sortByViews(){
   makeRequest("GET","/api/sortCounter", populateList);
 }
 
+function sortByStar(){
+  makeRequest("GET", "/api/sortStar",populateList);
+}
+
 function sortSearch(){
   makeRequest("GET","/api/search", populateList);
 }
@@ -188,10 +193,6 @@ function incrementBookmark(id){
 function starBookmark(id,starValue){
   console.log(starValue);
   makeRequest("GET", "/api/bookmarks/star/" + id + '/' + starValue, toggleStar);
-
-}
-
-function retrieveBookmark(id){
 
 }
 
@@ -230,7 +231,6 @@ function grabAddFormElements(){
   document.getElementById('add-tag4').value= "";
   document.getElementById('add-description').value= "";
   document.getElementById('add-star').value= "";
-
   return payload;
 }
 
@@ -239,6 +239,7 @@ function grabAddFormElements(){
  * Grabs user input when editing a bookmark
  * @returns {string}
  */
+
 function grabEditFormElements(){
   var title = document.getElementById('edit-title').value;
   var url = document.getElementById('edit-url').value;
