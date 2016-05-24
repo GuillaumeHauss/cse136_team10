@@ -160,7 +160,7 @@ module.exports.insert = function(req, res) {
   }
   else if (!urlRegex.test(url)) {
     //console.log("Error in url");
-    res.render('errors/error', {errorType: error.urlError});
+    res.render('errors/error', {errorType: errorAdd});
   }
   else {
     var queryString = 'INSERT INTO bookmark (username, title, url, description, star, tag1, tag2, tag3, tag4, creationDate, lastVisit, counter, folder) VALUES (' + db.escape(

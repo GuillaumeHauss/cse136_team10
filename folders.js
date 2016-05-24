@@ -10,18 +10,17 @@ var upload = multer({
 
 var list = module.exports.list = function(req, res) {
   var user = req.session.user;
-  console.log(user);
-  db.query('SELECT * from folder WHERE username = ' + db.escape(user) + ' ORDER BY name', function(err, folders) {
+  //console.log(user);
+  //console.log(req.folders);
+  db.query('SELECT * from folder WHERE username = ' + db.escape(user) + 'ORDER BY name', function(err, folders) {
     if (err) throw err;
-    db.query('select bookmark.folder, bookmark.title, bookmark.url from folder left join bookmark on folder.name = bookmark.folder where bookmark.username =' + db.escape(user), function(err, bookmarks) {
+    /*db.query('select bookmark.folder, bookmark.title, bookmark.url from folder left join bookmark on folder.name = bookmark.folder where bookmark.username =' + db.escape(user), function(err, bookmarks) {
       console.log("bookmark folders: " + bookmarks);
-      /*for(var i = 0, len = folders.length; i < len; i++){
+      for(var i = 0, len = folders.length; i < len; i++){
         console.log(bookmarks[i].folders);
-        if(bookmarks[i].folders){
 
-        }
-      }*/
-    });
+      }
+    });*/
     res.json(folders);
   });
 };
@@ -53,8 +52,6 @@ module.exports.insert = function(req, res) {
           var query = 'INSERT INTO folder (name, username) VALUES (' + db.escape(req.body.title) + ', ' + db.escape(user) + ')';
           db.query(query, function(err){
             if (err) throw err;
-
-            //res.redirect('/bookmarks');
             list(req,res);
           });
         }

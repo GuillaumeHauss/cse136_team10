@@ -34,6 +34,14 @@ function loadListeners(){
     addBookmark();
   });
 
+  $('.folder-input').on('click',function(){
+
+    var folderTitle = this.getAttribute('title');
+    //console.log((this).getAttribute('title'));
+    loadBookmark(folderTitle);
+    console.log(folderTitle);
+  });
+
   //LISTENER FOR EDIT BOOKMARK
   $('.edit-bookmark').on('click', function(){
     console.log('edit clicked');
@@ -132,7 +140,7 @@ function makeRequest(request,url, operation, payload) {
 }
 
 //Wrapper Functions to make Ajax Requests
-function loadBookmark(){
+function loadBookmark(folder){
   makeRequest("GET","/api/bookmarks", populateList);
 }
 
@@ -308,10 +316,8 @@ function populateList(data){
   var template = document.getElementById('list');
   var compiled = ejs.compile(template.innerHTML);
   document.getElementById('bookmark-card').innerHTML = compiled({bookmarks: data});
-
   loadListeners();
 }
-
 /**
  * Function to populate the view with folders
  * @param data

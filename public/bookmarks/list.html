@@ -33,9 +33,9 @@
              <tr>
                 <td>
                    <div class="folder">
-                      <input type="checkbox" value="selected" id="folder-<%=folder.name%>" class="folder-input">
+                      <input type="checkbox" value="selected" title = "<%=folder.name%>" id="folder-<%=folder.name%>" class="folder-input">
                       <label for="folder-<%=folder.name%>" class="social-label"><%=folder.name%></label>
-                      <div class="folder-content">
+                      <!--<div class="folder-content">
                          <% folders.forEach(function(obj) {%>
                            <% if(obj != null) { %>
                               <li><a href="<%= obj.url %>"> <%=obj.title%> </a></li>
@@ -46,7 +46,7 @@
                                <input type="submit" class="import-export" value="Export">
                             </form>
                          </div>
-                      </div>
+                      </div>-->
                    </div>
                 </td>
              </tr>
