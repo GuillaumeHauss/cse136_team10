@@ -20,6 +20,10 @@ function loadListeners(){
     });
   });
 
+  $('.add-btn').on('click', function(){
+    addBookmark();
+  });
+
   $('.edit-bookmark').on('click', function(){
     console.log('edit clicked');
     var template = document.getElementById('edit-modal');
@@ -76,7 +80,7 @@ function loadListeners(){
   });
 
 
-  $('.add-btn').on('click',addBookmark);
+
   //$('.edit-btn').on('click', editBookmark);
 }
 
@@ -118,6 +122,10 @@ function deleteBookmark(id){
   makeRequest("DELETE","/api/bookmarks/delete/" + id, deleteCard);
 }
 
+function addFolder(){
+
+}
+
 function sortByTitle(){
   makeRequest("GET","/api/sortTitle", populateList);
 }
@@ -144,12 +152,12 @@ function sortSearch(){
 
 
 function addBookmark(){
-  makeRequest("POST","/api/bookmarks/insert",populateList, grabFormElements());
+  makeRequest("POST","/api/bookmarks/insert",populateList, grabAddFormElements());
 }
 
 function editBookmark(id){
   console.log('Editing bookmark');
-  makeRequest("PUT", "/api/bookmarks/update/" + id, populateList, grabFormElements());
+  makeRequest("PUT", "/api/bookmarks/update/" + id, populateList, grabEditFormElements());
 }
 
 function incrementBookmark(id){
@@ -168,7 +176,7 @@ function updateBookmark(){
   makeRequest("POST","/api/bookmarks/insert",populateList, grabFormElements());
 }*/
 
-function grabFormElements(){
+function grabAddFormElements(){
   var title = document.getElementById('add-title').value;
   var url = document.getElementById('add-url').value;
   var tag1 = document.getElementById('add-tag1').value;
@@ -180,7 +188,7 @@ function grabFormElements(){
 
   var payload = 'title=' + title + '&url=' + url + '&tag1=' + tag1  + '&tag2=' + tag2  + '&tag3=' + tag3  + '&tag4=' + tag4  + '&description=' + description  + '&star=' + star;
 
-  console.log(payload);
+  console.log("payload: " + payload);
 
   document.getElementById('add-title').setAttribute("value","");
   document.getElementById('add-url').setAttribute("value","");
@@ -198,6 +206,40 @@ function grabFormElements(){
   document.getElementById('add-tag4').value= "";
   document.getElementById('add-description').value= "";
   document.getElementById('add-star').value= "";
+
+  return payload;
+}
+
+function grabEditFormElements(){
+  var title = document.getElementById('edit-title').value;
+  var url = document.getElementById('edit-url').value;
+  var tag1 = document.getElementById('edit-tag1').value;
+  var tag2 = document.getElementById('edit-tag2').value;
+  var tag3 = document.getElementById('edit-tag3').value;
+  var tag4 = document.getElementById('edit-tag4').value;
+  var description = document.getElementById('edit-description').value;
+  var star = document.getElementById('edit-star').value;
+
+  var payload = 'title=' + title + '&url=' + url + '&tag1=' + tag1  + '&tag2=' + tag2  + '&tag3=' + tag3  + '&tag4=' + tag4  + '&description=' + description  + '&star=' + star;
+
+  console.log("payload: " + payload);
+
+  document.getElementById('edit-title').setAttribute("value","");
+  document.getElementById('edit-url').setAttribute("value","");
+  document.getElementById('edit-tag1').setAttribute("value","");
+  document.getElementById('edit-tag2').setAttribute("value","");
+  document.getElementById('edit-tag3').setAttribute("value","");
+  document.getElementById('edit-tag4').setAttribute("value","");
+  document.getElementById('edit-description').setAttribute("value","");
+  document.getElementById('edit-star').setAttribute("value","");
+  document.getElementById('edit-title').value = "";
+  document.getElementById('edit-url').value= "";
+  document.getElementById('edit-tag1').value= "";
+  document.getElementById('edit-tag2').value= "";
+  document.getElementById('edit-tag3').value= "";
+  document.getElementById('edit-tag4').value= "";
+  document.getElementById('edit-description').value= "";
+  document.getElementById('edit-star').value= "";
 
   return payload;
 }

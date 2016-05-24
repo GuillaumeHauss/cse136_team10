@@ -113,6 +113,8 @@ module.exports.add = function(req, res) {
 };
 
 module.exports.insert = function(req, res) {
+
+  console.log('preparing to insert');
   // if (!req.session) res.redirect('/error');
   if(req.session && req.session.user != undefined){
   var user = req.session.user;
@@ -121,8 +123,8 @@ module.exports.insert = function(req, res) {
   var url = db.escape(req.body.url);
   var description = db.escape(req.body.description);
   var star = 0;
-    console.log(title);
-    console.log(url);
+    console.log("title: " + title);
+    console.log("url: " + url);
    if (req.body.folder != ""){
         var folder = req.body.folder;      
   }
