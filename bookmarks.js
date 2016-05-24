@@ -118,6 +118,7 @@ module.exports.insert = function(req, res) {
   // if (!req.session) res.redirect('/error');
   if(req.session && req.session.user != undefined){
   var user = req.session.user;
+    var folder;
 
   var title = req.body.title;
   var url = db.escape(req.body.url);
@@ -126,10 +127,10 @@ module.exports.insert = function(req, res) {
     console.log("title: " + title);
     console.log("url: " + url);
    if (req.body.folder != ""){
-        var folder = req.body.folder;      
+        folder = req.body.folder;
   }
   else{
-    var folder = null;
+    folder = 'none';
   }
   
   var tag = ['NULL', 'NULL', 'NULL', 'NULL'];
@@ -137,6 +138,7 @@ module.exports.insert = function(req, res) {
   if (req.body.tag2) tag[1] = req.body.tag2;
   if (req.body.tag3) tag[2] = req.body.tag3;
   if (req.body.tag4) tag[3] = req.body.tag4;
+
 
   var date = new Date();
   date = date = date.getUTCFullYear() + '-' +

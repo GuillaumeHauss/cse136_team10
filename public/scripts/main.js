@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
   loadBookmark();
+  loadFolder();
 
 });
 
@@ -20,7 +21,13 @@ function loadListeners(){
     });
   });
 
+  $('.add-folder-btn').on('click', function(){
+    addFolder();
+  });
+
   $('.add-btn').on('click', function(){
+    event.preventDefault();
+    console.log("add button clicked");
     addBookmark();
   });
 
@@ -31,6 +38,7 @@ function loadListeners(){
     var compiled = ejs.compile(template.innerHTML);
     document.getElementById('crud-modal').innerHTML = compiled({bookmark:bookmark});
     var id = bookmark.title;
+
     $('.edit-btn').on('click', function(){
       editBookmark(id);
     });
@@ -41,18 +49,15 @@ function loadListeners(){
     incrementBookmark(bookmark.title, this);
   });
 
+  $('.add-bookmark-folder').on('click', function(){
+
+  });
+
   $('.star-btn').on('click',function(){
     console.log('star btn clicked: ' + this.children[0].getAttribute('class'));
     var bookmark = getBookmarkEl(this);
     console.log(bookmark.star);
     starBookmark(bookmark.title, bookmark.star);
-    /*if(this.children[0].getAttribute('class') === 'fa fa-star filled'){
-      this.children[0].setAttribute('class', 'fa fa-star-o filled');
-    }
-    else if (this.children[0].getAttribute('class') === 'fa fa-star-o filled') {
-      this.children[0].setAttribute('class', 'fa fa-star filled');
-    }*/
-
   });
 
   $('#sort-title').on('click', function(){
@@ -60,7 +65,7 @@ function loadListeners(){
   });
 
   $('#sort-last-visit').on('click', function(){
-    sortByLastVisit()();
+    sortByLastVisit();
   });
 
   $('#sort-url').on('click', function(){
@@ -79,9 +84,6 @@ function loadListeners(){
     sortByViews();
   });
 
-
-
-  //$('.edit-btn').on('click', editBookmark);
 }
 
 //Function WRAPPER  for AJAX Calls
@@ -117,13 +119,16 @@ function loadBookmark(){
   makeRequest("GET","/api/bookmarks", populateList);
 }
 
+function loadFolder(){
+  makeRequest("GET", "/api/folders", populateFolders);
+}
 function deleteBookmark(id){
   console.log('deleted: '+ id);
   makeRequest("DELETE","/api/bookmarks/delete/" + id, deleteCard);
 }
 
 function addFolder(){
-
+  makeRequest("POST","/api/folders/insert", populateFolders, grabFolderElements());
 }
 
 function sortByTitle(){
@@ -143,13 +148,12 @@ function sortByLastVisit(){
 }
 
 function sortByViews(){
-  makeRequest("GET","/api/counter", populateList);
+  makeRequest("GET","/api/sortCounter", populateList);
 }
 
 function sortSearch(){
   makeRequest("GET","/api/search", populateList);
 }
-
 
 function addBookmark(){
   makeRequest("POST","/api/bookmarks/insert",populateList, grabAddFormElements());
@@ -170,12 +174,11 @@ function starBookmark(id,starValue){
   makeRequest("GET", "/api/bookmarks/star/" + id + '/' + starValue, toggleStar);
 
 }
-/*
-function updateBookmark(){
-  console.log("updating bookmark");
-  makeRequest("POST","/api/bookmarks/insert",populateList, grabFormElements());
-}*/
 
+/***
+ * Grabs user input when adding a new bookmark
+ * @returns {string}
+ */
 function grabAddFormElements(){
   var title = document.getElementById('add-title').value;
   var url = document.getElementById('add-url').value;
@@ -185,10 +188,8 @@ function grabAddFormElements(){
   var tag4 = document.getElementById('add-tag4').value;
   var description = document.getElementById('add-description').value;
   var star = document.getElementById('add-star').value;
-
-  var payload = 'title=' + title + '&url=' + url + '&tag1=' + tag1  + '&tag2=' + tag2  + '&tag3=' + tag3  + '&tag4=' + tag4  + '&description=' + description  + '&star=' + star;
-
-  console.log("payload: " + payload);
+  var folder = document.getElementById('list-of-folders').value;
+  var payload = 'title=' + title + '&url=' + url + '&tag1=' + tag1  + '&tag2=' + tag2  + '&tag3=' + tag3  + '&tag4=' + tag4  + '&description=' + description  + '&star=' + star + '&folder=' + folder;
 
   document.getElementById('add-title').setAttribute("value","");
   document.getElementById('add-url').setAttribute("value","");
@@ -198,6 +199,9 @@ function grabAddFormElements(){
   document.getElementById('add-tag4').setAttribute("value","");
   document.getElementById('add-description').setAttribute("value","");
   document.getElementById('add-star').setAttribute("value","");
+  document.getElementById('list-of-folders').setAttribute ("value","");
+
+  document.getElementById('list-of-folders').value ="";
   document.getElementById('add-title').value = "";
   document.getElementById('add-url').value= "";
   document.getElementById('add-tag1').value= "";
@@ -210,6 +214,11 @@ function grabAddFormElements(){
   return payload;
 }
 
+
+/***
+ * Grabs user input when editing a bookmark
+ * @returns {string}
+ */
 function grabEditFormElements(){
   var title = document.getElementById('edit-title').value;
   var url = document.getElementById('edit-url').value;
@@ -219,10 +228,9 @@ function grabEditFormElements(){
   var tag4 = document.getElementById('edit-tag4').value;
   var description = document.getElementById('edit-description').value;
   var star = document.getElementById('edit-star').value;
+  var folder = document.getElementById('list-of-folders').value;
 
-  var payload = 'title=' + title + '&url=' + url + '&tag1=' + tag1  + '&tag2=' + tag2  + '&tag3=' + tag3  + '&tag4=' + tag4  + '&description=' + description  + '&star=' + star;
-
-  console.log("payload: " + payload);
+  var payload = 'title=' + title + '&url=' + url + '&tag1=' + tag1  + '&tag2=' + tag2  + '&tag3=' + tag3  + '&tag4=' + tag4  + '&description=' + description  + '&star=' + star + '&folder=' + folder;
 
   document.getElementById('edit-title').setAttribute("value","");
   document.getElementById('edit-url').setAttribute("value","");
@@ -232,6 +240,7 @@ function grabEditFormElements(){
   document.getElementById('edit-tag4').setAttribute("value","");
   document.getElementById('edit-description').setAttribute("value","");
   document.getElementById('edit-star').setAttribute("value","");
+  document.getElementById('list-of-folders').setAttribute("value","");
   document.getElementById('edit-title').value = "";
   document.getElementById('edit-url').value= "";
   document.getElementById('edit-tag1').value= "";
@@ -240,11 +249,27 @@ function grabEditFormElements(){
   document.getElementById('edit-tag4').value= "";
   document.getElementById('edit-description').value= "";
   document.getElementById('edit-star').value= "";
+  document.getElementById('list-of-folders').value="";
 
   return payload;
 }
-//function editCard
-//Call Back Functions
+
+/***
+ * Grabs user input for creating a new folder
+ * @returns {string}
+ */
+function grabFolderElements() {
+  var folderName = document.getElementById('add-folder-name').value;
+  var payload = "title=" + folderName;
+  document.getElementById('add-folder-name').value = "";
+  document.getElementById('add-folder-name').setAttribute("value", "");
+  return payload;
+}
+
+/**
+ * Function to remove the card from the View
+ * @param data
+ */
 function deleteCard(data){
   console.log(data);
   var card = document.getElementById(data.bookmark);
@@ -253,25 +278,49 @@ function deleteCard(data){
   cardToRemove.parentNode.removeChild(cardToRemove);
 }
 
+/**
+ * Function to populate the view with bookmarks
+ * @param data
+ */
 function populateList(data){
   console.log("populate List" + data);
   var template = document.getElementById('list');
-  console.log(template.innerHTML);
   var compiled = ejs.compile(template.innerHTML);
   document.getElementById('bookmark-card').innerHTML = compiled({bookmarks: data});
   loadListeners();
 }
 
-//Get Bookmark Elements from the DOM Tree
-function getBookmarkEl(bookmark){
+/**
+ * Function to populate the view with folders
+ * @param data
+ */
+function populateFolders(data){
+  console.log("populating Folders" + data);
+  var template = document.getElementById('folder-list');
+  var compiled = ejs.compile(template.innerHTML);
+  console.log(data[0] + ' ' + data[1]);
+  document.getElementById('folders').innerHTML = compiled({folders: data});
 
+  var template2 = document.getElementById('folder-list-form');
+  var compiled2 = ejs.compile(template2.innerHTML);
+  document.getElementById('list-of-folders').innerHTML = compiled2({folders: data});
+
+
+}
+
+
+/***
+ * This function get's the bookmark element from clicking the crud functions
+ * @param bookmark
+ *
+ */
+function getBookmarkEl(bookmark){
   var bookmarkCard = bookmark.parentNode.parentNode;
   var starValue = bookmarkCard.children[4].children[3].value;
   var tags = [];
   for(var i = 0, len = bookmarkCard.children[3].children.length; i < len; i++){
     tags.push(bookmarkCard.children[3].children[i]);
   }
-  //console.log("value of star: " + starValue);
   return {
     "title" : bookmarkCard.children[0].innerHTML,
     "description" : bookmarkCard.children[1].innerHTML,
@@ -284,6 +333,10 @@ function getBookmarkEl(bookmark){
   };
 }
 
+/***
+ * Function to increment the counter in the view
+ * @param
+ */
 function incrementValue(data){
   console.log(data);
   var bookmarkObj = document.getElementById(data.title);
@@ -297,8 +350,11 @@ function incrementValue(data){
   }
 }
 
+/***
+ * Function to toggle the status of the star in the view
+ * @param data
+ */
 function toggleStar(data){
-
   var bookmarkObj = document.getElementById(data.title);
   var child = bookmarkObj.children;
 
@@ -313,10 +369,6 @@ function toggleStar(data){
   }
   else if(star.value === '0'){
     star.children[0].className = 'fa fa-star-o filled';
-
   }
-
-
-
 }
 

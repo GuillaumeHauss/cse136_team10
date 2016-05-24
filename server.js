@@ -81,6 +81,19 @@ app.post('/bookmark/import/', bookmarks.importBookmark);
 app.post('/folder/export', bookmarks.exportFolder);
 app.post('/folder/import', bookmarks.importFolder);
 
+/*
+app.get('/folders/add', folders.add);
+app.get('/folders/edit/:folder_name', folders.edit);
+app.get('/folders/addBookmarkToFolder/:folder_name', folders.addBookmarkToFolder);
+app.get('/folders/removeBookmarkFromFolder/:folder_name', folders.removeBookmarkFromFolder);*/
+
+/*crud functions for folders */
+app.get('/api/folders', folders.list);
+app.post('/folders/update/:folder_name', folders.update);
+app.post('/api/folders/insert', folders.insert);
+app.post('/folders/delete', folders.delete);
+app.post('/folders/addBookmark', folders.addBookmark);
+app.post('/folders/removeBookmark', folders.removeBookmark);
 
 app.listen(config.PORT, function () {
   console.log('Example app listening on port ' + config.PORT + '!');

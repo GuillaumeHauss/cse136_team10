@@ -8,6 +8,15 @@ var upload = multer({
   dest: './public/uploads/'
 }).single('filename');
 
+var list = module.exports.list = function(req, res) {
+  var user = req.session.user;
+  console.log(user);
+  db.query('SELECT * from folder WHERE username = ' + db.escape(user) + ' ORDER BY name', function(err, books) {
+    if (err) throw err;
+    res.json(books);
+  });
+};
+
 module.exports.add = function(req, res) {
   if (req.session && req.session.user != undefined){
     res.render('folders/addFolder.ejs');
@@ -20,22 +29,24 @@ module.exports.add = function(req, res) {
 module.exports.insert = function(req, res) {
   if (req.session && req.session.user != undefined){
     var user = req.session.user;
-
+    console.log("Inserting into user: " + user);
     if (req.body.title === "\s") {
       res.render("errors/error", {errorType: error.form});
     }
     var name = req.body.title;
+    console.log(name);
     db.query('select * from folder where name='+db.escape(name)+' and username='+db.escape(user), function(err1, results){
       if (err1){
         throw err1;
       }
       else{
         if (results.length==0){
-
           var query = 'INSERT INTO folder (name, username) VALUES (' + db.escape(req.body.title) + ', ' + db.escape(user) + ')';
           db.query(query, function(err){
             if (err) throw err;
-            res.redirect('/bookmarks');
+
+            //res.redirect('/bookmarks');
+            list(req,res);
           });
         }
         else{
@@ -157,14 +168,13 @@ module.exports.addBookmark = function(req, res){
       else{
         res.redirect('/bookmarks');
       }
-    })
+    });
 
   }
   else{
     res.render('errors/error', {errorType:error.notLoggedIn});
   }
 };
-
 
 module.exports.removeBookmarkFromFolder = function(req, res){
   var user = req.session.user;
@@ -196,8 +206,8 @@ module.exports.removeBookmark = function(req,res){
   else{
     res.render('errors/error', {errorType:error.notLoggedIn});
   }
-}
-;
+};
+
 module.exports.import = function(req, res) {
   upload(req, res, function(err) {
     if (err) throw err;

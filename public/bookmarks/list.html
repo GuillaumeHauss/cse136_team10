@@ -22,38 +22,38 @@
          Add Bookmark
       </button>
 
-     <!-- <button id="add-folder-btn" type="button" data-toggle="modal" data-target="#addFolderModal">
-         Folders
-      </button>-->
       <h2>Folders <i class="fa fa-plus-square-o" aria-hidden="true" data-toggle="modal" data-target="#addFolderModal"></i></h2>
-      <!-- <table id="folders">
-          <% for (var folder in folders) {%>
-          <%if(folder != "NULL") {%>
-          <tr>
-             <td>
-                <div class="folder">
-                   <input type="checkbox" value="selected" id="social-folder" class="folder-input">
 
-                   <label for="social-folder" class="social-label"><%=folder%></label>
-                   <div role="folder" class="folder-content">
+      <table id ="folders">
 
-                      <div class="import-export">
-                         <form method="post" action="/folder/export">
-                            <input class="hidden" name="name" value="<%folder.name%>" readonly>
-                            <input type="submit" class="import-export" value="Export">
-                         </form>
+      </table>
+      <script id="folder-list" type="text/x-ejs-template">
+             <% folders.forEach(function(folder){%>
+             <%if(folder != "NULL") {%>
+             <tr>
+                <td>
+                   <div class="folder">
+                      <input type="checkbox" value="selected" id="folder-<%=folder.name%>" class="folder-input">
+                      <label for="folder-<%=folder.name%>" class="social-label"><%=folder.name%></label>
+                      <div class="folder-content">
+                         <% folders.forEach(function(obj) {%>
+                           <% if(obj != null) { %>
+                              <li><a href="<%= obj.url %>"> <%=obj.title%> </a></li>
+                           <% }}); %>
+                         <div class="import-export">
+                            <form method="post" action="/folder/export">
+                               <input class="hidden" name="name" value="<%folder.name%>" readonly>
+                               <input type="submit" class="import-export" value="Export">
+                            </form>
+                         </div>
                       </div>
-                      <% folders[folder].forEach(function(obj) {%>
-                      <li><a href=<%=obj.url%>><%=obj.title%></a></li>
-                      <% }); %>
                    </div>
-                </div>
-             </td>
-          </tr>
+                </td>
+             </tr>
+             <%}%>
+             <% })%>
+      </script>
 
-          <%}%>
-          <% } %>
-       </table>-->
    </div>
 </div>
 <div class="home-container">
@@ -116,7 +116,7 @@
                      <p class="tags">Tags: <span> <%= bookmark.tag1 %></span> <span> <%= bookmark.tag2%></span> <span> <%= bookmark.tag3%></span> <span><%= bookmark.tag4%></span></p>
                   </div>
                   <div class="modal-footer">
-                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                     <button type="button" class="close-btn btn btn-default" data-dismiss="modal">Close</button>
                      <button type="button" class="delete-btn btn btn-primary" data-dismiss="modal"> Delete </button>
                   </div>
                </div>
@@ -151,8 +151,16 @@
                               <label id="edit-star" for="star">Star it?</label><input type="checkbox" name="star" id="star"><br>
                            </div>
                         </div>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="close-btn btn btn-default" data-dismiss="modal">Close</button>
                         <button type="button" class="edit-btn btn btn-primary" data-dismiss="modal"> Edit </button>
+                        <div id="folderContainer">
+                           <h4>Folder:</h4>
+                           <select id = "list-of-folders" class="form-control" title="folder" name="folder">
+                              <% folders.forEach(function(folder) {%>
+                              <option name="folder" value="<%=folder.name%>"><%=folder.name%></option>
+                              <% }); %>
+                           </select>
+                        </div>
 
                      </form>
 
@@ -189,24 +197,28 @@
                         </div>
                      </div>
 
-                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                     <button type="button" class="close-btn btn btn-default" data-dismiss="modal">Close</button>
                      <button type="button" class="add-btn btn btn-primary" data-dismiss="modal"> Add </button>
-                     <!--<div id="folderContainer">
+                     <div id="folderContainer">
                         <h4>Folder:</h4>
-                        <select class="form-control" type="text" name="folder" form="add-form"><br>
-                           <option name="folder" value=""></option>
+                        <select id = "list-of-folders" class="form-control" title="folder" name="folder">
                            <% folders.forEach(function(folder) {%>
                            <option name="folder" value="<%=folder.name%>"><%=folder.name%></option>
                            <% }); %>
                         </select>
-                     </div>-->
+                     </div>
                   </form>
-
                </div>
             </div>
          </div>
       </div>
    </div>
+   <script id = "folder-list-form"  type="text/x-ejs-template">
+      <option disabled selected value> -- select an option -- </option>
+      <% folders.forEach(function(folder) {%>
+      <option name="folder" value="<%=folder.name%>"><%=folder.name%></option>
+      <% }); %>
+   </script>
 
    <div class="modal fade" id="addFolderModal" tabindex="-1" role="dialog" aria-labelledby="addFolderLabel">
       <div class="modal-dialog" role="document">
@@ -220,16 +232,13 @@
                <form id = "add-form">
                   <h2>Bookmarx</h2>
                   <p>Add a new folder</p>
-                  <input type="text" name="title" placeholder="Folder Name" required="true"><br>
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="button" class="add-btn btn btn-primary" data-dismiss="modal"> Add </button>
-
-
+                  <input type="text" id= "add-folder-name" name="folder-name" placeholder="Folder Name" required="true"><br>
+                  <button type="button" class="close-btn btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="add-folder-btn btn btn-primary" data-dismiss="modal"> Add </button>
                   <form method="post" action="/folder/import" enctype="multipart/form-data">
                      <input type="file" name="filename">
                      <input type="submit" value="Import">
                   </form>
-
                </form>
             </div>
          </div>
