@@ -7,14 +7,11 @@ function updateList(sortParameter, req, res){
   if(req.session && req.session.user != undefined){
   var user = req.session.user;
   db.query('select name from user where username = '+ db.escape(user), function(err, names) {
-    // console.log(names);
     db.query('SELECT * from bookmark where username = ' + db.escape(user)+' order by '+sortParameter, function (err, bookmarks) {
       if (err) throw err;
       db.query('(Select folder, title, url from bookmark where username = ' + db.escape(user) + ' and folder is not null ) union (select name, null, null from folder where username = ' + db.escape(user) + ' and name not in (select folder from bookmark where username = ' + db.escape(user) + ' and folder is not null))', function (err, folders) {
         if (err) throw err;
-
         var foldersHash = {};
-
         for (var i = 0; i < bookmarks.length; i++) {
           // console.log(bookmarks[i]);
           if ( bookmarks[i].folder != null && bookmarks[i].folder in foldersHash) {
@@ -27,8 +24,6 @@ function updateList(sortParameter, req, res){
         for (i = 0; i < folders.length; i++) {
          if(!foldersHash[folders[i].folder] && foldersHash[folders[i].folder != null]) foldersHash[folders[i].folder] = [{"title": null, "url": null}];
         }
-
-        //var nameObj = names[0].name;
         console.log("updating list on server");
         res.json(bookmarks);
       });
@@ -45,30 +40,66 @@ var list = module.exports.list = function(req, res) {
   updateList('title', req, res);
 };
 
+
+/***
+ * Function for Sort by Title
+ * @param req
+ * @param res
+ */
 module.exports.sortTitle = function(req, res) {
   updateList('title', req, res);
 };
 
+/***
+ * Function for Sort by Title
+ * @param req
+ * @param res
+ */
 module.exports.sortURL = function(req, res) {
   updateList('url', req, res);
 };
 
+/***
+ * Function for Sort by Title
+ * @param req
+ * @param res
+ */
 module.exports.sortLastVisit = function(req, res) {
   updateList('lastVisit DESC', req, res);
 };
 
+/***
+ * Function for Sort by Title
+ * @param req
+ * @param res
+ */
 module.exports.sortCreateDate = function(req, res) {
   updateList('creationDate ASC', req, res);
 };
 
+/***
+ * Function for Sort by Title
+ * @param req
+ * @param res
+ */
 module.exports.sortStar = function(req, res) {
   updateList('star DESC', req, res);
 };
 
+/***
+ * Function for Sort by Title
+ * @param req
+ * @param res
+ */
 module.exports.sortCounter = function(req, res){
   updateList('counter DESC', req, res);
 };
 
+/***
+ * Function for Sort by Title
+ * @param req
+ * @param res
+ */
 module.exports.search = function(req,res){
   if(req.session && req.session.user != undefined){
 
@@ -91,21 +122,11 @@ module.exports.search = function(req,res){
   }
 };
 
-module.exports.add = function(req, res) {
-   if(req.session && req.session.user != undefined){
-
-    var user = req.session.user;
-    db.query('select name from folder where username = ' + db.escape(user), function(err, folders) {
-      if (err) throw err;
-      res.render('bookmarks/add.ejs', {folders: folders});
-    });
-  
-  }
-  else{
-    res.render('errors/error', {errorType : error.notLoggedIn});
-  }
-};
-
+/***
+ * Function for Sort by Title
+ * @param req
+ * @param res
+ */
 module.exports.insert = function(req, res) {
 
   console.log('preparing to insert');
@@ -190,26 +211,6 @@ module.exports.insert = function(req, res) {
   }
 };
 
-/*** Function to serve the edit bookmark view
- * @param req
- * @param res
- */
-module.exports.edit = function(req, res) {
-   if(req.session && req.session.user != undefined){
-    var id = req.params.bookmark_id;
-    db.query('SELECT * from bookmark WHERE title = ' + "'" + id + "'", function(err, bookmark) {
-      if (err){
-        throw err;
-        res.redirect('505.ejs');
-      }
-      res.render('bookmarks/edit', {bookmark: bookmark[0]});
-    });
-}
-else{
-    res.render('errors/error', {errorType : error.notLoggedIn});
-}
-};
-
 /*** Function to edit a bookmark
  * @param req
  * @param res
@@ -276,28 +277,6 @@ module.exports.update = function(req,res){
   }
 };
 
-/*** Function to serve the confirmation of deleting a bookmark
- *
- * @param req
- * @param res
- */
-module.exports.confirmDelete = function(req,res){
-  if(req.session && req.session.user != undefined){
-    var id = req.params.bookmark_id;
-    //console.log("id of bookmark: " + id);
-    db.query('SELECT * from bookmark WHERE title = ' + "'" + id + "'", function (err, bookmark) {
-      if (err) {
-        throw err;
-        res.redirect('505.ejs');
-      }
-      res.render('bookmarks/confirm-delete', {bookmark: bookmark[0]});
-    });
-  }
-  else{
-    res.render('errors/error', {errorType : error.notLoggedIn});
-  }
-
-};
 /*** Function to delete a bookmark
  *
  * @param req
@@ -321,9 +300,10 @@ else{
 }
 };
 
-/**
- * STARFUNCTION
- * Function to star/unstar a bookmark
+/***
+ * Function to Star/ Unstar a bookmark
+ * @param req
+ * @param res
  */
 module.exports.star = function(req, res){
   console.log('star function');
@@ -366,8 +346,10 @@ module.exports.star = function(req, res){
   }
 };
 
-/**
- * Function to updta the counter of the bookmark
+/***
+ * Function to update counter
+ * @param req
+ * @param res
  */
  module.exports.counter = function(req, res){
    if(req.session && req.session.user != undefined){
@@ -483,18 +465,11 @@ module.exports.exportFolder = function(req, res) {
   });
 };
 
-module.exports.retrieve = function(req, res){
-  if(req.session && req.session.user != undefined) {
-    var user = req.session.user;
-    var title = req.params.bookmark_id;
-
-    db.query('SELECT * From bookmark WHERE username= ' + db.escape(user) + 'and title = ' + db.escape(title),function(err, result){
-      if(err) throw err;
-      res.json(result);
-    });
-  }
-};
-
+/***
+ * Render Folder view
+ * @param req
+ * @param res
+ */
 module.exports.renderFolder = function(req,res){
   if(req.session && req.session.user != undefined) {
     var user = req.session.user;

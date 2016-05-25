@@ -9,21 +9,18 @@ var upload = multer({
 }).single('filename');
 
 var list = module.exports.list = function(req, res) {
-  var user = req.session.user;
-  //console.log(user);
-  console.log(req.folders);
-  db.query('SELECT * from folder WHERE username = ' + db.escape(user) + 'ORDER BY name', function(err, folders) {
-    if (err) throw err;
-    /*db.query('select bookmark.folder, bookmark.title, bookmark.url from folder left join bookmark on folder.name = bookmark.folder where bookmark.username =' + db.escape(user), function(err, bookmarks) {
-      console.log("bookmark folders: " + bookmarks);
-      for(var i = 0, len = folders.length; i < len; i++){
-        console.log(bookmarks[i].folders);
-
-      }
-    });*/
-    console.log(folders);
-    res.json(folders);
-  });
+  if (req.session && req.session.user != undefined) {
+    var user = req.session.user;
+    //console.log(user);
+    console.log(req.folders);
+    db.query('SELECT * from folder WHERE username = ' + db.escape(user) + 'ORDER BY name', function (err, folders) {
+      if (err) throw err;
+      res.json(folders);
+    });
+  }
+  else{
+    res.render('errors/error', {errorType:error.notLoggedIn});
+  }
 };
 
 module.exports.add = function(req, res) {
@@ -238,10 +235,6 @@ module.exports.import = function(req, res) {
 };
 
 module.exports.export = function(req, res) {
-  /* if (!req.session) {
-   //console.error('ERROR: No session');
-   return;
-   }*/
   var username = req.session.user;
   var name = req.body.name;
   console.log('folder');

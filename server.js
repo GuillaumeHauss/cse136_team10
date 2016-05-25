@@ -62,17 +62,9 @@ app.get('/api/bookmarks/star/:bookmark_title/:bookmark_star', bookmarks.star);
 app.get('/api/bookmarks/counter/:bookmark_title', bookmarks.counter);
 
 /* Crud Routes for Bookmarks*/
-app.get('/api/bookmarks/add', bookmarks.add);
 app.post('/api/bookmarks/insert', bookmarks.insert);
-
-app.get('/api/bookmarks/confirm-delete/:bookmark_id',bookmarks.confirmDelete);
 app.delete('/api/bookmarks/delete/:bookmark_id',bookmarks.delete);
-
-app.get('/api/bookmarks/retrieve/:bookmark_id', bookmarks.retrieve);
-app.get('/api/bookmarks/edit/:bookmark_id', bookmarks.edit);
 app.put('/api/bookmarks/update/:bookmark_id', bookmarks.update);
-
-
 
 // Import and export individual bookmarks
 app.post('/bookmark/export/', bookmarks.exportBookmark);
@@ -82,13 +74,6 @@ app.post('/bookmark/import/', bookmarks.importBookmark);
 app.post('/folder/export', bookmarks.exportFolder);
 app.post('/folder/import', bookmarks.importFolder);
 
-/*
-app.get('/folders/add', folders.add);
-app.get('/folders/edit/:folder_name', folders.edit);
-app.get('/folders/addBookmarkToFolder/:folder_name', folders.addBookmarkToFolder);
-app.get('/folders/removeBookmarkFromFolder/:folder_name', folders.removeBookmarkFromFolder);*/
-
-/*crud functions for folders */
 app.get('/api/bookmark/folders/:folder_name', bookmarks.renderFolder);
 app.get('/api/folders', folders.list);
 app.post('/folders/update/:folder_name', folders.update);

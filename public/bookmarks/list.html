@@ -3,7 +3,6 @@
 <head>
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
-
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -18,53 +17,19 @@
    <h1>BookMarx</h1>
    <!--<p id="helloUser">Hello <em><%= name %></em></p>-->
    <div class="folder-wrapper">
-      <button id="add-bookmark-btn" type="button" data-toggle="modal" data-target="#myAddModal">
+       <button id="add-bookmark-btn" type="button" data-toggle="modal" data-target="#myAddModal">
          Add Bookmark
-      </button>
-
-      <h2>Folders <i class="fa fa-plus-square-o" aria-hidden="true" data-toggle="modal" data-target="#addFolderModal"></i></h2>
-      <div class="folder" style="margin-left: 10px;">
-         <input type="checkbox" value="selected" title = "all" id="folder-all" class="folder-input" style="cursor: pointer;">
-         <label for="folder-all" >All</label>
+       </button>
+       <h2>Folders <i class="fa fa-plus-square-o" aria-hidden="true" data-toggle="modal" data-target="#addFolderModal"></i></h2>
+       <h4 class="folder" title = "all" id="folder-all" style="cursor:pointer;" >All</h4>
+      <div id ="folders">
       </div>
-
-      <table id ="folders">
-      </table>
-
-      <script id="folder-list" type="text/x-ejs-template">
-             <% folders.forEach(function(folder){%>
-             <%if(folder != "NULL") {%>
-             <tr>
-                <td>
-                   <div class="folder">
-                      <input type="checkbox" value="selected" title = "<%=folder.name%>" id="folder-<%=folder.name%>" class="folder-input">
-                      <label for="folder-<%=folder.name%>" class="social-label"><%=folder.name%></label>
-                      <!--<div class="folder-content">
-                         <% folders.forEach(function(obj) {%>
-                           <% if(obj != null) { %>
-                              <li><a href="<%= obj.url %>"> <%=obj.title%> </a></li>
-                           <% }}); %>
-                         <div class="import-export">
-                            <form method="post" action="/folder/export">
-                               <input class="hidden" name="name" value="<%folder.name%>" readonly>
-                               <input type="submit" class="import-export" value="Export">
-                            </form>
-                         </div>
-                      </div>-->
-                   </div>
-                </td>
-             </tr>
-             <%}%>
-             <% })%>
-      </script>
-
    </div>
 </div>
 <div class="home-container">
-   <div class="row ">
+   <nav>
       <div class="nav-left">
-         <form id="sort-controls" action="" method="post" style="display:inline;">
-            <div class="btn-group">
+            <div  id="sort-controls" class="btn-group">
                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Sort bookmarks by... <span class="caret"></span>
                </button>
@@ -77,147 +42,154 @@
                   <li id = "sort-visit">Most Visited</li>
                </ul>
             </div>
-         </form>
-         <div class="container-import-bookmark">
-            <form method="post" action="/bookmark/import" enctype="multipart/form-data">
-               <input class="import-items" type="file" name="filename">
-               <input class="import-items" type="submit" value="Import">
-            </form>
-         </div>
+         <!--<div class="container-import-bookmark">
+             <input class="import-items" type="file" name="filename">
+             <input class="import-items" type="submit" value="Import">
+         </div>-->
       </div>
       <div class="nav-right">
-         <form method = "get" action="/logout">
-            <input class="log-button" type="submit" value="Log out">
-         </form>
+          <form class="navbar-form" role="search">
+              <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Search">
+              </div>
+              <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+          <input class="log-button" type="submit" value="Log out">
+
       </div>
-   </div>
+   </nav>
    <hr>
 
    <div class ="container-fluid">
-      <!--<div class="input-group">
-         <form method="post" action="/search">
-            <div class="search-bar">
-               <input type="text" class="form-control fix-height" name="searchString" placeholder="Search for...">
-            </div>
-            <div class="search-bar">
-               <input class ="btn-btn-default" type="submit" value= "Go!">
-            </div>
-         </form>
-      </div>-->
       <div id="bookmark-card"></div>
       <div id="crud-modal"></div>
-
-      <script id="delete-modal" type = "text/x-ejs-template">
-         <div class="modal fade" id="myDeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-               <div class="modal-content">
-                  <div class="modal-header">
-                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                     <h4 class="modal-title" id="myModalLabel"><%= bookmark.title %></h4>
-                  </div>
-                  <div class="modal-body">
-                     <p><%= bookmark.description %></p>
-                     <p class="tags">Tags: <span> <%= bookmark.tag1 %></span> <span> <%= bookmark.tag2%></span> <span> <%= bookmark.tag3%></span> <span><%= bookmark.tag4%></span></p>
-                  </div>
-                  <div class="modal-footer">
-                     <button type="button" class="close-btn btn btn-default" data-dismiss="modal">Close</button>
-                     <button type="button" class="delete-btn btn btn-primary" data-dismiss="modal"> Delete </button>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </script>
-
-      <script id="edit-modal" type = "text/x-ejs-template">
-         <div class="modal fade" id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myEditModalLabel">
-            <div class="modal-dialog" role="document">
-               <div class="modal-content">
-                  <div class="modal-header">
-                     <h2>Bookmarx</h2>
-                     <p>Edit Bookmark: <%= bookmark.title %></p>
-                     <p>Fill out the form with the requested values</p>
-                  </div>
-                  <div class="modal-body">
-                     <form id = "edit-form" method='post'>
-                        <input id="edit-title" type="text" name="title" value="<%= bookmark.title %>" required="true"><br>
-                        <input id="edit-url" type="url" name="url" value="<%= bookmark.url %>" required="true"><br>
-                        <div class="folder">
-                           <input type="checkbox" value="selected" id="social-folder" class="folder-input">
-                           <label for="social-folder" class="social-label">Advanced Options</label>
-                           <div role="folder" class="folder-content">
-                              <div id="tagHolder">
-                                 <input id="edit-tag1" class="input-option tag1" type="text" name="tag1" value="<%= bookmark.tag1 %>"><br>
-                                 <input id="edit-tag2" class="input-option tag2" type="text" name="tag2" value="<%= bookmark.tag2 %>"><br>
-                                 <input id="edit-tag3" class="input-option tag3" type="text" name="tag3" value="<%= bookmark.tag3 %>"><br>
-                                 <input id="edit-tag4" class="input-option tag4" type="text" name="tag4" value="<%= bookmark.tag4 %>"><br>
-                              </div>
-                              <input id = "edit-description" class="input-option" type="text" name="description" value="<%= bookmark.description %>"><br>
-                              <label id="edit-star" for="star">Star it?</label><input type="checkbox" name="star" id="star"><br>
-                           </div>
-                        </div>
-                        <button type="button" class="close-btn btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="edit-btn btn btn-primary" data-dismiss="modal"> Edit </button>
-                        <div id="folderContainer">
-                           <h4>Folder:</h4>
-                           <select id = "list-of-folders" class="form-control" title="folder" name="folder">
-                              <option disabled selected value> -- Select an option -- </option>
-                              <% folders.forEach(function(folder) {%>
-                              <option class = "folder-options" name="folder" value="<%=folder.name%>"><%=folder.name%></option>
-                              <% }); %>
-                           </select>
-                        </div>
-
-                     </form>
-
-                  </div>
-               </div>
-            </div>
-         </div>
-      </script>
 
       <div class="modal fade" id="myAddModal" tabindex="-1" role="dialog" aria-labelledby="myAddModalLabel">
          <div class="modal-dialog" role="document">
             <div class="modal-content">
                <div class="modal-header">
-                  <h2>Bookmarx</h2>
-                  <p>Add a new bookmark</p>
-                  <p>Fill out the form with the requested values</p>
+                  <h1>Add a new bookmark</h1>
                </div>
                <div class="modal-body">
                   <form id = "add-form" method='post'>
+                     <label for ="add-title">Title</label>
                      <input id="add-title" type="text" name="title" placeholder="Title" required="true"><br>
+                     <label for ="add-url">url</label>
                      <input id="add-url" type="url" name="url" placeholder="Enter the url with 'http:// at the beginning" required="true"><br>
-                     <div class="folder">
-                        <input type="checkbox" value="selected" id="social-folder" class="folder-input">
-                        <label for="social-folder" class="social-label">Advanced Options</label>
-                        <div role="folder" class="folder-content">
-                           <div id="tagHolder">
-                              <input id="add-tag1" class="input-option tag1" type="text" placeholder = "tag" name="tag1"><br>
-                              <input id="add-tag2" class="input-option tag2" type="text" placeholder = "tag" name="tag2"><br>
-                              <input id="add-tag3" class="input-option tag3" type="text" placeholder = "tag" name="tag3"><br>
-                              <input id="add-tag4" class="input-option tag4" type="text" placeholder = "tag" name="tag4"><br>
-                           </div>
-                           <input id = "add-description" class="input-option" type="text" name="description" placeholder = "description"><br>
-                           <label id="add-star" for="star">Star it?</label><input type="checkbox" name="star" id="star"><br>
-                        </div>
-                     </div>
-
+                     <input type="checkbox" value="selected" id="social-folder" class="folder-input">
+                     <label for ="add-tag1">Tag1</label>
+                     <input id="add-tag1" class="input-option tag1" type="text" placeholder = "tag" name="tag1"><br>
+                     <label for ="add-tag2">Tag2</label>
+                     <input id="add-tag2" class="input-option tag2" type="text" placeholder = "tag" name="tag2"><br>
+                     <label for ="add-tag3">Tag3</label>
+                     <input id="add-tag3" class="input-option tag3" type="text" placeholder = "tag" name="tag3"><br>
+                     <label for ="add-tag4">Tag4</label>
+                     <input id="add-tag4" class="input-option tag4" type="text" placeholder = "tag" name="tag4"><br>
+                     <label id="add-star" for="star">Star it?</label>
+                     <input type="checkbox" name="star" id="star"><br>
+                     <label>Folder:</label>
+                     <select id = "list-of-folders" class="form-control" title="folder" name="folder">
+                        <% folders.forEach(function(folder) {%>
+                        <option name="folder" value="<%=folder.name%>"><%=folder.name%></option>
+                        <% }); %>
+                     </select>
+                     <br>
                      <button type="button" class="close-btn btn btn-default" data-dismiss="modal">Close</button>
                      <button type="button" class="add-btn btn btn-primary" data-dismiss="modal"> Add </button>
-                     <div id="folderContainer">
-                        <h4>Folder:</h4>
-                        <select id = "list-of-folders" class="form-control" title="folder" name="folder">
-                           <% folders.forEach(function(folder) {%>
-                           <option name="folder" value="<%=folder.name%>"><%=folder.name%></option>
-                           <% }); %>
-                        </select>
-                     </div>
                   </form>
                </div>
             </div>
          </div>
       </div>
+
+      <div class="modal fade" id="addFolderModal" tabindex="-1" role="dialog" aria-labelledby="addFolderLabel">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h1>Add a New Folder</h1>
+               </div>
+               <div class="modal-body">
+                  <form id = "add-folder-form">
+                      <label for ="add-folder-name">Folder Name:</label>
+                      <input type="text" id= "add-folder-name" name="folder-name" placeholder="Folder Name" required="true"><br>
+
+                      <button type="button" class="close-btn btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="button" class="add-folder-btn btn btn-primary" data-dismiss="modal"> Add </button>
+                     <!--<form method="post" action="/folder/import" enctype="multipart/form-data">
+                        <input type="file" name="filename">
+                        <input type="submit" value="Import">
+                     </form> -->
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div> <!-- End of Container -->
+   </div> <!-- End of Home Container -->
+
+<!-- Template for confirm Delete -->
+<script id="delete-modal" type = "text/x-ejs-template">
+   <div class="modal fade" id="myDeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               <h4 class="modal-title" id="myModalLabel"><%= bookmark.title %></h4>
+            </div>
+            <div class="modal-body">
+               <p><%= bookmark.description %></p>
+               <p class="tags">Tags: <span> <%= bookmark.tag1 %></span> <span> <%= bookmark.tag2%></span> <span> <%= bookmark.tag3%></span> <span><%= bookmark.tag4%></span></p>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="close-btn btn btn-default" data-dismiss="modal">Close</button>
+               <button type="button" class="delete-btn btn btn-primary" data-dismiss="modal"> Delete </button>
+            </div>
+         </div>
+      </div>
    </div>
+</script>
+
+<!-- Template for edit Modal -->
+<script id="edit-modal" type = "text/x-ejs-template">
+   <div class="modal fade" id="myEditModal" tabindex="-1" role="dialog" aria-labelledby="myEditModalLabel">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h1>Edit Bookmark</h1>
+            </div>
+            <div class="modal-body">
+               <form id = "edit-form" method='post'>
+                  <label>Title: </label>
+                  <input id="edit-title" type="text" name="title" value="<%= bookmark.title %>" required="true"><br>
+                  <label>Url: </label>
+                  <input id="edit-url" type="url" name="url" value="<%= bookmark.url %>" required="true"><br>
+                  <label for = "edit-tag1">Tag1: </label>
+                  <input id="edit-tag1" class="input-option tag1" type="text" name="tag1" value="<%= bookmark.tag1 %>"><br>
+                  <label for = "edit-tag2">Tag2: </label>
+                  <input id="edit-tag2" class="input-option tag2" type="text" name="tag2" value="<%= bookmark.tag2 %>"><br>
+                  <label for = "edit-tag3">Tag3: </label>
+                  <input id="edit-tag3" class="input-option tag3" type="text" name="tag3" value="<%= bookmark.tag3 %>"><br>
+                  <label for = "edit-tag4">Tag4: </label>
+                  <input id="edit-tag4" class="input-option tag4" type="text" name="tag4" value="<%= bookmark.tag4 %>"><br>
+                  <label id="edit-star" for="star">Star it?</label><input type="checkbox" name="star" id="star"><br>
+                  <h4>Select a Folder</h4>
+                  <select id = "list-of-folders" class="form-control" title="folder" name="folder">
+                     <option disabled selected value> -- Select an option -- </option>
+                     <% folders.forEach(function(folder) {%>
+                     <option class = "folder-options" name="folder" value="<%=folder.name%>"><%=folder.name%></option>
+                     <% }); %>
+                  </select>
+                  <br>
+                  <button type="button" class="close-btn btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="edit-btn btn btn-primary" data-dismiss="modal"> Edit </button>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</script>
+
+   <!-- Template to Populate Folder drop down -->
    <script id = "folder-list-form"  type="text/x-ejs-template">
       <option disabled selected value> -- Select an option -- </option>
       <% folders.forEach(function(folder) {%>
@@ -225,32 +197,8 @@
       <% }); %>
    </script>
 
-   <div class="modal fade" id="addFolderModal" tabindex="-1" role="dialog" aria-labelledby="addFolderLabel">
-      <div class="modal-dialog" role="document">
-         <div class="modal-content">
-            <div class="modal-header">
-               <h2>Bookmarx</h2>
-               <p>Add a new bookmark Folder</p>
-               <p>Fill out the form with the requested values</p>
-            </div>
-            <div class="modal-body">
-               <form id = "add-form">
-                  <h2>Bookmarx</h2>
-                  <p>Add a new folder</p>
-                  <input type="text" id= "add-folder-name" name="folder-name" placeholder="Folder Name" required="true"><br>
-                  <button type="button" class="close-btn btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="button" class="add-folder-btn btn btn-primary" data-dismiss="modal"> Add </button>
-                  <form method="post" action="/folder/import" enctype="multipart/form-data">
-                     <input type="file" name="filename">
-                     <input type="submit" value="Import">
-                  </form>
-               </form>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
 
+<!-- TEMPLATE FOR POPULATING LIST -->
 <script id="list" type="text/x-ejs-template">
    <% bookmarks.forEach(function(bookmark) { %>
    <div class="col-md-4">
@@ -263,7 +211,6 @@
             </div>
          </a>
          <p class="tags">Tags: <span> <%= bookmark.tag1 %></span> <span> <%= bookmark.tag2%></span> <span> <%= bookmark.tag3%></span> <span><%= bookmark.tag4%></span></p>
-         <!-- Links for edit, delete, and star -->
          <div class = "crud-btns">
             <p class="counter"><span><%= bookmark.counter %> </span> views</p>
             <button type="button" class="edit-bookmark" data-toggle="modal" data-target="#myEditModal">
@@ -283,10 +230,15 @@
       </div>
    </div>
    <% }); %>
-
 </script>
 
-<script src="../scripts/crud.js"></script>
+<!-- TEMPLATE FOR POPULATING FOLDERS -->
+<script id="folder-list" type="text/x-ejs-template">
+   <% folders.forEach(function(folder){%>
+   <%if(folder != "NULL") {%>
+         <h4 class="folder" title = "<%=folder.name%>"  > <%=folder.name%></h4>
+   <%}%>
+   <% })%>
+</script>
 </body>
-
 </html>

@@ -34,8 +34,7 @@ function loadListeners(){
     addBookmark();
   });
 
-  $('.folder-input').on('click',function(){
-
+  $('.folder').on('click',function(){
     var folderTitle = this.getAttribute('title');
     //console.log((this).getAttribute('title'));
     console.log(folderTitle);
@@ -216,18 +215,18 @@ function grabAddFormElements(){
   var tag2 = document.getElementById('add-tag2').value;
   var tag3 = document.getElementById('add-tag3').value;
   var tag4 = document.getElementById('add-tag4').value;
-  var description = document.getElementById('add-description').value;
+  //var description = document.getElementById('add-description').value;
   var star = document.getElementById('add-star').value;
   var folder = document.getElementById('list-of-folders').value;
-  var payload = 'title=' + title + '&url=' + url + '&tag1=' + tag1  + '&tag2=' + tag2  + '&tag3=' + tag3  + '&tag4=' + tag4  + '&description=' + description  + '&star=' + star + '&folder=' + folder;
-
+  //var payload = 'title=' + title + '&url=' + url + '&tag1=' + tag1  + '&tag2=' + tag2  + '&tag3=' + tag3  + '&tag4=' + tag4  + '&description=' + description  + '&star=' + star + '&folder=' + folder;
+  var payload = 'title=' + title + '&url=' + url + '&tag1=' + tag1  + '&tag2=' + tag2  + '&tag3=' + tag3  + '&tag4=' + tag4  + '&star=' + star + '&folder=' + folder;
   document.getElementById('add-title').setAttribute("value","");
   document.getElementById('add-url').setAttribute("value","");
   document.getElementById('add-tag1').setAttribute("value","");
   document.getElementById('add-tag2').setAttribute("value","");
   document.getElementById('add-tag3').setAttribute("value","");
   document.getElementById('add-tag4').setAttribute("value","");
-  document.getElementById('add-description').setAttribute("value","");
+  //document.getElementById('add-description').setAttribute("value","");
   document.getElementById('add-star').setAttribute("value","");
   document.getElementById('list-of-folders').setAttribute ("value","");
 
@@ -238,7 +237,7 @@ function grabAddFormElements(){
   document.getElementById('add-tag2').value= "";
   document.getElementById('add-tag3').value= "";
   document.getElementById('add-tag4').value= "";
-  document.getElementById('add-description').value= "";
+  //document.getElementById('add-description').value= "";
   document.getElementById('add-star').value= "";
   return payload;
 }
@@ -256,19 +255,20 @@ function grabEditFormElements(){
   var tag2 = document.getElementById('edit-tag2').value;
   var tag3 = document.getElementById('edit-tag3').value;
   var tag4 = document.getElementById('edit-tag4').value;
-  var description = document.getElementById('edit-description').value;
+  //var description = document.getElementById('edit-description').value;
   var star = document.getElementById('edit-star').value;
   var folder = document.getElementById('list-of-folders').value;
 
-  var payload = 'title=' + title + '&url=' + url + '&tag1=' + tag1  + '&tag2=' + tag2  + '&tag3=' + tag3  + '&tag4=' + tag4  + '&description=' + description  + '&star=' + star + '&folder=' + folder;
-
+  console.log('edit-title: ' + title);
+  //var payload = 'title=' + title + '&url=' + url + '&tag1=' + tag1  + '&tag2=' + tag2  + '&tag3=' + tag3  + '&tag4=' + tag4  + '&description=' + description  + '&star=' + star + '&folder=' + folder;
+  var payload = 'title=' + title + '&url=' + url + '&tag1=' + tag1  + '&tag2=' + tag2  + '&tag3=' + tag3  + '&tag4=' + tag4 + '&star=' + star + '&folder=' + folder;
   document.getElementById('edit-title').setAttribute("value","");
   document.getElementById('edit-url').setAttribute("value","");
   document.getElementById('edit-tag1').setAttribute("value","");
   document.getElementById('edit-tag2').setAttribute("value","");
   document.getElementById('edit-tag3').setAttribute("value","");
   document.getElementById('edit-tag4').setAttribute("value","");
-  document.getElementById('edit-description').setAttribute("value","");
+  //document.getElementById('edit-description').setAttribute("value","");
   document.getElementById('edit-star').setAttribute("value","");
   document.getElementById('list-of-folders').setAttribute("value","");
   document.getElementById('edit-title').value = "";
@@ -277,7 +277,7 @@ function grabEditFormElements(){
   document.getElementById('edit-tag2').value= "";
   document.getElementById('edit-tag3').value= "";
   document.getElementById('edit-tag4').value= "";
-  document.getElementById('edit-description').value= "";
+  //document.getElementById('edit-description').value= "";
   document.getElementById('edit-star').value= "";
   document.getElementById('list-of-folders').value="";
 
