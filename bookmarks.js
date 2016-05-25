@@ -494,3 +494,25 @@ module.exports.retrieve = function(req, res){
     });
   }
 };
+
+module.exports.renderFolder = function(req,res){
+  if(req.session && req.session.user != undefined) {
+    var user = req.session.user;
+    var folder = req.params.folder_name;
+
+    var query;
+    if( folder === "all"){
+      query = 'SELECT * FROM bookmark WHERE username=' + db.escape(user);
+    }
+    else{
+      query = 'SELECT * FROM bookmark WHERE folder=' + db.escape(folder) + 'and username=' + db.escape(user);
+    }
+
+      db.query(query, function (err, result) {
+        if (err) throw err;
+        console.log("result of folder filter: " + result[0]);
+        res.json(result);
+      });
+  }
+
+};

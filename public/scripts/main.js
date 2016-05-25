@@ -38,8 +38,8 @@ function loadListeners(){
 
     var folderTitle = this.getAttribute('title');
     //console.log((this).getAttribute('title'));
-    loadBookmark(folderTitle);
     console.log(folderTitle);
+    loadFolderView(folderTitle);
   });
 
   //LISTENER FOR EDIT BOOKMARK
@@ -54,8 +54,6 @@ function loadListeners(){
       console.log(bookmark.folder);
       console.log(static_folders[i].name);
       if(static_folders[i].name === bookmark.folder){
-        console.log('hi');
-        console.log(  document.getElementsByClassName("folder-options[value='" + bookmark.folder + "']"));
         var folderOptions = document.getElementsByClassName("folder-options");
         for(i=0, len= folderOptions.length; i < len; i++){
           if(folderOptions[i]. value === bookmark.folder){
@@ -142,6 +140,9 @@ function makeRequest(request,url, operation, payload) {
 //Wrapper Functions to make Ajax Requests
 function loadBookmark(folder){
   makeRequest("GET","/api/bookmarks", populateList);
+}
+function loadFolderView(folder){
+  makeRequest("GET", "/api/bookmark/folders/" + folder, populateList);
 }
 
 function loadFolder(){

@@ -89,6 +89,7 @@ app.get('/folders/addBookmarkToFolder/:folder_name', folders.addBookmarkToFolder
 app.get('/folders/removeBookmarkFromFolder/:folder_name', folders.removeBookmarkFromFolder);*/
 
 /*crud functions for folders */
+app.get('/api/bookmark/folders/:folder_name', bookmarks.renderFolder);
 app.get('/api/folders', folders.list);
 app.post('/folders/update/:folder_name', folders.update);
 app.post('/api/folders/insert', folders.insert);
